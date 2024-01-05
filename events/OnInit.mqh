@@ -3,6 +3,11 @@
 int OnInit()
   {    
   
+    if(ScopeLevel < StartStep + StepPEND && ScopeLevel !=0 ){
+        Alert("ВНИМАНИЕ! ScopeLevel должен болльше > ",StartStep + StepPEND , " или равен 0" );
+           return(INIT_FAILED);
+      }
+  
     DIGIT               = (int)SymbolInfoInteger(NULL,SYMBOL_DIGITS);
     POINT               = SymbolInfoDouble(NULL,SYMBOL_POINT);
     TRADE_STOPS_LEVEL   = (int)SymbolInfoInteger(NULL,SYMBOL_TRADE_STOPS_LEVEL) ;

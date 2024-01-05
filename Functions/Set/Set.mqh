@@ -414,6 +414,74 @@ void setXY_Label(){
         if ( count_SELL_STOP !=0 )  TRADE_SUB_DN = true;   
       }
  }
+ 
+ //+------------------------------------------------------------------+
+ //|                                                                  |
+ //+------------------------------------------------------------------+
+void setPRICE_BL(double BID){
+
+  for(int i=0;i<NUMBER_OF_KNEES;i++){
+      string const MainName_BL  = Order.arrBUYLIMIT[i];
+  //+------------------------------------------------------------------+
+  //|                    BUYLIMIT                                      |
+  //+------------------------------------------------------------------+
+    int const nextFullStep_BL             = (int)jBUYLIMIT[MainName_BL][NAME_FULL_STEP].ToInt();
+ double const nextPrice_BL                = BID - nextFullStep_BL * POINT ;    
+ jBUYLIMIT[MainName_BL][NAME_PRICE_OPEN]  = nextPrice_BL;  
+        
+ int const kstart = arrStartStop[i][0];
+ int const kstop  = arrStartStop[i][1];  
+    
+   for(int k=kstart;k<kstop;k++){     
+      //+------------------------------------------------------------------+
+      //|                   SELLSTOP                                               |
+      //+------------------------------------------------------------------+
+      string const SubName_SS       = Order.arrSELLSTOP[k];
+      string const fullName_SS      = MainName_BL + "#" + SubName_SS;     
+         int const nextFullStep_SS  = (int)jBUYLIMIT[MainName_BL][SubName_SS][NAME_FULL_STEP].ToInt();     
+         int const nextSubStep_SS   = (int)jBUYLIMIT[MainName_BL][SubName_SS][NAME_SUB_STEP].ToInt();   
+         int const spred            = (int)SymbolInfoInteger(NULL,SYMBOL_SPREAD);
+      double const nextPrice_SS     = BID - nextFullStep_SS * POINT ;  
+      double const nextTP_SS        = nextPrice_SS -  nextSubStep_SS * POINT ;          
+      jBUYLIMIT[MainName_BL][SubName_SS][NAME_PRICE_OPEN]  = nextPrice_SS;    
+      jBUYLIMIT[MainName_BL][SubName_SS][NAME_TAKEPROFIT]  = nextTP_SS; 
+     }   
+   }
+}
+ 
+ //+------------------------------------------------------------------+
+ //|                                                                  |
+ //+------------------------------------------------------------------+
+void setPRICE_SL(double ASK){
+
+  for(int i=0;i<NUMBER_OF_KNEES;i++){
+      string const MainName_SL  = Order.arrSELLLIMIT[i];  
+  //+------------------------------------------------------------------+
+  //|                    SELLIMIT                                      |
+  //+------------------------------------------------------------------+
+    int const nextFullStep_SL             = (int)jSELLLIMIT[MainName_SL][NAME_FULL_STEP].ToInt();
+ double const nextPrice_SL                = ASK + nextFullStep_SL*POINT ;    
+ jSELLLIMIT[MainName_SL][NAME_PRICE_OPEN] = nextPrice_SL; 
+        
+ int const kstart = arrStartStop[i][0];
+ int const kstop  = arrStartStop[i][1];  
+    
+   for(int k=kstart;k<kstop;k++){    
+     //+------------------------------------------------------------------+
+     //|                   BUYSTOP                                               |
+     //+------------------------------------------------------------------+
+     string const SubName_BS        = Order.arrBUYSTOP[k];
+     string const fullName_BS       = MainName_SL + "#" + SubName_BS;
+        int const nextFullStep_BS   = (int)jSELLLIMIT[MainName_SL][SubName_BS][NAME_FULL_STEP].ToInt(); 
+        int const nextSubStep_BS    = (int)jSELLLIMIT[MainName_SL][SubName_BS][NAME_SUB_STEP].ToInt();
+     double const nextPrice_BS      = ASK + nextFullStep_BS * POINT;  
+     double const nextTP_BS         = nextPrice_BS +  nextSubStep_BS * POINT ;
+     jSELLLIMIT[MainName_SL][SubName_BS][NAME_PRICE_OPEN] = nextPrice_BS;    
+     jSELLLIMIT[MainName_SL][SubName_BS][NAME_TAKEPROFIT] = nextTP_BS;  
+     }   
+   }
+}
+ 
  //+------------------------------------------------------------------+
  //|                                                                  |
  //+------------------------------------------------------------------+
