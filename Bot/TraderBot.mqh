@@ -53,26 +53,6 @@ void TraderBot(int      number,  CTrade   &trade[]  )
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ P R O F I T   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$$$$$
-//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-//|                       CLOSE All PROFIT  | % GetPipsProfit() > ProfitPipsPLUS %                            
-//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-//if(false)
-//if(SignalCloseAll_TRALL[number]){ 
-//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> CLOSE All PROFIT  | % GetPipsProfit() > ProfitPipsPLUS %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-// if(    jBUYLIMIT[NAME_BL_0][NAME_STATUS].ToStr() == NAME_STATUS_OPEN || jSELLLIMIT[NAME_SL_0][NAME_STATUS].ToStr() == NAME_STATUS_OPEN ){
-//     //LAST_PROFIT = AccountInfoDouble(ACCOUNT_PROFIT);     
-//     //LAST_PipsPROFIT = GetPipsProfit();  
-//  }    
-//   int p = 50; 
-//   while(  GetCountAllTotalByMagic() > 0 && p > 0){
-//     CloseAllPosition( number,trade, _Symbol );   
-//     DeleteAllPend   ( number,trade, _Symbol );
-//     p--;
-//   }
-//   SetPARAMETRS_START(NAME_ALL);
-//   //--- 
-//   SetTRADE_CLOSE();
-//}
 //+------------------------------------------------------------------+
 //|                    CLOSE  PROFIT BL   | % Pips_BL > ProfitPips_BL  %                              |
 //+------------------------------------------------------------------+
@@ -196,7 +176,6 @@ if(SignalCloseBuyLimitScope[number] ){
  SetTRADE_CLOSE();  
 }
 
-
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 //|           >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> O P E N <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -204,11 +183,11 @@ if(SignalCloseBuyLimitScope[number] ){
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 
 //+------------------------------------------------------------------+
-//|           OPEN BUYLIMIT SCOPE_OFF     %  CountPend == 0  %                            
+//|           START | SCOPE_OFF |  BUYLIMIT   % CountPend == 0  %                            
 //+------------------------------------------------------------------+
 if(ScopeLevel == 0)
  if(SignalOpenBuyLimit[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   OPEN BUYLIMIT SCOPE_OFF     %  CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   START | SCOPE_OFF |  BUYLIMIT   % CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrBUYLIMIT[i];
      double const nextPrice      = jBUYLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
@@ -219,12 +198,12 @@ if(ScopeLevel == 0)
    //---
    }
 }
-//+------------------------------------------------------------------+
-//|           OPEN BUYLIMIT SCOPE_ON    %  CountPend == 0  %                           
-//+------------------------------------------------------------------+
+//+------------------------------------------------------------------------------------------------------------------------------------+
+//|         START | SCOPE_ON | OPEN BUYLIMIT    %  CountPend == 0  %                           
+//+------------------------------------------------------------------------------------------------------------------------------------+
 if(ScopeLevel != 0 )
  if(SignalOpenBuyLimit[number] ){ 
-    Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    OPEN BUYLIMIT SCOPE_ON     %  CountPend == 0  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+    Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    START | SCOPE_ON | OPEN BUYLIMIT     %  CountPend == 0  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrBUYLIMIT[i];
      double const nextPrice      = jBUYLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
@@ -236,11 +215,11 @@ if(ScopeLevel != 0 )
    //---
    }
 }
-//+------------------------------------------------------------------+
-//|           OPEN HIDE BUYLIMIT SCOPE  % isPriceInScopeBUYLIMIT %                            
-//+------------------------------------------------------------------+
+//+------------------------------------------------------------------------------------------------------------------------------------+
+//|          TRADE | SCOPE | OPEN HIDE BUYLIMIT   % isPriceInScopeBUYLIMIT %                            
+//+------------------------------------------------------------------------------------------------------------------------------------+
 if( SignalOpenBuyLimitScope[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>     OPEN HIDE BUYLIMIT SCOPE  % isPriceInScopeBUYLIMIT %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>     TRADE | SCOPE | OPEN HIDE BUYLIMIT   % isPriceInScopeBUYLIMIT %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrBUYLIMIT[i];
         int const countPend      = GetCountPendByComment(NameOrder)  ;
@@ -249,19 +228,17 @@ if( SignalOpenBuyLimitScope[number] ){
      double const nextPrice      = jBUYLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
      double const nextLot        = jBUYLIMIT[NameOrder][NAME_LOT].ToDbl() ;
      string const nextComment    = NameOrder ;
-     
-
-        
+             
    if( count == 0  )
         if ( nextPrice > PRICE_ScopeLevel_DN_ASK   )   
                                set_OPEN_BUYLIMIT(number,trade,NameOrder,nextPrice,nextLot,nextComment);      
    }
 }
-//+------------------------------------------------------------------+
-//|      OPEN BUYLIMIT MOVE NO SCOPE   % GetCountPendByPREFIX  ==0   %                            
-//+------------------------------------------------------------------+
+//+------------------------------------------------------------------------------------------------------------------------------------+
+//|     TRADE | SCOPE_OFF | OPEN MOVE BUYLIMIT  % GetCountPendByPREFIX ==0  %                             
+//+------------------------------------------------------------------------------------------------------------------------------------+
 if( SignalOpenBuyLimitMove[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    OPEN BUYLIMIT MOVE NO SCOPE  % GetCountPendByPREFIX ==0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   TRADE | SCOPE_OFF | OPEN MOVE BUYLIMIT  % GetCountPendByPREFIX ==0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrBUYLIMIT[i];
         int const countPend      = GetCountPendByComment(NameOrder)  ;
@@ -276,11 +253,11 @@ if( SignalOpenBuyLimitMove[number] ){
                                   
    }
 }
-//+------------------------------------------------------------------+
-//|      OPEN BUYLIMIT MOVE  SCOPE   % GetCountPendByPREFIX ==0   %                            
-//+------------------------------------------------------------------+
+//+------------------------------------------------------------------------------------------------------------------------------------+
+//|      TRADE | SCOPE_ON | OPEN MOVE BUYLIMIT  % GetCountPendByPREFIX ==0   %                            
+//+------------------------------------------------------------------------------------------------------------------------------------+
 if( SignalOpenBuyLimitMoveScope[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  OPEN BUYLIMIT MOVE SCOPE  % GetCountPendByPREFIX ==0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  TRADE | SCOPE_ON | OPEN MOVE BUYLIMIT  % GetCountPendByPREFIX ==0  %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrBUYLIMIT[i];
         int const countPend      = GetCountPendByComment(NameOrder)  ;
