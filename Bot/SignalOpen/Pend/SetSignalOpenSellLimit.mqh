@@ -6,7 +6,7 @@ void SetSignalOpenSellLimit( int number){
 SignalOpenSellLimit[number] = false;  
 
 if(Status.OpenSELLLIMIT[number][STATUS_WORK]           = WorkingHour() ? true: false )
-if(Status.OpenSELLLIMIT[number][STATUS_TRADE]          = !TRADE ? true: false )
+//if(Status.OpenSELLLIMIT[number][STATUS_TRADE]          = !TRADE ? true: false )
 if(Status.OpenSELLLIMIT[number][STATUS_TRADE_UP]       = TRADE_UP ? true: false )
 if(Status.OpenSELLLIMIT[number][STATUS_MAIN_ON]        = MAIN_ON ? true: false )
 if(Status.OpenSELLLIMIT[number][STATUS_TRADE_MAIN_UP]  = !TRADE_MAIN_UP ? true: false )

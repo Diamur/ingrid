@@ -56,11 +56,15 @@ bool isPriceInScopeSELLLIMIT(double price){
      int const countPosition  = GetCountPositionByComment(NameOrder);
      int const count          = countPend + countPosition;
   double const nextPrice      = jSELLLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
-    
-   if(price  > nextPrice && count == 0) {
+  double const BID            =  SymbolInfoDouble(NULL,SYMBOL_BID);
+    //+------------------------------------------------------------------+         
+     if(count == 0)
+        if( nextPrice < price ) 
+           if( nextPrice > BID )  {
                    return true;
-     }
- }
+      }
+  }
+  //+------------------------------------------------------------------+
  return _bool; 
 }
 //+------------------------------------------------------------------+
@@ -74,25 +78,17 @@ bool isPriceInScopeBUYLIMIT(double price){
      int const countPosition  = GetCountPositionByComment(NameOrder);
      int const count          = countPend + countPosition;
   double const nextPrice      = jBUYLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
-
-//     Print(__FUNCTION__, "%%%%%%%%%%%%%%%%%%%%%%% ",i,"  %%%%%%%%%%%%%%%%%% " );
-// 
-//     Print(__FUNCTION__, " --------------- price = ",  price  );
-//     Print(__FUNCTION__, " --------------- nextPrice = ", nextPrice  );
-//     Print(__FUNCTION__, " --------------- count = ", count  );
-//     Print(__FUNCTION__, " --------------- price  < nextPrice = ", price  < nextPrice  );
-//     Print(__FUNCTION__, " --------------- price  < nextPrice && count == 0 = ", price  < nextPrice && count == 0  );
-//     
-     
-
-  if(price  < nextPrice && count == 0) {
+  double const ASK            =  SymbolInfoDouble(NULL,SYMBOL_ASK);  
+    //+------------------------------------------------------------------+
+     if(count == 0)
+        if( nextPrice > price ) 
+           if( nextPrice < ASK )  {
                    return true;
-     } 
- }
+      } 
+    }
+    //+------------------------------------------------------------------+
  return _bool; 
 }
-
-
 //+------------------------------------------------------------------+
 //|                  SELLSTOP                                                |
 //+------------------------------------------------------------------+
@@ -111,27 +107,21 @@ int const kstop  = arrStartStop[i][1];
         int const countPend      = GetCountPendByComment(fullName)  ;
         int const countPosition  = GetCountPositionByComment(fullName);
         int const count          = countPend + countPosition; 
-           double nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;
-          
-     //Print(__FUNCTION__, "%%%%%%%%%%%%%%%%%%%%%%% ",i,"  %%%%%%%%%%%%%%%%%% " ); 
-     //Print(__FUNCTION__, " --------------- price = ",  price  );
-     //Print(__FUNCTION__, " --------------- nextPrice = ", nextPrice  );
-     //Print(__FUNCTION__, " --------------- count = ", count  );
-     //Print(__FUNCTION__, " --------------- price  < nextPrice = ", price  < nextPrice  );
-     //Print(__FUNCTION__, " --------------- price  < nextPrice && count == 0 = ", price  < nextPrice && count == 0  );
-   
-      //+------------------------------------------------------------------+
-        if(price  < nextPrice && count == 0) {
+     double const nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;
+     double const BID            =  SymbolInfoDouble(NULL,SYMBOL_BID);
+    //+------------------------------------------------------------------+
+      if(count == 0)
+        if( nextPrice > price ) 
+           if( nextPrice < BID )  {
                 return true;                
          } 
        }
-      //+------------------------------------------------------------------+      
+    //+------------------------------------------------------------------+      
    }
  return _bool; 
 }
-
 //+------------------------------------------------------------------+
-//|                                                                  |
+//|               BUYSTOP                                            |
 //+------------------------------------------------------------------+
 bool isPriceInScopeBUYSTOP(double price){
  bool _bool = false;
@@ -148,9 +138,12 @@ int const kstop  = arrStartStop[i][1];
         int const countPend      = GetCountPendByComment(fullName)  ;
         int const countPosition  = GetCountPositionByComment(fullName);
         int const count          = countPend + countPosition; 
-     double const nextPrice      = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;  
+     double const nextPrice      = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ; 
+     double const ASK            =  SymbolInfoDouble(NULL,SYMBOL_ASK);   
       //+------------------------------------------------------------------+
-        if(price  > nextPrice && count == 0) {
+      if(count == 0)
+        if( nextPrice < price ) 
+           if( nextPrice > ASK )  {        
                 return true;
          } 
        }

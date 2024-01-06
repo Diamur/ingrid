@@ -32,14 +32,25 @@ void SetPARAMETRS_START(string type){
    }
     //---
  else if(type == NAME_MOVE_UP){   
-      BarReMOVE = iTime(NULL,PERIOD_CURRENT,0); 
-      PriceMAX_UP = 0;
-      PriceMIN_UP = 0;          
+      //BarReMOVE = iTime(NULL,PERIOD_CURRENT,0); 
+   jSELLLIMIT[NAME_SL_0][NAME_STATUS] = NAME_STATUS_PEND;
+   STOPLOSS_SL    = 0;
+   STOPLOSS_BS    = 0;
+   TRALL_FULL_SL  = Trall_SL;
+   TRALL_FULL_BS  = Trall_BS;
+   PriceMAX_UP    = 0;
+   PriceMIN_UP    = 0;
+   TRADE_MAIN_UP  = false;
   }
  else if(type == NAME_MOVE_DN){
-      BarReMOVE = iTime(NULL,PERIOD_CURRENT,0); 
-      PriceMAX_DN = 0;
-      PriceMIN_DN = 0;
+   jBUYLIMIT[NAME_BL_0][NAME_STATUS] = NAME_STATUS_PEND;
+   STOPLOSS_BL    = 0;
+   STOPLOSS_SS    = 0;   
+   TRALL_FULL_BL  = Trall_BL; 
+   TRALL_FULL_SS  = Trall_SS;    
+   PriceMAX_DN    = 0;
+   PriceMIN_DN    = 0;
+   TRADE_MAIN_DN  = false; 
   } 
  //---
  else if(type == NAME_SELLLIMIT){
@@ -324,14 +335,14 @@ void setXY_Label(){
                 if(str == 4) arrYLabel[str] =  arrYLabel[str] - 7;                   
                 if(str == 5) arrYLabel[str] =  arrYLabel[str] - 7;                   
                 
-                if(str == 8) arrYLabel[str] =  arrYLabel[str] - 7;                   
-                if(str == 9) arrYLabel[str] =  arrYLabel[str] - 7;  
-                
-                if(str == 11) arrYLabel[str] =  arrYLabel[str] -7;  
-                if(str == 12) arrYLabel[str] =  arrYLabel[str] -7;  
-                
-                if(str == 14) arrYLabel[str] =  arrYLabel[str] -7;  
-                if(str == 15) arrYLabel[str] =  arrYLabel[str] -7;  
+//                if(str == 8) arrYLabel[str] =  arrYLabel[str] - 7;                   
+//                if(str == 9) arrYLabel[str] =  arrYLabel[str] - 7;  
+//                
+//                if(str == 11) arrYLabel[str] =  arrYLabel[str] -7;  
+//                if(str == 12) arrYLabel[str] =  arrYLabel[str] -7;  
+//                
+//                if(str == 14) arrYLabel[str] =  arrYLabel[str] -7;  
+//                if(str == 15) arrYLabel[str] =  arrYLabel[str] -7;  
                 
                }   
           }    
@@ -622,19 +633,10 @@ void SetTicket_BUYSTOP_CLOSE (double price){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
- void SetTRALL(){ 
-   double _ASK             = SymbolInfoDouble (NULL,SYMBOL_ASK) ; 
-   double _BID             = SymbolInfoDouble (NULL,SYMBOL_BID) ;    
+ void SetTRALL_UP(double _ASK,double _BID){ 
+                //= SymbolInfoDouble (NULL,SYMBOL_ASK) ; 
+             //= SymbolInfoDouble (NULL,SYMBOL_BID) ;    
   //---
-   //double profit           = AccountInfoDouble(ACCOUNT_PROFIT);
-   //color clrProfit        = profit > 0 ? clrLime: clrRed ;
- 
-  //---  ALL ---
-      
-   //double VolumeBUY        = GetVolumeBUY() ;      
-   //double VolumeSELL       = GetVolumeSELL() ;
-   //double VolumeAll        = VolumeBUY-VolumeSELL;
-   //   int PipsALL          = GetPipsProfit();
 //+------------------------------------------------------------------+
 //|            UP                                                      |
 //+------------------------------------------------------------------+
@@ -648,13 +650,21 @@ void SetTicket_BUYSTOP_CLOSE (double price){
 
 
   //--- SL  ---      
-   double Volume_SL          = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_SL,true) ;      
+   double Volume_SL          = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_SL) ;      
       int Pips_SL            = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true);
    string strVECTOR_SL       = Pips_SL > 0  && Volume_SL > 0 ?  "UP" : (  Pips_SL > 0  && Volume_SL < 0 ? "DN":"--" );
     color clrVECTOR_SL       = strVECTOR_SL == "UP" ? clrAqua : (strVECTOR_SL == "DN" ? clrOrangeRed :  clrOlive)  ;       
    
    SetTRALL_SL(_ASK, _BID, TRALL_FULL_SL, TrallStep_SL, Pips_SL, strVECTOR_SL, false);
-      
+
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+void SetTRALL_DN(double _ASK,double _BID ){ 
+   //double _ASK             = SymbolInfoDouble (NULL,SYMBOL_ASK) ; 
+   //double _BID             = SymbolInfoDouble (NULL,SYMBOL_BID) ;    
+  //---
 //+------------------------------------------------------------------+
 //|           DN                                                       |
 //+------------------------------------------------------------------+
@@ -671,34 +681,10 @@ void SetTicket_BUYSTOP_CLOSE (double price){
       int Pips_SS            = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SS,true);
    string strVECTOR_SS       = Pips_SS > 0  && Volume_SS > 0 ?  "UP" : (  Pips_SS > 0  && Volume_SS < 0 ? "DN":"--" );
     color clrVECTOR_SS       = strVECTOR_SS == "UP" ? clrAqua : (strVECTOR_SS == "DN" ? clrOrangeRed :  clrOlive)  ;       
-   
-  //if(STOPLOSS_SS != 0)
-  //  {   
-  // Print(__FUNCTION__, " ==================================================== ");
-  // Print(__FUNCTION__, " ---------------------- Volume_SS = ", Volume_SS);
-  // Print(__FUNCTION__, " ---------------------- Pips_SS = ",Pips_SS );
-  // Print(__FUNCTION__, " ---------------------- strVECTOR_SS = ", strVECTOR_SS);
-  // }  
-   
-   
-   SetTRALL_SS(_ASK, _BID, TRALL_FULL_SS, TrallStep_SS, Pips_SS, strVECTOR_SS, false);
-   
-   
-   
-   //---  DN ---
-//      int PipsMainBUY      = GetPipsProfitMainBUY();
-//   double ProfitMainBUY    = GetProfitMainBUY();
-//   double VolumeMainBUY    = GetVolumeMainBUY();
-//   
-//      int PipsBUY          = GetPipsProfitBUY();
-//      int PipsSELL         = GetPipsProfitSELL();      
-     
 
-   
-  //SetTRALL_VECTOR( _ASK, _BID,TRALL,TRALL_Step, PipsALL,STOPLOSS_UP,STOPLOSS_DN, strVECTOR, "TRALL_NULL",  "TRALL_OPEN", "TRALL_FULL");
-   
-      
+   SetTRALL_SS(_ASK, _BID, TRALL_FULL_SS, TrallStep_SS, Pips_SS, strVECTOR_SS, false);
 }
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
@@ -956,7 +942,7 @@ void SetTRALL_BS  (  double _ASK,
      
       H_line(NAME_TRALL_NULL_BS, PRICE_TRALL_NULL_BS,clrAqua );
        if(STOPLOSS_BS != 0){
-               H_line(NAME_TRALL_OPEN_BS, PRICE_TRALL_OPEN_BS,clrRed,STYLE_SOLID,2 );   
+               H_line(NAME_TRALL_OPEN_BS, STOPLOSS_BS,clrRed,STYLE_SOLID,2 );   
         }else{
                H_line(NAME_TRALL_OPEN_BS, PRICE_TRALL_OPEN_BS,clrPink );   
            } 

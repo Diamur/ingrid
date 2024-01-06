@@ -19,7 +19,7 @@ bool   _chekServer     = false ;
 #define  NUMBER_OF_SELLSTOP            122  
 #define  NUMBER_OF_BUYSTOP             122  
 
-#define  NUMBER_OF_STATUSES            40 
+#define  NUMBER_OF_STATUSES            50 
 
 #define  STATUS_TRADE                  0 
 #define  STATUS_WORK                   1 
@@ -68,7 +68,7 @@ bool   _chekServer     = false ;
 #define  STATUS_SCOPE_ON               37 
 #define  STATUS_PROFIT_FULL            38 
 #define  STATUS_TRALL                  39 
-
+#define  STATUS_COUNT_POS              40 
 
 
 //+------------------------------------------------------------------+
@@ -805,8 +805,6 @@ double STOPLOSS_SL;
 double STOPLOSS_BL;
 double STOPLOSS_SS;
 
-//double LAST_PROFIT;
-//   int LAST_PipsPROFIT;  
 //---
    int VECTOR;
 

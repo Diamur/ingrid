@@ -19,6 +19,7 @@ int OnInit()
     DIGIT               = (int)SymbolInfoInteger(NULL,SYMBOL_DIGITS);
     POINT               = SymbolInfoDouble(NULL,SYMBOL_POINT);
     TRADE_STOPS_LEVEL   = (int)SymbolInfoInteger(NULL,SYMBOL_TRADE_STOPS_LEVEL) ;
+    BALANCE_START       = AccountInfoDouble(ACCOUNT_BALANCE );
     
     
     PriceMAX_UP = 0;
@@ -75,7 +76,7 @@ int OnInit()
   //---
   for(int i=0;i<NUMBER_OF_SUB_KNEES;i++)
      {
-       Order.arrBUYSTOP[i]  = "BL_"+(string)i;
+       Order.arrBUYSTOP[i]  = "BS_"+(string)i;
        Order.arrSELLSTOP[i]  = "SS_"+(string)i;
      }
    //---

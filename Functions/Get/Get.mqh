@@ -37,7 +37,7 @@ int GetCountAllTotalByMagic(){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-int GetCountPositijnsByPREFIX( string prefix ){
+int GetCountPositionsByPREFIX( string prefix ){
   int count = 0;    
   for(int i=0;i<PositionsTotal();i++){ 
       if( PositionGetSymbol(i) != "" ) 
