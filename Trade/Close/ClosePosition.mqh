@@ -45,7 +45,7 @@ bool ClosePositionByPREFIX(    int number,
      if(PositionGetSymbol(i) == symbol )
        if( PositionGetInteger(POSITION_MAGIC) == Magic)  {
           int const pos = StringFind( PositionGetString(POSITION_COMMENT),prefix);
-          if(pos==0){
+          if(pos != -1 ){
                if(!trade[number].PositionClose( PositionGetInteger(POSITION_TICKET) ) ){
                  Print(__FUNCTION__," CloseAllPosition error "  + " = ", GetLastError());
               } else _close =  true;

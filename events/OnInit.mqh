@@ -7,6 +7,14 @@ int OnInit()
         Alert("ВНИМАНИЕ! ScopeLevel должен болльше > ",StartStep + StepPEND , " или равен 0" );
            return(INIT_FAILED);
       }
+    
+    if(ReSubStep > ScopeLevel && ScopeLevel !=0 ){
+        Alert("ВНИМАНИЕ! ReSubStep должен меньше < ",ScopeLevel  );
+           return(INIT_FAILED);
+      }
+    
+      
+      
   
     DIGIT               = (int)SymbolInfoInteger(NULL,SYMBOL_DIGITS);
     POINT               = SymbolInfoDouble(NULL,SYMBOL_POINT);

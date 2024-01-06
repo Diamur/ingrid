@@ -19,7 +19,6 @@
 //#include  "indicators\STO.mqh"
 //#include  "indicators\CCI.mqh" 
 //+------------------------------------------------------------------+
-
 #include  "Trade\Trade.mqh" 
 #include  "Bot\Bot.mqh"
 #include  "Lot\Lot.mqh" 

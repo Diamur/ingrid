@@ -43,10 +43,12 @@ void SetPARAMETRS_START(string type){
   } 
  //---
  else if(type == NAME_SELLLIMIT){
+   jSELLLIMIT[NAME_SL_0][NAME_STATUS] = NAME_STATUS_PEND;
    STOPLOSS_SL    = 0;
    TRALL_FULL_SL  = Trall_SL;
    PriceMAX_UP    = 0;
    PriceMIN_UP    = 0;
+   TRADE_MAIN_UP  = false; 
   }
  //---
  else if(type == NAME_BUYSTOP){
@@ -57,17 +59,29 @@ void SetPARAMETRS_START(string type){
   }
  //---
  else if(type == NAME_BUYLIMIT){
+   jBUYLIMIT[NAME_BL_0][NAME_STATUS] = NAME_STATUS_PEND;
    STOPLOSS_BL    = 0;
    TRALL_FULL_BL  = Trall_BL; 
    PriceMAX_DN    = 0;
-   PriceMIN_DN    = 0; 
+   PriceMIN_DN    = 0;
+   TRADE_MAIN_DN  = false; 
  }
  //---
  else if(type == NAME_SELLSTOP){   
-   STOPLOSS_SS    = 0;
-   TRALL_FULL_SS  = Trall_SS;    
-     PriceMIN_DN = 0; 
-  }
+     STOPLOSS_SS    = 0;
+     TRALL_FULL_SS  = Trall_SS;    
+     PriceMIN_DN    = 0; 
+  }  
+ //---
+ if(GetCountAllTotalByMagic() == 0 ){ 
+         BALANCE_START  = AccountInfoDouble(ACCOUNT_BALANCE);
+         EQITY          = AccountInfoDouble(ACCOUNT_EQUITY);
+         TRADE          = false;
+         TRADE_MAIN_UP  = false;
+         TRADE_MAIN_DN  = false;
+         TRADE_SUB_UP   = false;
+         TRADE_SUB_DN   = false;     
+ }   
   BarReMOVE      = iTime(NULL,PERIOD_CURRENT,0);
 }
 //+------------------------------------------------------------------+
@@ -634,8 +648,8 @@ void SetTicket_BUYSTOP_CLOSE (double price){
 
 
   //--- SL  ---      
-   double Volume_SL          = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_SL) ;      
-      int Pips_SL            = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL);
+   double Volume_SL          = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_SL,true) ;      
+      int Pips_SL            = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true);
    string strVECTOR_SL       = Pips_SL > 0  && Volume_SL > 0 ?  "UP" : (  Pips_SL > 0  && Volume_SL < 0 ? "DN":"--" );
     color clrVECTOR_SL       = strVECTOR_SL == "UP" ? clrAqua : (strVECTOR_SL == "DN" ? clrOrangeRed :  clrOlive)  ;       
    
@@ -654,9 +668,18 @@ void SetTicket_BUYSTOP_CLOSE (double price){
    
   //--- SS  ---      
    double Volume_SS          = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_SS) ;      
-      int Pips_SS            = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SS);
+      int Pips_SS            = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SS,true);
    string strVECTOR_SS       = Pips_SS > 0  && Volume_SS > 0 ?  "UP" : (  Pips_SS > 0  && Volume_SS < 0 ? "DN":"--" );
     color clrVECTOR_SS       = strVECTOR_SS == "UP" ? clrAqua : (strVECTOR_SS == "DN" ? clrOrangeRed :  clrOlive)  ;       
+   
+  //if(STOPLOSS_SS != 0)
+  //  {   
+  // Print(__FUNCTION__, " ==================================================== ");
+  // Print(__FUNCTION__, " ---------------------- Volume_SS = ", Volume_SS);
+  // Print(__FUNCTION__, " ---------------------- Pips_SS = ",Pips_SS );
+  // Print(__FUNCTION__, " ---------------------- strVECTOR_SS = ", strVECTOR_SS);
+  // }  
+   
    
    SetTRALL_SS(_ASK, _BID, TRALL_FULL_SS, TrallStep_SS, Pips_SS, strVECTOR_SS, false);
    
@@ -814,23 +837,38 @@ void SetTRALL_SS  (  double _ASK,
        PRICE_TRALL_NULL_SS = _BID + Pips*POINT;
      //---
      if(Pips > trall ) {
+          //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Pips > trall>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
+          //     Print(__FUNCTION__, " -------------------------------------- Pips > trall = ", Pips > trall);
+          //     Print(__FUNCTION__, " -------------------------------------- Pips = ", Pips);
+          //     Print(__FUNCTION__, " -------------------------------------- TRALL_FULL_SS = ", TRALL_FULL_SS);
+          //      Print(__FUNCTION__, " -------------------------------------- STOPLOSS_SS = ", STOPLOSS_SS);
          TRALL_FULL_SS        = Pips;
          TRALL_OPEN_SS        = TRALL_FULL_SS-trall_step;  
          PRICE_TRALL_OPEN_SS  = PRICE_TRALL_NULL_SS - TRALL_OPEN_SS * POINT;  
-         PRICE_TRALL_FULL_SS  = PRICE_TRALL_NULL_SS - TRALL_FULL_SS *  POINT;       
-         STOPLOSS_SS          = PRICE_TRALL_OPEN_SS;
+         PRICE_TRALL_FULL_SS  = PRICE_TRALL_NULL_SS - TRALL_FULL_SS *  POINT;
+                
+         STOPLOSS_SS          = PRICE_TRALL_OPEN_SS; //STOPLOSS_SS ==0? PRICE_TRALL_OPEN_SS: (STOPLOSS_SS > PRICE_TRALL_OPEN_SS ? PRICE_TRALL_OPEN_SS : STOPLOSS_SS)  ;
+       
        }else{
             TRALL_OPEN_SS        = trall-trall_step;  
             PRICE_TRALL_OPEN_SS  = PRICE_TRALL_NULL_SS - TRALL_OPEN_SS * POINT;
             PRICE_TRALL_FULL_SS  = PRICE_TRALL_NULL_SS - TRALL_FULL_SS *  POINT;                  
      } 
-          
+//     Print(__FUNCTION__, " ============================================================================= ");
+//     Print(__FUNCTION__, " -------------------------------------- STOPLOSS_SS = ", STOPLOSS_SS);
+//     Print(__FUNCTION__, " -------------------------------------- PRICE_TRALL_OPEN_SS = ", PRICE_TRALL_OPEN_SS);
+//     
+//     Print(__FUNCTION__, " -------------------------------------- Pips = ", Pips);
+//     Print(__FUNCTION__, " -------------------------------------- trall = ", trall);
+//     Print(__FUNCTION__, " -------------------------------------- Pips > trall = ", Pips > trall);
+     
+ 
     DT_NULL_OPEN_SS = (int)((PRICE_TRALL_NULL_SS - PRICE_TRALL_OPEN_SS)/POINT);
     DT_OPEN_FULL_SS = (int)((PRICE_TRALL_OPEN_SS - PRICE_TRALL_FULL_SS )/POINT);       
      
       H_line(NAME_TRALL_NULL_SS, PRICE_TRALL_NULL_SS,clrAqua );
        if(STOPLOSS_SS != 0){
-               H_line(NAME_TRALL_OPEN_SS, PRICE_TRALL_OPEN_SS,clrYellow,STYLE_SOLID,2 );   
+               H_line(NAME_TRALL_OPEN_SS, STOPLOSS_SS,clrYellow,STYLE_SOLID,2 );   
         }else{
                H_line(NAME_TRALL_OPEN_SS, PRICE_TRALL_OPEN_SS,clrPink );   
            } 

@@ -67,7 +67,7 @@ bool DeletePendByPREFIX (    int number,
        if((OrderGetTicket(i))>0) 
           if( OrderGetInteger(ORDER_MAGIC) == Magic){
             int const pos = StringFind( OrderGetString(ORDER_COMMENT),prefix);
-            if(pos==0){
+            if(pos != -1){
                  if( ! trade[number].OrderDelete( OrderGetTicket(i) ) ){           
                    Print(__FUNCTION__," error DeletePendByPREFIX " +  " = ", GetLastError());
                  } else _del = true; 

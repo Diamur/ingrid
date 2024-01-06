@@ -10,7 +10,7 @@ if(Status.OpenBUYLIMIT[number][STATUS_TRADE_DN] = TRADE_DN ? true: false )
 if(Status.OpenBUYLIMIT[number][STATUS_MAIN_ON]  = MAIN_ON ? true: false )
 //if(Status.OpenBUYLIMIT[number][STATUS_TRADE]    = TRADE ? true: false )
 if(Status.OpenBUYLIMIT[number][STATUS_SCOPE_ON] = ScopeLevel == 0 ? true: false )
-if(Status.OpenBUYLIMIT[number][STATUS_COUNT]    = GetCountPendByPREFIX(NAME_PREFIX_BL) ==0 ? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_COUNT]    = ( GetCountPendByPREFIX(NAME_PREFIX_BL) == 0  &&  GetCountPositijnsByPREFIX(NAME_PREFIX_BL) ==0 )  ? true: false )
           
 SignalOpenBuyLimitMove[number] = true;
 

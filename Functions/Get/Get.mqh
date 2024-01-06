@@ -43,7 +43,7 @@ int GetCountPositijnsByPREFIX( string prefix ){
       if( PositionGetSymbol(i) != "" ) 
         if( PositionGetInteger(POSITION_MAGIC) == Magic){
            int const pos = StringFind( PositionGetString(POSITION_COMMENT),prefix);
-           if(pos==0){
+           if(pos != -1){
                 count++;
            }
         }    
@@ -59,7 +59,7 @@ int GetCountPendByPREFIX(string prefix){
        if((OrderGetTicket(i)) >0 ) {
          if( OrderGetInteger(ORDER_MAGIC) == Magic){
           int const pos = StringFind(  OrderGetString(ORDER_COMMENT),prefix);
-            if(pos==0){
+            if(pos != -1){
                 count++;
             }   
           
@@ -177,7 +177,7 @@ double GetProfitBUY_PREFIX( string prefix ){
         if( PositionGetInteger(POSITION_MAGIC) == Magic)
          if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY){
           int const pos = StringFind(PositionGetString(POSITION_COMMENT), prefix );
-              if(pos == 0){
+              if(pos != -1){
                   profit+= PositionGetDouble(POSITION_PROFIT) ;
               }
           }
@@ -195,7 +195,7 @@ double GetProfitSELL_PREFIX( string prefix ){
         if( PositionGetInteger(POSITION_MAGIC) == Magic)
          if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL){
           int const pos = StringFind(PositionGetString(POSITION_COMMENT),prefix);
-              if(pos == 0){
+              if(pos != -1){
                   profit+= PositionGetDouble(POSITION_PROFIT) ;
               }
           }
@@ -211,7 +211,7 @@ double GetProfitBUY_SELL_PREFIX( string prefix ){
        if( PositionGetSymbol(i) != "" ) 
         if( PositionGetInteger(POSITION_MAGIC) == Magic){
           int const pos = StringFind(PositionGetString(POSITION_COMMENT),prefix);
-              if(pos == 0){
+              if(pos != -1){
                   profit+= PositionGetDouble(POSITION_PROFIT) ;
               }
           }
@@ -293,7 +293,7 @@ double GetVolumeSELL_PREFIX(string prefix){
         if( PositionGetInteger(POSITION_MAGIC) == Magic)
          if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL){
             int const pos = StringFind(PositionGetString(POSITION_COMMENT),prefix);
-              if(pos == 0){
+              if(pos != -1){
                   volume+= PositionGetDouble(POSITION_VOLUME) ;
                 }
           } 
@@ -311,7 +311,7 @@ double GetVolumeBUY_PREFIX(string prefix){
         if( PositionGetInteger(POSITION_MAGIC) == Magic)
          if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY){
             int const pos = StringFind(PositionGetString(POSITION_COMMENT),prefix);
-              if(pos == 0){
+              if(pos != -1){
                   volume+= PositionGetDouble(POSITION_VOLUME) ;
                 }
           } 
@@ -321,7 +321,7 @@ double GetVolumeBUY_PREFIX(string prefix){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-double GetVolumeBUY_SELL_PREFIX(string prefix){
+double GetVolumeBUY_SELL_PREFIX(string prefix, bool revers = false ){
   double volume = 0;
     for(int i=0;i<PositionsTotal();i++)
       { 
@@ -329,19 +329,19 @@ double GetVolumeBUY_SELL_PREFIX(string prefix){
         if( PositionGetInteger(POSITION_MAGIC) == Magic)
          if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY){
             int const pos = StringFind(PositionGetString(POSITION_COMMENT),prefix);
-              if(pos == 0){
+              if(pos != -1){
                   volume+= PositionGetDouble(POSITION_VOLUME) ;
                 }
           } 
          if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL){
             int const pos = StringFind(PositionGetString(POSITION_COMMENT),prefix);
-              if(pos == 0){
+              if(pos != -1){
                   volume-= PositionGetDouble(POSITION_VOLUME) ;
                 }
           } 
           
       }   
-   return volume;
+   return ( revers? -1 : 1 ) *volume;
 }
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -371,10 +371,16 @@ int GetPipsProfitSELL_Prefix(string prefix){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-int GetPipsProfitBUY_SELL_Prefix(string prefix){     
-  if(GetVolumeBUY_SELL_PREFIX(prefix) != 0){
-      return  (int)( GetProfitBUY_SELL_PREFIX(prefix)/GetVolumeBUY_SELL_PREFIX(prefix));
-    }
+int GetPipsProfitBUY_SELL_Prefix(string prefix, bool revers = false){    
+ 
+ //Print(__FUNCTION__, " ----------------------- prefix = ", prefix );  
+ //Print(__FUNCTION__, " ----------------------- GetVolumeBUY_SELL_PREFIX(prefix)= ",GetVolumeBUY_SELL_PREFIX(prefix) );
+ //Print(__FUNCTION__, " ----------------------- GetProfitBUY_SELL_PREFIX(prefix)= ", GetProfitBUY_SELL_PREFIX(prefix)); 
+ 
+  if(GetVolumeBUY_SELL_PREFIX(prefix,revers) != 0){
+      return  (int)( GetProfitBUY_SELL_PREFIX(prefix)/  GetVolumeBUY_SELL_PREFIX(prefix,revers)  ) ;
+  }
+    
    return  0;
 }  
 //+------------------------------------------------------------------+

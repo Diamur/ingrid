@@ -112,6 +112,14 @@ int const kstop  = arrStartStop[i][1];
         int const countPosition  = GetCountPositionByComment(fullName);
         int const count          = countPend + countPosition; 
            double nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;
+          
+     //Print(__FUNCTION__, "%%%%%%%%%%%%%%%%%%%%%%% ",i,"  %%%%%%%%%%%%%%%%%% " ); 
+     //Print(__FUNCTION__, " --------------- price = ",  price  );
+     //Print(__FUNCTION__, " --------------- nextPrice = ", nextPrice  );
+     //Print(__FUNCTION__, " --------------- count = ", count  );
+     //Print(__FUNCTION__, " --------------- price  < nextPrice = ", price  < nextPrice  );
+     //Print(__FUNCTION__, " --------------- price  < nextPrice && count == 0 = ", price  < nextPrice && count == 0  );
+   
       //+------------------------------------------------------------------+
         if(price  < nextPrice && count == 0) {
                 return true;                

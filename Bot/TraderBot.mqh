@@ -130,6 +130,22 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE BL TRALL  | %   ASK < 
    SetPARAMETRS_START(NAME_BUYLIMIT);
    //--- 
 }
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|             CLOSE SS TRALL  | %   BID > STOPLOSS_BL  %                                                     |
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if(SignalCloseSS_TRALL[number]){ 
+Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE SS TRALL  | % BID > STOPLOSS_SS %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+   int p = 50; 
+   //---
+   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  GetCountPositijnsByPREFIX( NAME_PREFIX_SS ) = ", GetCountPositijnsByPREFIX( NAME_PREFIX_SS ) );
+   
+   while( GetCountPositijnsByPREFIX( NAME_PREFIX_SS ) > 0 && p > 0){
+        ClosePositionByPREFIX ( number, NAME_PREFIX_SS, trade, _Symbol );
+     p--;
+   }   
+   SetPARAMETRS_START(NAME_SELLSTOP);
+   //--- 
+}
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ S C O P E   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -164,6 +180,19 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE BL TRALL  | %   ASK < 
 // //--- 
 // SetTRADE_CLOSE();
 //}
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|            SCOPE | CLOSE SELLSTOP  | %  Ticket_SELLSTOP_CLOSE !=-1  %                               
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if(SignalCloseSellStopScope[number] ){  
+ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE SELLSTOP  | %  Ticket_SELLSTOP_CLOSE !=-1  %  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+  int p = 50; 
+  bool close = false;
+   while(   close == false && p > 0){
+     close = DeletePendByTicket(number,trade,_Symbol,Ticket_SELLSTOP_CLOSE ,Magic) ? true: close;       
+     p--;
+   }
+ //SetTRADE_CLOSE();  
+}
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|            SCOPE | CLOSE BUYLIMIT  | %  Ticket_BUYLIMIT_CLOSE !=-1  %                               
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -291,130 +320,196 @@ if( SignalOpenBuyLimitScope[number] ){
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|           OPEN START SELLLIMIT NO SCOPE     %  CountPend == 0  %                            
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-if(ScopeLevel == 0)
- if(SignalOpenSellLimit[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   OPEN SELLLIMIT NO SCOPE     %  CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
-   for(int i=0;i<NUMBER_OF_KNEES;i++){
-     string const NameOrder      = Order.arrSELLLIMIT[i];
-     double const nextPrice      = jSELLLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
-     double const nextLot        = jSELLLIMIT[NameOrder][NAME_LOT].ToDbl() ;
-     string const nextComment    = NameOrder ;
-   //---
-     set_OPEN_SELLLIMIT(number,trade,NameOrder,nextPrice,nextLot,nextComment);      
-   //---
-   }
-}
+//if(ScopeLevel == 0)
+// if(SignalOpenSellLimit[number] ){ 
+//   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   OPEN SELLLIMIT NO SCOPE     %  CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+//   for(int i=0;i<NUMBER_OF_KNEES;i++){
+//     string const NameOrder      = Order.arrSELLLIMIT[i];
+//     double const nextPrice      = jSELLLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
+//     double const nextLot        = jSELLLIMIT[NameOrder][NAME_LOT].ToDbl() ;
+//     string const nextComment    = NameOrder ;
+//   //---
+//     set_OPEN_SELLLIMIT(number,trade,NameOrder,nextPrice,nextLot,nextComment);      
+//   //---
+//   }
+//}
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|           OPEN START SELLLIMIT SCOPE_ON     %  CountPend == 0  %                           
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-if(ScopeLevel != 0 )
- if(SignalOpenSellLimit[number] ){ 
-    Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    OPEN SELLLIMIT SCOPE_ON     %  CountPend == 0  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
-   for(int i=0;i<NUMBER_OF_KNEES;i++){
-     string const NameOrder      = Order.arrSELLLIMIT[i];
-     double const nextPrice      = jSELLLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
-     double const nextLot        = jSELLLIMIT[NameOrder][NAME_LOT].ToDbl() ;
-     string const nextComment    = NameOrder ;
-   //---
-   if( nextPrice < PRICE_ScopeLevel_UP_BID  )   
-                                set_OPEN_SELLLIMIT(number,trade,NameOrder,nextPrice,nextLot,nextComment);     
-   //---
-   }
-}
+//if(ScopeLevel != 0 )
+// if(SignalOpenSellLimit[number] ){ 
+//    Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    OPEN SELLLIMIT SCOPE_ON     %  CountPend == 0  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+//   for(int i=0;i<NUMBER_OF_KNEES;i++){
+//     string const NameOrder      = Order.arrSELLLIMIT[i];
+//     double const nextPrice      = jSELLLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
+//     double const nextLot        = jSELLLIMIT[NameOrder][NAME_LOT].ToDbl() ;
+//     string const nextComment    = NameOrder ;
+//   //---
+//   if( nextPrice < PRICE_ScopeLevel_UP_BID  )   
+//                                set_OPEN_SELLLIMIT(number,trade,NameOrder,nextPrice,nextLot,nextComment);     
+//   //---
+//   }
+//}
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|           OPEN HIDE SELLLIMIT SCOPE    % isPriceInScopeBUYLIMIT %                            
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-if( SignalOpenSellLimitScope[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    OPEN SELLLIMIT SCOPE    % isPriceInScopeBUYLIMIT %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
-   for(int i=0;i<NUMBER_OF_KNEES;i++){
-     string const NameOrder      = Order.arrSELLLIMIT[i];
-        int const countPend      = GetCountPendByComment(NameOrder)  ;
-        int const countPosition  = GetCountPositionByComment(NameOrder);
-        int const count          = countPend + countPosition;
-     double const nextPrice      = jBUYLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
-     double const nextLot        = jBUYLIMIT[NameOrder][NAME_LOT].ToDbl() ;
-     string const nextComment    = NameOrder ;
-     
-   if( count == 0  )
-        if ( nextPrice < PRICE_ScopeLevel_UP_BID   )   
-                               set_OPEN_SELLLIMIT(number,trade,NameOrder,nextPrice,nextLot,nextComment);      
-   }
-}
+//if( SignalOpenSellLimitScope[number] ){ 
+//   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    OPEN HIDE SELLLIMIT SCOPE    % isPriceInScopeBUYLIMIT %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+//   for(int i=0;i<NUMBER_OF_KNEES;i++){
+//     string const NameOrder      = Order.arrSELLLIMIT[i];
+//        int const countPend      = GetCountPendByComment(NameOrder)  ;
+//        int const countPosition  = GetCountPositionByComment(NameOrder);
+//        int const count          = countPend + countPosition;
+//     double const nextPrice      = jBUYLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
+//     double const nextLot        = jBUYLIMIT[NameOrder][NAME_LOT].ToDbl() ;
+//     string const nextComment    = NameOrder ;
+//     
+//   if( count == 0  )
+//        if ( nextPrice < PRICE_ScopeLevel_UP_BID   )   
+//                               set_OPEN_SELLLIMIT(number,trade,NameOrder,nextPrice,nextLot,nextComment);      
+//   }
+//}
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-//|                     SELLSTOP                                 
+//|                  START | SCOPE_OFF | OPEN SELLSTOP % count =0  %                                 
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if( ScopeLevel == 0) 
+ if(SignalOpenSellStop[number] ){ 
+
 //if(SignalOpenSellStop[number] || SignalOpenSellStopScope[number]){ 
-//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> OpenSellStop <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-//
-//for(int i=1;i<NUMBER_OF_KNEES;i++){
-//  
-//int const kstart = arrStartStop[i][0];
-//int const kstop  = arrStartStop[i][1];  
-////if(kstart <3)
-//for(int k=kstart;k<kstop;k++){
-// 
-//  string const MainNameOrder  = Order.arrBUYLIMIT[i];
-//  string const SubNameOrder   = Order.arrSELLSTOP[k];
-//  string const fullName       = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ;
-//     int const countPend      = GetCountPendByComment(fullName)  ;
-//     int const countPosition  = GetCountPositionByComment(fullName);
-//     int const count          = countPend + countPosition;     
-//  double const nextLot        = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_LOT].ToDbl() ;
-//  string const nextComment    = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
-//    bool const nextTrade      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TRADE].ToBool();
-//  double const nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
-//  double const nextTP         = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;       
-// 
+
+Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_OFF | OPEN SELLSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+
+for(int i=1;i<NUMBER_OF_KNEES;i++){
+  
+int const kstart = arrStartStop[i][0];
+int const kstop  = arrStartStop[i][1];  
+if(kstart <10)
+for(int k=kstart;k<kstop;k++){
+ 
+  string const MainNameOrder  = Order.arrBUYLIMIT[i];
+  string const SubNameOrder   = Order.arrSELLSTOP[k];
+  string const fullName       = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ;
+     int const countPend      = GetCountPendByComment(fullName)  ;
+     int const countPosition  = GetCountPositionByComment(fullName);
+     int const count          = countPend + countPosition;     
+  double const nextLot        = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_LOT].ToDbl() ;
+  string const nextComment    = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
+    //bool const nextTrade      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TRADE].ToBool();
+  double const nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
+  double const nextTP         =  Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
+ 
 // if(  TRADE == false  || (TRADE == true  && count == 0 && ASK - ReSubStep * POINT > nextPrice          )  ){   
 //  if(nextPrice > PRICE_ScopeLevel_DN_ASK || ScopeLevel == 0 ) {
 //    //--- OPEN SELLSTOP ---
-//    int const tiket = OpenSellStop(number,
-//                                 trade,
-//                                 arrSymbol[number],
-//                                 nextLot, 
-//                                 NormalizeDouble( nextPrice , (int)SymbolInfoInteger(arrSymbol[number], SYMBOL_DIGITS)  ),
-//                                 0,
-//                                 nextTP,
-//                                 nextComment
-//                                 );
-//   if(tiket != -1 ){
-//          jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TICKET]     = tiket;
-//          jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TRADE]      = true;
-//          jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN] = nextPrice;
-//          jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT] = nextTP;              
-//          
-//          jData.Clear();
-//          jData[NAME_MAIN] = MainNameOrder;
-//          jData[NAME_SUB] = SubNameOrder;
-//          jTicket[(string)tiket].Set(jData) ;
-//
-//           Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>>> tiket = " , tiket ); 
-//             
-//           Print(__FUNCTION__, "  ------------------------ nextPrice = ", nextPrice );
-//           Print(__FUNCTION__, "  ------------------------ PRICE_ScopeLevel_DN_ASK = ", PRICE_ScopeLevel_DN_ASK );
-//           Print(__FUNCTION__, "  ------------------------ nextPrice = ", nextPrice );
-//              
-//
-//          //---
-//          if(nextPrice > PriceMAX_DN || PriceMAX_DN == 0) PriceMAX_DN = nextPrice;
-//          //---
-//          if(nextPrice < PriceMIN_DN || PriceMIN_DN == 0) PriceMIN_DN = nextPrice;        
-//         }else
-//            Print(__FUNCTION__, "  errror OpenSellStop " );   
+//   
 //       }else{
 //           jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TRADE]      = false;
-//           jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT] = nextTP;  
+//
 //           break;
 //       };
 //     }else{
 //           jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TRADE]      = false;
-//           jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT] = nextTP;  
+//
 //           break;
 //       };  
-//    
-//   }// конец цикла
-//  }
-// }
+//       
+     if( count == 0  )
+         set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
+   }// конец цикла
+  }
+ }
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                  START | SCOPE_ON | OPEN SELLSTOP % count =0  %                                 
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if( ScopeLevel != 0) 
+ if(SignalOpenSellStop[number] ){  
+//if(SignalOpenSellStop[number] || SignalOpenSellStopScope[number]){ 
+
+Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_ON | OPEN SELLSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+
+for(int i=1;i<NUMBER_OF_KNEES;i++){
+  
+int const kstart = arrStartStop[i][0];
+int const kstop  = arrStartStop[i][1];  
+if(kstart <10)
+for(int k=kstart;k<kstop;k++){
+ 
+  string const MainNameOrder  = Order.arrBUYLIMIT[i];
+  string const SubNameOrder   = Order.arrSELLSTOP[k];
+  string const fullName       = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ;
+     int const countPend      = GetCountPendByComment(fullName)  ;
+     int const countPosition  = GetCountPositionByComment(fullName);
+     int const count          = countPend + countPosition;     
+  double const nextLot        = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_LOT].ToDbl() ;
+  string const nextComment    = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
+  double const nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
+  double const nextTP         =  Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
+ 
+// if(  TRADE == false  || (TRADE == true  && count == 0 && ASK - ReSubStep * POINT > nextPrice          )  ){   
+//  if(nextPrice > PRICE_ScopeLevel_DN_ASK || ScopeLevel == 0 ) {
+//    //--- OPEN SELLSTOP ---//   
+//       }else{
+//           jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TRADE]      = false;//
+//           break;
+//       };
+//     }else{
+//           jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TRADE]      = false;//
+//           break;
+//       };  
+      
+  if( count == 0  )
+
+     if (nextPrice > PRICE_ScopeLevel_DN_ASK ){
+          set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
+      }else{
+         break;
+      }  
+       
+       
+   }// конец цикла
+  }
+ }
+ //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                  TRADE | SCOPE_ON | OPEN SELLSTOP % inScope  %                                 
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if(SignalOpenSellStopScope[number] ){  
+//if(SignalOpenSellStop[number] || SignalOpenSellStopScope[number]){ 
+
+Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> TRADE | SCOPE_ON | OPEN SELLSTOP % inScope  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+
+for(int i=1;i<NUMBER_OF_KNEES;i++){
+  
+int const kstart = arrStartStop[i][0];
+int const kstop  = arrStartStop[i][1];  
+if(kstart <10)
+for(int k=kstart;k<kstop;k++){
+ 
+  string const MainNameOrder  = Order.arrBUYLIMIT[i];
+  string const SubNameOrder   = Order.arrSELLSTOP[k];
+  string const fullName       = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ;
+     int const countPend      = GetCountPendByComment(fullName)  ;
+     int const countPosition  = GetCountPositionByComment(fullName);
+     int const count          = countPend + countPosition;     
+  double const nextLot        = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_LOT].ToDbl() ;
+  string const nextComment    = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
+  double const nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
+  double const nextTP         =  Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;  
+
+
+
+   if( count == 0  )
+    if(ASK - ReSubStep * POINT > nextPrice )
+     if (nextPrice > PRICE_ScopeLevel_DN_ASK ){
+          set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
+      }else{
+         break;
+      }  
+       
+       
+   }// конец цикла
+  }
+ }
+ 
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+

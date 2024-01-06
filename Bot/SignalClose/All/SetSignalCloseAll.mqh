@@ -72,35 +72,35 @@ void SetSignalCloseBL_PROFIT ( int number){
 //|                  MOVE SL UP                                         |
 //+------------------------------------------------------------------+
 void SetSignalCloseUP_MOVE ( int number){
-//---
- SignalCloseUP_MOVE[number] = false; 
-//---
-if(Status.CloseSL[number][STATUS_TRADE]           =  TRADE ? true: false )
-if(Status.CloseSL[number][STATUS_MAIN_ON]         =  MAIN_ON ? true: false )
-if(Status.CloseSL[number][STATUS_PEND]            =  jSELLLIMIT[NAME_SL_0][NAME_STATUS].ToStr() == NAME_STATUS_PEND ? true: false )
-if(Status.CloseSL[number][STATUS_NEWBAR]          =  BarReMOVE != iTime(NULL,PERIOD_CURRENT,0) ? true: false )
-if(Status.CloseSL[number][STATUS_COUNT]           =  GetCountPendByPREFIX( NAME_PREFIX_SL) > 0 ? true: false ) 
-if(Status.CloseSL[number][STATUS_DT_START_STEP]   =  GetPipsDT_StartStep_UP() > StartStep  +  SymbolInfoInteger(NULL,SYMBOL_SPREAD) ? true: false )
-//---
-SignalCloseUP_MOVE[number] = true;  
+   //---
+    SignalCloseUP_MOVE[number] = false; 
+   //---
+   if(Status.CloseSL[number][STATUS_TRADE_MAIN_UP]   =  TRADE_MAIN_UP ? true: false )
+   if(Status.CloseSL[number][STATUS_MAIN_ON]         =  MAIN_ON ? true: false )
+   if(Status.CloseSL[number][STATUS_PEND]            =  jSELLLIMIT[NAME_SL_0][NAME_STATUS].ToStr() == NAME_STATUS_PEND ? true: false )
+   if(Status.CloseSL[number][STATUS_NEWBAR]          =  BarReMOVE != iTime(NULL,PERIOD_CURRENT,0) ? true: false )
+   if(Status.CloseSL[number][STATUS_COUNT]           =  GetCountPendByPREFIX( NAME_PREFIX_SL) > 0 ? true: false ) 
+   if(Status.CloseSL[number][STATUS_DT_START_STEP]   =  GetPipsDT_StartStep_UP() > StartStep  +  SymbolInfoInteger(NULL,SYMBOL_SPREAD) ? true: false )
+   //---
+   SignalCloseUP_MOVE[number] = true;  
 //---
 }
 //+------------------------------------------------------------------+
 //|                  MOVE BL DN                                         |
 //+------------------------------------------------------------------+
 void SetSignalCloseDN_MOVE ( int number){
-//---
- SignalCloseDN_MOVE[number] = false; 
-//---
-if(Status.CloseBL[number][STATUS_TRADE]           =  TRADE ? true: false )
-if(Status.CloseBL[number][STATUS_MAIN_ON]         =  MAIN_ON ? true: false )
-if(Status.CloseBL[number][STATUS_PEND]            =  jBUYLIMIT[NAME_BL_0][NAME_STATUS].ToStr() == NAME_STATUS_PEND ? true: false )
-if(Status.CloseBL[number][STATUS_NEWBAR]          =  BarReMOVE != iTime(NULL,PERIOD_CURRENT,0) ? true: false )
-if(Status.CloseBL[number][STATUS_COUNT]           =  GetCountPendByPREFIX( NAME_PREFIX_BL) > 0 ? true: false )                                                     
-if(Status.CloseBL[number][STATUS_DT_START_STEP]   =  GetPipsDT_StartStep_DN() > StartStep  +  SymbolInfoInteger(NULL,SYMBOL_SPREAD) ? true: false )
-//---
-SignalCloseDN_MOVE[number] = true; 
-//---
+   //---
+    SignalCloseDN_MOVE[number] = false; 
+   //---
+   if(Status.CloseBL[number][STATUS_TRADE_MAIN_DN]   =  TRADE_MAIN_DN ? true: false )
+   if(Status.CloseBL[number][STATUS_MAIN_ON]         =  MAIN_ON ? true: false )
+   if(Status.CloseBL[number][STATUS_PEND]            =  jBUYLIMIT[NAME_BL_0][NAME_STATUS].ToStr() == NAME_STATUS_PEND ? true: false )
+   if(Status.CloseBL[number][STATUS_NEWBAR]          =  BarReMOVE != iTime(NULL,PERIOD_CURRENT,0) ? true: false )
+   if(Status.CloseBL[number][STATUS_COUNT]           =  GetCountPendByPREFIX( NAME_PREFIX_BL) > 0 ? true: false )                                                     
+   if(Status.CloseBL[number][STATUS_DT_START_STEP]   =  GetPipsDT_StartStep_DN() > StartStep  +  SymbolInfoInteger(NULL,SYMBOL_SPREAD) ? true: false )
+   //---
+   SignalCloseDN_MOVE[number] = true; 
+   //---
 }
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //<><><><><><><><><><><><><><><><><>  TRALL        <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
@@ -126,6 +126,13 @@ void SetSignalCloseSS_TRALL( int number){
 if(Status.CloseSS[number][STATUS_STOPLOSS]        = STOPLOSS_SS != 0 && SymbolInfoDouble(NULL,SYMBOL_BID) > STOPLOSS_SS ? true: false )
  //---
  SignalCloseSS_TRALL[number] = true; 
+ 
+ //Print(__FUNCTION__, " ============================================================================= ");
+ //Print(__FUNCTION__, " -------------------------------------- STOPLOSS_SS = ", STOPLOSS_SS);
+ //Print(__FUNCTION__, " -------------------------------------- SymbolInfoDouble(NULL,SYMBOL_BID) = ", SymbolInfoDouble(NULL,SYMBOL_BID));
+ // Print(__FUNCTION__, " -------------------------------------- SymbolInfoDouble(NULL,SYMBOL_BID) > STOPLOSS_SS = ", SymbolInfoDouble(NULL,SYMBOL_BID) > STOPLOSS_SS);
+ 
+ 
 }
 //+------------------------------------------------------------------+
 //|                       BL    BUY                                       |
