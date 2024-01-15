@@ -13,6 +13,7 @@ if(Status.OpenBUYLIMIT[number][STATUS_TRADE_MAIN_DN]  = TRADE_MAIN_DN ? true: fa
 if(Status.OpenBUYLIMIT[number][STATUS_SCOPE_ON]       = ScopeLevel != 0 ? true: false )
 if(Status.OpenBUYLIMIT[number][STATUS_COUNT]          = GetCountPendByPREFIX(NAME_PREFIX_BL) != 0 ||  GetCountPositionsByPREFIX(NAME_PREFIX_BL) !=0 ? true: false )
 if(Status.OpenBUYLIMIT[number][STATUS_SCOPE_LEVEL]    = isPriceInScopeBUYLIMIT( PRICE_ScopeLevel_DN_ASK )  ? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_STO_UP]         = isStoMain_UP(number,STOLevelUP,0)  ? true: false ) 
           
 SignalOpenBuyLimitScope[number] = true; 
 

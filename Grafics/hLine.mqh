@@ -16,6 +16,8 @@ bool H_line(string name, double price, color _color, ENUM_LINE_STYLE style = STY
      ObjectSetInteger(0,name,OBJPROP_STYLE,STYLE_DOT);
      ObjectSetInteger(0,name,OBJPROP_COLOR,_color);  
      ObjectSetInteger(0,name,OBJPROP_WIDTH, width);  
+     ObjectSetInteger(0,name,OBJPROP_BACK, true);  
+     
       
    }  
    return true;

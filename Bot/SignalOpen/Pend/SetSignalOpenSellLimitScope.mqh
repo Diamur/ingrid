@@ -13,6 +13,7 @@ if(Status.OpenSELLLIMIT[number][STATUS_TRADE_MAIN_UP]  = TRADE_MAIN_UP ? true: f
 if(Status.OpenSELLLIMIT[number][STATUS_SCOPE_ON]       = ScopeLevel != 0 ? true: false )
 if(Status.OpenSELLLIMIT[number][STATUS_COUNT]          = GetCountPendByPREFIX(NAME_PREFIX_SL) != 0 ||  GetCountPositionsByPREFIX(NAME_PREFIX_SL) !=0 ? true: false )
 if(Status.OpenSELLLIMIT[number][STATUS_SCOPE_LEVEL]    = isPriceInScopeSELLLIMIT( PRICE_ScopeLevel_UP_BID )  ? true: false )
+if(Status.OpenSELLLIMIT[number][STATUS_STO_DN]         = isStoMain_DN(number,STOLevelUP,0)  ? true: false ) 
 
 SignalOpenSellLimitScope[number] = true; 
    if(SignalOpenSellLimitScope[number]){

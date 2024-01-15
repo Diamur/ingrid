@@ -22,7 +22,7 @@ void SetSignalClose(int  number){
    
    
    //SetSignalCloseAll ( number);
-   //SetSignalCloseAll_PROFIT( number);
+   SetSignalCloseAll_PROFIT( number);
    
    //SetSignalCloseBUY_PROFIT( number);
    //SetSignalCloseSELL_PROFIT( number);

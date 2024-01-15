@@ -23,11 +23,11 @@
 //+------------------------------------------------------------------+
 //|      Взять массив значений индикатора                                   |
 //+------------------------------------------------------------------+
-   double   GetSto(const int  handle, 
-                  double &arr[],
-                  const int  buf=0, 
-                  const int  shift=0,
-                  const bool arrReturn   = false
+   double   GetSto( const int  handle, 
+                   double &arr[],
+                    const int  buf=0, 
+                    const int  shift=0,
+                    const bool arrReturn   = false
                   ){
      double _arr[1] = {0};
       ResetLastError(); 
@@ -74,41 +74,77 @@
    //+------------------------------------------------------------------+
    //|                                                                  |
    //+------------------------------------------------------------------+
-   bool isSto_UP(int number,int level_UP , int shift  ){
+  bool isStoMain_UP(int number,  int level_UP , int shift  ){
       bool _isSto_UP = false;
      //Получение данных индикаторов
-      setArr_iSto(h_Sto[number],0,0, arr_iStoMain );
-      setArr_iSto(h_Sto[number],1,0, arr_iStoSignal );
-
+      setArr_iSto(h_Sto[number],0,shift, arr_iStoMain );
+      //setArr_iSto(h_Sto[number],1,shift, arr_iStoSignal );
    //+------------------------------------------------------------------+
    //|  Логика индикатора                                               |
    //+------------------------------------------------------------------+  
-   if(arr_iStoMain[1] > level_UP )      
-      _isSto_UP = true;      
-   //+------------------------------------------------------------------+
-   //|                                                                  |
-   //+------------------------------------------------------------------+
+    ArraySetAsSeries(arr_iStoMain,true);
+   //Print(__FUNCTION__, "  ----------------arr_iStoMain[0] = ", arr_iStoMain[0] );
+   //Print(__FUNCTION__, "  ----------------arr_iStoMain[1] = ", arr_iStoMain[1] );
+   //Print(__FUNCTION__, "  ----------------arr_iStoMain[2] = ", arr_iStoMain[2] );
+   //Print(__FUNCTION__, "  ---------------- arr_iStoMain[3]= ", arr_iStoMain[3]);
+   
+   
+    if(arr_iStoMain[shift] > level_UP )  _isSto_UP = true;    
       return _isSto_UP;
-   } 
+  } 
    //+------------------------------------------------------------------+
    //|                                                                  |
    //+------------------------------------------------------------------+
-   bool isSto_DN(int number, int level_DN , int shift){
+  bool isStoMain_DN(int number, int level_DN , int shift){
       bool _isSto_DN = false;
      //Получение данных индикаторов
-      setArr_iSto(h_Sto[number],0,0, arr_iStoMain );
-      setArr_iSto(h_Sto[number],1,0, arr_iStoSignal );
+      setArr_iSto(h_Sto[number],0,shift, arr_iStoMain );
+      //setArr_iSto(h_Sto[number],1,shift, arr_iStoSignal );
    //+------------------------------------------------------------------+
    //|  Логика индикатора                                               |
    //+------------------------------------------------------------------+    
-   
-   if(arr_iStoMain[1] < level_DN)      
-   _isSto_DN = true;      
+     ArraySetAsSeries(arr_iStoMain,true);
+   if(arr_iStoMain[shift] < level_DN)         _isSto_DN = true;      
+      return _isSto_DN;
+  }   
+
    //+------------------------------------------------------------------+
    //|                                                                  |
    //+------------------------------------------------------------------+
+  bool isStoSignal_UP(int number,  int level_UP , int shift  ){
+      bool _isSto_UP = false;
+     //Получение данных индикаторов
+      //setArr_iSto(h_Sto[number],0,shift, arr_iStoMain );
+      setArr_iSto(h_Sto[number],1,shift, arr_iStoSignal );
+   //+------------------------------------------------------------------+
+   //|  Логика индикатора                                               |
+   //+------------------------------------------------------------------+  
+   ArraySetAsSeries(arr_iStoSignal,true);
+   
+   //   Print(__FUNCTION__, "  ----------------arr_iStoSignal[0] = ", arr_iStoSignal[0] );
+   //Print(__FUNCTION__, "  ----------------arr_iStoSignal[1] = ", arr_iStoSignal[1] );
+   //Print(__FUNCTION__, "  ----------------arr_iStoSignal[2] = ", arr_iStoSignal[2] );
+   //Print(__FUNCTION__, "  ---------------- arr_iStoSignal[3]= ", arr_iStoSignal[3]);
+   
+    if(arr_iStoSignal[shift] > level_UP )  _isSto_UP = true;    
+      return _isSto_UP;
+  } 
+   //+------------------------------------------------------------------+
+   //|                                                                  |
+   //+------------------------------------------------------------------+
+  bool isStoSignal_DN(int number, int level_DN , int shift){
+      bool _isSto_DN = false;
+     //Получение данных индикаторов
+      //setArr_iSto(h_Sto[number],0,shift, arr_iStoMain );
+      setArr_iSto(h_Sto[number],1,shift, arr_iStoSignal );
+   //+------------------------------------------------------------------+
+   //|  Логика индикатора                                               |
+   //+------------------------------------------------------------------+    
+     ArraySetAsSeries(arr_iStoSignal,true);
+   if(arr_iStoSignal[shift] < level_DN)         _isSto_DN = true;      
       return _isSto_DN;
-   }   
+  }    
+  
 //+------------------------------------------------------------------+
 //|       Разрешение торговли при положении стохастика               |
 //+------------------------------------------------------------------+

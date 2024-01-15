@@ -40,22 +40,92 @@ void TraderBot(int      number,  CTrade   &trade[]  )
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ P R O F I T   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$$$$$
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                    CLOSE  BUTTON UP   | % State_BUTTON_STOP_UP  %                              |
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if( State_BUTTON_STOP_UP ){
+     Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON UP | % State_BUTTON_STOP_UP  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+     //---
+     CloseSL_PREFIX (number,trade) ;
+     //---
+     SetPARAMETRS_START(NAME_SELLLIMIT);
+}
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                    CLOSE  BUTTON DN   | % State_BUTTON_STOP_UP  %                              |
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if( State_BUTTON_STOP_DN ){
+     Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON DN | % State_BUTTON_STOP_DN  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+     //---
+     CloseBL_PREFIX (number,trade) ;
+     //---
+     SetPARAMETRS_START(NAME_BUYLIMIT);
+}
+
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                    CLOSE  BUTTON ALL   | % State_BUTTON_STOP %                              |
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if( State_BUTTON_STOP ){
+     Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON ALL   | % State_BUTTON_STOP  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+     //---
+     CloseAll_PREFIX(number,trade);
+     //---
+     SetPARAMETRS_START(NAME_ALL);
+}
+
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                    CLOSE  PROFIT ALL   | % DT_EQ_BAL_START > Profit_Eqity  %                              |
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if (  SignalCloseAll_PROFIT[number] ) {
+Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT ALL   | % DT_EQ_BAL_START > Profit_Eqity  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+
+//  int p = 50; 
+//   //---
+//   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
+//        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
+//     p--;
+//   }
+//   p = 50; 
+//   //---
+//   while( GetCountPendByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
+//        DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
+//     p--;
+//   }
+//   p = 50; 
+//   
+//   //---
+//   while( GetCountPositionsByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
+//        ClosePositionByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
+//     p--;
+//   }
+//    p = 50; 
+//   //---
+//   while( GetCountPositionsByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
+//        ClosePositionByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
+//     p--;
+//   }
+   CloseAll_PREFIX(number,trade);
+   SetPARAMETRS_START(NAME_ALL);
+}
+//+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
+//+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|                    CLOSE  PROFIT SL   | % Pips_SL > ProfitPips_SL  %                              |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseSL_PROFIT[number]){ 
 Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT SL   | % Pips_SL > ProfitPips_SL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   int p = 50; 
-   //---
-   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-     p--;
-   }
-   p = 50; 
-   //---
-   while( GetCountPositionsByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-        ClosePositionByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-     p--;
-   }   
+//   int p = 50; 
+//   //---
+//   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
+//        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
+//     p--;
+//   }
+//   p = 50; 
+//   //---
+//   while( GetCountPositionsByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
+//        ClosePositionByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
+//     p--;
+//   }   
+//   
+   CloseSL_PREFIX(number,trade);
    SetPARAMETRS_START(NAME_SELLLIMIT);
    //--- 
    //SetTRADE_CLOSE();
@@ -67,18 +137,20 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT SL   | % Pip
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseBL_PROFIT[number]){ 
 Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE  PROFIT BL   | % Pips_BL > ProfitPips_BL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   int p = 50; 
-   //---
-   while( GetCountPendByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
-        DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
-     p--;
-   }
-   p = 50; 
-   //---
-   while( GetCountPositionsByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
-        ClosePositionByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
-     p--;
-   }   
+   //int p = 50; 
+   ////---
+   //while( GetCountPendByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
+   //     DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
+   //  p--;
+   //}
+   //p = 50; 
+   ////---
+   //while( GetCountPositionsByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
+   //     ClosePositionByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
+   //  p--;
+   //}   
+   
+   CloseBL_PREFIX(number,trade);
    SetPARAMETRS_START(NAME_BUYLIMIT);
    //--- 
    //SetTRADE_CLOSE();
@@ -91,12 +163,14 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE  PROFIT BL   | % Pips_
 //if(false)
 if(SignalCloseUP_MOVE[number]){ 
 Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE  MOVE SL UP  | %  DT_StartStep_UP > StartStep+SPREAD  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   int p = 50; 
-   //---
-   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-     p--;
-   }
+//   int p = 50; 
+//   //---
+//   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
+//        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
+//     p--;
+//   }
+//   
+   CloseUP_MOVE(number,trade);
    SetPARAMETRS_START(NAME_MOVE_UP);
    //---
 }
@@ -108,12 +182,13 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE  MOVE SL UP  | %  DT_S
 //if(false)
 if(SignalCloseDN_MOVE[number]){ 
 Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE MOVE BL  DN  | %  DT_StartStep_DN > StartStep+SPREAD  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   int p = 50; 
-   //---
-   while( GetCountPendByPREFIX( NAME_PREFIX_BL) > 0 && p > 0){         
-        DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol);
-     p--;
-   }
+   //int p = 50; 
+   ////---
+   //while( GetCountPendByPREFIX( NAME_PREFIX_BL) > 0 && p > 0){         
+   //     DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol);
+   //  p--;
+   //}
+   CloseDN_MOVE(number,trade);
    SetPARAMETRS_START(NAME_MOVE_DN);
    //--- 
 }
@@ -123,7 +198,7 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE MOVE BL  DN  | %  DT_S
 //|             CLOSE SL TRALL  | %   BID > STOPLOSS_SL  %                                                     |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseSL_TRALL[number]){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   CLOSE SL TRALL  | %   BID > STOPLOSS_SL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   CLOSE SL TRALL  | %   BID > STOPLOSS_SL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
    int p = 50; 
    //---
    while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
@@ -136,6 +211,7 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   CLOSE SL TRALL  | %   BID >
         ClosePositionByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
      p--;
    }   
+   
    SetPARAMETRS_START(NAME_SELLLIMIT);
    //--- 
 }
@@ -386,7 +462,9 @@ for(int k=kstart;k<kstop;k++){
   string const nextComment    = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
   double const nextPrice      = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
   double const nextTP         =  Trall_BS != 0 ? 0 : jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
- 
+   //if(i < 3 )
+   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jSELLLIMIT ",i," =  ", jSELLLIMIT[MainNameOrder][SubNameOrder].Serialize() );
+  if(nextPrice > 0)
      if( count == 0  )
          set_OPEN_BUYSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
    }// конец цикла
@@ -416,7 +494,9 @@ for(int k=kstart;k<kstop;k++){
   string const nextComment    = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
   double const nextPrice      = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
   double const nextTP         =  Trall_BS != 0 ? 0 : jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
- 
+   //if(i < 3 )
+   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jSELLLIMIT ",i," =  ", jSELLLIMIT[MainNameOrder][SubNameOrder].Serialize() );
+   if(nextPrice > 0)
      if( count == 0  )
      if (nextPrice < PRICE_ScopeLevel_UP_BID ){
           set_OPEN_BUYSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
@@ -451,8 +531,11 @@ for(int k=kstart;k<kstop;k++){
   double const nextLot        = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_LOT].ToDbl() ;
   string const nextComment    = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
   double const nextPrice      = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
-  double const nextTP         =  Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;  
-
+  double const nextTP         = Trall_BS != 0 ? 0 : jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;
+  
+  //if(i < 3 )
+  //  Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jSELLLIMIT ",i," =  ", jSELLLIMIT[MainNameOrder][SubNameOrder].Serialize() );
+  if(nextPrice > 0)
    if( count == 0  )
     if(ASK + ReSubStep * POINT < nextPrice )
      if (nextPrice < PRICE_ScopeLevel_UP_BID ){
@@ -490,7 +573,9 @@ for(int k=kstart;k<kstop;k++){
   string const nextComment    = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
   double const nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
   double const nextTP         =  Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
- 
+   //if(i < 3 )
+   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jBUYLIMIT ",i," =  ", jBUYLIMIT[MainNameOrder][SubNameOrder].Serialize() );
+   if(nextPrice > 0)
      if( count == 0  )
          set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
    }// конец цикла
@@ -519,13 +604,16 @@ for(int k=kstart;k<kstop;k++){
   double const nextLot        = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_LOT].ToDbl() ;
   string const nextComment    = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
   double const nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
-  double const nextTP         =  Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
-
-  if( count == 0  )
-     if (nextPrice > PRICE_ScopeLevel_DN_ASK ){
+  double const nextTP         = Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
+  //  if(i < 3 )
+  //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jBUYLIMIT ",i," =  ", jBUYLIMIT[MainNameOrder][SubNameOrder].Serialize() );
+  
+ if(nextPrice > 0 )
+   if( count == 0  )
+      if (nextPrice > PRICE_ScopeLevel_DN_ASK ){
           set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
       }else{
-         break;
+         //break;
       }  
    }// конец цикла
   }
@@ -555,13 +643,17 @@ for(int k=kstart;k<kstop;k++){
   string const nextComment    = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
   double const nextPrice      = jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
   double const nextTP         =  Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;  
-
+  
+  //if(i < 3 )
+  // Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jBUYLIMIT ",i," =  ", jBUYLIMIT[MainNameOrder][SubNameOrder].Serialize() );
+ 
+  if(nextPrice > 0 )
    if( count == 0  )
     if(ASK - ReSubStep * POINT > nextPrice )
      if (nextPrice > PRICE_ScopeLevel_DN_ASK ){
           set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
       }else{
-         break;
+         //break;
       }  
        
        

@@ -6,6 +6,7 @@
 #include  "\text.mqh" 
 //#include  "\vLine.mqh" 
 #include  "\hLine.mqh" 
+#include "\PanelLogo.mqh";
 
 
 //+------------------------------------------------------------------+

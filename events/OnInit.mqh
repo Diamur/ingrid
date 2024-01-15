@@ -97,36 +97,7 @@ int OnInit()
     else{
       arrSymbol[0] = Symbol1;   
     }  
-   
 
-//    Step.StartStep   = StartStep; // (int)(StepBUYLIMIT/2);
-//    Step.AStep       = StepPEND;
-//    Step.B1Step      = (int)(StepPEND/( 2 + 2 )); //x2 s/3
-//    Step.B2Step      = (int)(StepPEND/( 4 + 2 )); //x4 s/5
-//    Step.B3Step      = (int)(StepPEND/( 8 + 2 )); //x8 s/9
-//    Step.B4Step      = (int)(StepPEND/( 16 + 2 )); //x16 s/17
-//    Step.B5Step      = (int)(StepPEND/( 32 + 2 )); //x32 s/33
-//    Step.B6Step      = (int)(StepPEND/( 64 + 2 )); //x64 s/65
-//    Step.B7Step      = (int)(StepPEND/( 128 + 2 )); //x128 s/129
-//    Step.B8Step      = (int)(StepPEND/( 256 + 2 )); //x256 s/257
-//    
-//    Lot.LotA         = MinLot;
-//    Lot.LotB1        = MinLot*2;
-//    Lot.LotB2        = MinLot*4;
-//    Lot.LotB3        = MinLot*8;
-//    Lot.LotB4        = MinLot*16;
-//    Lot.LotB5        = MinLot*32;
-//    Lot.LotB6        = MinLot*64;
-//    Lot.LotB7        = MinLot*128;
-//    Lot.LotB8        = MinLot*256;
-//    Lot.LotB9        = MinLot*512;
-//    Lot.LotB10        = MinLot*1024;
-    
-    
-    
-    //Инициализация Статусов
-    //ArrayInitialize(Status,false);
-    
     //
    ArrayInitialize(MAX_PRICE_SELLLIMIT,0);
    ArrayInitialize(MIN_PRICE_SELLLIMIT,0);
@@ -236,12 +207,12 @@ int OnInit()
    
      
    //---
-   //if(TRADE_iSTO)
-   //h_Sto[i] = ini_iSto(arrSymbol[0],STO_TF,STOKperiod,STODperiod,STOSlowing,MODE_SMA,STO_LOWHIGH, hiddenIndikator );
-   //if(h_Sto[i] < 0){
-   //   Print(__FUNCTION__, " h_Sto[0] error =  ", GetLastError() ); 
-   //   return(INIT_FAILED);
-   //  }        
+   if(TRADE_iSTO)
+   h_Sto[i] = ini_iSto(arrSymbol[0],STO_TF,STOKperiod,STODperiod,STOSlowing,MODE_SMA,STO_LOWHIGH, hiddenIndikator );
+   if(h_Sto[i] < 0){
+      Print(__FUNCTION__, " h_Sto[0] error =  ", GetLastError() ); 
+      return(INIT_FAILED);
+     }        
    //---  
    //if(TRADE_iCCI)
    // h_CCI[i] = ini_iCCI(arrSymbol[0],CCI_TF,CCIma_period,PRICE_CLOSE, hiddenIndikator );
@@ -333,6 +304,43 @@ int OnInit()
    
    Comment("");  
    ObjectsDeleteAll(0);
+   
+   
+   //--- установка флага получения событий создания объектов графика 
+   ChartSetInteger(ChartID(),CHART_EVENT_OBJECT_CREATE,true); 
+//--- установка флага получения событий удаления объектов графика 
+   ChartSetInteger(ChartID(),CHART_EVENT_OBJECT_DELETE,true); 
+//--- включение сообщений о прокрутке колесика мышки 
+   ChartSetInteger(0,CHART_EVENT_MOUSE_WHEEL,1); 
+//--- принудительное обновление свойств графика гарантирует готовность к обработке событий 
+   ChartRedraw(); 
+   
+   //Print(__FUNCTION__, " -----------------------------------------  MQLInfoInteger(MQL_TESTER)  =  ", (bool)MQLInfoInteger(MQL_TESTER) );
+   //Print(__FUNCTION__, " -----------------------------------------  MQLInfoInteger(MQL_OPTIMIZATION)  =  ", (bool)MQLInfoInteger(MQL_OPTIMIZATION) );
+   
+   SetStartParams();
+   
+    //if(! _chekServer ){
+   ShowPanel(true);
+   
+   Print(__FUNCTION__, " ----------------------------------------- FolderCreate(dir) =  ",  FolderCreate(dir) );
+   Print(__FUNCTION__, " ----------------------------------------- file_MAGIC  =  ", file_MAGIC  );
+   Print(__FUNCTION__, " ----------------------------------------- GetStringFile(file_MAGIC)  =  ", GetStringFile(file_MAGIC)  );
+           
+   if(GetStringFile(file_MAGIC) != (string)Magic  ){  
+         
+            SetStartParams();       
+            SetParamsTntoFile();
+         
+   }else {      
+     GetParamsFromFile();                           
+   }
+   ShowPropertiesTrade();
+      //}
+   
+
+   
+   EventSetTimer(1);
    
    return(INIT_SUCCEEDED);
    

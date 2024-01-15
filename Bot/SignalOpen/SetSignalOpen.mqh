@@ -14,8 +14,8 @@ void SetSignalOpen(int  number ){
    
    if( TRADE_BUYLIMIT ) SetSignalOpenBuyLimit (number);  
    if( TRADE_BUYLIMIT ) SetSignalOpenBuyLimitScope (number);
-   if( TRADE_BUYLIMIT ) SetSignalOpenBuyLimitMove (number);
-   if( TRADE_BUYLIMIT ) SetSignalOpenBuyLimitMoveScope (number);    
+   //if( TRADE_BUYLIMIT ) SetSignalOpenBuyLimitMove (number);
+   //if( TRADE_BUYLIMIT ) SetSignalOpenBuyLimitMoveScope (number);    
  
    if( TRADE_SELLLIMIT) SetSignalOpenSellLimit(number);
    if( TRADE_SELLLIMIT) SetSignalOpenSellLimitScope(number);

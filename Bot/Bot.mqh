@@ -6,6 +6,8 @@
 #include "\TraderBot.mqh";
 #include "\TraderGrafic.mqh";
 
+
+
 //+------------------------------------------------------------------+
 //|         SignalOpen                                               |
 //+------------------------------------------------------------------+
@@ -24,8 +26,8 @@
 
 #include "\SignalOpen\Pend\SetSignalOpenBuyLimit.mqh";
 #include "\SignalOpen\Pend\SetSignalOpenBuyLimitScope.mqh";
-#include "\SignalOpen\Pend\SetSignalOpenBuyLimitMove.mqh";
-#include "\SignalOpen\Pend\SetSignalOpenBuyLimitMoveScope.mqh";
+//#include "\SignalOpen\Pend\SetSignalOpenBuyLimitMove.mqh";
+//#include "\SignalOpen\Pend\SetSignalOpenBuyLimitMoveScope.mqh";
 
 #include "\SignalOpen\Pend\SetSignalOpenSellLimit.mqh";
 #include "\SignalOpen\Pend\SetSignalOpenSellLimitScope.mqh";

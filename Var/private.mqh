@@ -69,7 +69,9 @@ bool   _chekServer     = false ;
 #define  STATUS_PROFIT_FULL            38 
 #define  STATUS_TRALL                  39 
 #define  STATUS_COUNT_POS              40 
-
+#define  STATUS_STATE_UP               41
+#define  STATUS_STATE_DN               42
+#define  STATUS_STATE_STOP             43 
 
 //+------------------------------------------------------------------+
 struct _Status {  
@@ -94,10 +96,8 @@ struct _Status {
      bool CloseSL[NUMBER_OF_SYMBOLS][NUMBER_OF_STATUSES];
    
      bool CloseBS[NUMBER_OF_SYMBOLS][NUMBER_OF_STATUSES];
-     bool CloseSS[NUMBER_OF_SYMBOLS][NUMBER_OF_STATUSES];
+     bool CloseSS[NUMBER_OF_SYMBOLS][NUMBER_OF_STATUSES];     
       
-      
-     
 };
 _Status Status;
 //+------------------------------------------------------------------+
@@ -202,7 +202,7 @@ _Lot Lot;
 #define  TRADE_SELLLIMIT    true
 
 //#define  TRADE_iMA           false
-//#define  TRADE_iSTO          false
+#define  TRADE_iSTO          true
 //#define  TRADE_iCCI          false
 
 //CPositionInfo  a_position;
@@ -583,8 +583,42 @@ int NextMultSELLLIMIT = 1;
 #define  NAME_TRALL_OPEN_SS   "TRALL_OPEN_SS"
 #define  NAME_TRALL_FULL_SS   "TRALL_FULL_SS"
 
+#define  NAME_BUTTON_START     "BUTTON_START"
+#define  NAME_BUTTON_STOP      "BUTTON_STOP"
 
+#define  NAME_BUTTON_START_UP  "BUTTON_START_UP"
+#define  NAME_BUTTON_START_DN  "BUTTON_START_DN"
 
+#define  NAME_BUTTON_STOP_UP   "BUTTON_STOP_UP"
+#define  NAME_BUTTON_STOP_DN   "BUTTON_STOP_DN"
+
+#define  BGCOLOR_BUTTON          C'239,198,121'
+#define  COLOR_TEXT              clrGray
+
+#define  TEXT_BUTTON_START     "START AUTO"
+#define  TEXT_BUTTON_STOP      "CLOSE&STOP"
+
+#define  TEXT_BUTTON_START_UP  "TRADE UP"
+#define  TEXT_BUTTON_STOP_UP   "CLOSE UP"
+
+#define  TEXT_BUTTON_START_DN  "TRADE DOWN"
+#define  TEXT_BUTTON_STOP_DN   "CLOSE DOWN"
+
+#define SPEEDCLICK 500 
+string name_obj = MQLInfoString(MQL_PROGRAM_NAME);
+uint time_click = 0;
+
+//--- идентификаторы служебных клавиш 
+#define KEY_NUMPAD_5       12 
+#define KEY_LEFT           37 
+#define KEY_UP             38 
+#define KEY_RIGHT          39 
+#define KEY_DOWN           40 
+#define KEY_NUMLOCK_DOWN   98 
+#define KEY_NUMLOCK_LEFT  100 
+#define KEY_NUMLOCK_5     101 
+#define KEY_NUMLOCK_RIGHT 102 
+#define KEY_NUMLOCK_UP    104 
 
 /*
 #define  NAME_BL_0 "BL_0"
@@ -730,7 +764,7 @@ datetime BarReMOVE;
 
    int arrCountSubKNEE[NUMBER_OF_KNEES];
 
-   int arrMain_MULT[NUMBER_OF_KNEES] ; //= {1,2,4,8,16,32,64,128, 256,512,1024,2024} ;
+double arrMain_MULT[NUMBER_OF_KNEES] ; //= {1,2,4,8,16,32,64,128, 256,512,1024,2024} ;
    int arrSub_MULT[NUMBER_OF_KNEES]  = {0,1,2,3,4,7,9,11,13,15,19,21};
 
    int arrFullStep[NUMBER_OF_KNEES];
@@ -820,6 +854,9 @@ double BALANCE_START ;
 double EQITY ;
 double DT_EQITY_BALANCE ;
 
+double   LAST_BALANCE  ;//= 0; //          
+datetime START_DATETIME;// = 0; //
+
 bool PRICE_Set      = false;
 
 int const arrStartStop[NUMBER_OF_KNEES][2] = {{0,0},{0,2},{2,5},{5,10},{10,17},{17,26},{26,37},{37,50},{50,65},{65,82},{82,101},{101,122}};
@@ -836,3 +873,32 @@ int const arrStartStop[NUMBER_OF_KNEES][2] = {{0,0},{0,2},{2,5},{5,10},{10,17},{
    //if(i==9) {  kstart = 65 ; kstop = 82 ; }
    //if(i==10){  kstart = 82 ; kstop = 101 ; }
    //if(i==11){  kstart = 101; kstop = 122 ; }
+   
+bool State_BUTTON_START    = false;
+bool State_BUTTON_STOP     = true;
+
+bool State_BUTTON_START_UP = false;
+bool State_BUTTON_START_DN = false;
+
+bool State_BUTTON_STOP_UP  = true;
+bool State_BUTTON_STOP_DN  = true;
+
+int  TIME_CLOSE_FULL = 0;
+int  TIME_CLOSE_UP = 0;
+int  TIME_CLOSE_DN = 0;
+
+
+
+//+------------------------------------------------------------------+     
+int DAY0_ID = 0;
+//int DAY1_ID = 0;
+
+int WEEK0_ID = 0;
+//int WEEK1_ID = 0;  
+
+int MONTH0_ID = 0;
+//int MONTH0_ID = 0;
+
+double arrDAY[7] = {0,0,0,0,0};
+double arrWEEK[4] = {0,0,0,0};   
+double arrMONTH[2] = {0,0}; 

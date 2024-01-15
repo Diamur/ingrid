@@ -374,11 +374,13 @@ int GetPipsProfitSELL_Prefix(string prefix){
 int GetPipsProfitBUY_SELL_Prefix(string prefix, bool revers = false){    
  
  //Print(__FUNCTION__, " ----------------------- prefix = ", prefix );  
- //Print(__FUNCTION__, " ----------------------- GetVolumeBUY_SELL_PREFIX(prefix)= ",GetVolumeBUY_SELL_PREFIX(prefix) );
+ //Print(__FUNCTION__, " ----------------------- MathAbs(GetVolumeBUY_SELL_PREFIX(prefix) ) = ",MathAbs(GetVolumeBUY_SELL_PREFIX(prefix)) );
  //Print(__FUNCTION__, " ----------------------- GetProfitBUY_SELL_PREFIX(prefix)= ", GetProfitBUY_SELL_PREFIX(prefix)); 
  
-  if(GetVolumeBUY_SELL_PREFIX(prefix,revers) != 0){
-      return  (int)( GetProfitBUY_SELL_PREFIX(prefix)/  GetVolumeBUY_SELL_PREFIX(prefix,revers)  ) ;
+ 
+ 
+  if(MathAbs(GetVolumeBUY_SELL_PREFIX(prefix,revers)) != 0){
+      return  (int)( GetProfitBUY_SELL_PREFIX(prefix)/  MathAbs(GetVolumeBUY_SELL_PREFIX(prefix,revers))  ) ;
   }
     
    return  0;

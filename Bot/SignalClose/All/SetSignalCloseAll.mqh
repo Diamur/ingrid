@@ -5,17 +5,17 @@
 //+------------------------------------------------------------------+
 //|                  PROFIT                                          |
 //+------------------------------------------------------------------+
-//void SetSignalCloseAll_PROFIT ( int number){
-// SignalCloseAll_PROFIT[number] = false; 
-////---
-//  if(Status.CloseALL[number][STATUS_TRADE]           = TRADE ? true: false )
-//  if(Status.CloseALL[number][STATUS_PROFIT_FULL]     = Profit_FULL_ON ? true: false )  
-//  if(Status.CloseALL[number][STATUS_TRALL]           = TRALL==0 ? true: false )  
-//  if(Status.CloseALL[number][STATUS_PROFIT_BUY]      =  GetPipsProfit() > ProfitPipsPLUS ? true: false )
-////---
-// SignalCloseAll_PROFIT[number] = true; 
-////---
-//}
+void SetSignalCloseAll_PROFIT ( int number){
+ SignalCloseAll_PROFIT[number] = false; 
+//---
+  //if(Status.CloseALL[number][STATUS_TRADE]           = TRADE ? true: false )
+  if(Status.CloseALL[number][STATUS_PROFIT_FULL]     = Profit_Eqity !=0 ? true: false )  
+  //if(Status.CloseALL[number][STATUS_TRALL]           = TRALL==0 ? true: false )  
+  if(Status.CloseALL[number][STATUS_PROFIT_BUY]      = EQITY - BALANCE_START > Profit_Eqity ? true: false )
+//---
+ SignalCloseAll_PROFIT[number] = true; 
+//---
+}
 //+------------------------------------------------------------------+
 //|                  PROFIT UP SL                                         |
 //+------------------------------------------------------------------+
@@ -38,6 +38,15 @@ void SetSignalCloseBL_PROFIT ( int number){
   if(Status.CloseBL[number][STATUS_PROFIT_BUY]      =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL) > ProfitPips_BL ? true: false )
  //---
   SignalCloseBL_PROFIT[number] = true; 
+  
+  if(  SignalCloseBL_PROFIT[number] ) {
+      
+      Print(__FUNCTION__, " --------------- GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL)= ",GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL));
+      Print(__FUNCTION__, " --------------- ProfitPips_BL= ",ProfitPips_BL );
+      
+      
+    }
+  
  //---
 }
 
