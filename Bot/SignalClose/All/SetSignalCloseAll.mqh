@@ -3,6 +3,34 @@
 //<><><><><><><><><><><><><><><><><>    PROFIT      <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //+------------------------------------------------------------------+
+//|                PRICE OUT FOOD SL  PROFIT < 1                                          |
+//+------------------------------------------------------------------+
+void SetSignalCloseSL_OUT_PRICE ( int number){
+  SignalCloseSL_OUT_PRICE[number] = false; 
+ //---
+  if(Status.CloseSL[number][STATUS_PIPS_OUT]    = PipsOutPrice !=0 ? true: false )  
+  if(Status.CloseSL[number][STATUS_ASK]         = SymbolInfoDouble(NULL,SYMBOL_ASK) < PriceMIN_UP   ? true: false )  
+  if(Status.CloseSL[number][STATUS_DT_OUT]      = (PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT > PipsOutPrice ? true: false )
+  if(Status.CloseBL[number][STATUS_PROFIT_SELL] =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL) < 0 ? true: false )  
+ //---
+ SignalCloseSL_OUT_PRICE[number] = true; 
+//---
+}
+//+------------------------------------------------------------------+
+//|                PRICE OUT FOOD BL  PROFIT < 1                                          |
+//+------------------------------------------------------------------+
+void SetSignalCloseBL_OUT_PRICE ( int number){
+  SignalCloseBL_OUT_PRICE[number] = false; 
+ //---
+  if(Status.CloseBL[number][STATUS_PIPS_OUT]    = PipsOutPrice !=0 ? true: false )  
+  if(Status.CloseBL[number][STATUS_BID]         = SymbolInfoDouble(NULL,SYMBOL_BID) > PriceMAX_DN  ? true: false )  
+  if(Status.CloseBL[number][STATUS_DT_OUT]      = ( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT > PipsOutPrice ? true: false )
+  if(Status.CloseBL[number][STATUS_PROFIT_BUY]  =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL) < 0 ? true: false )  
+ //---
+ SignalCloseBL_OUT_PRICE[number] = true; 
+//---
+}
+//+------------------------------------------------------------------+
 //|                  PROFIT                                          |
 //+------------------------------------------------------------------+
 void SetSignalCloseAll_PROFIT ( int number){
@@ -11,11 +39,26 @@ void SetSignalCloseAll_PROFIT ( int number){
   //if(Status.CloseALL[number][STATUS_TRADE]           = TRADE ? true: false )
   if(Status.CloseALL[number][STATUS_PROFIT_FULL]     = Profit_Eqity !=0 ? true: false )  
   //if(Status.CloseALL[number][STATUS_TRALL]           = TRALL==0 ? true: false )  
-  if(Status.CloseALL[number][STATUS_PROFIT_BUY]      = EQITY - BALANCE_START > Profit_Eqity ? true: false )
+  if(Status.CloseALL[number][STATUS_PROFIT_BUY]      = EQITY - BALANCE_START > Profit_Eqity && EQITY - BALANCE_START != 0 ? true: false )
 //---
  SignalCloseAll_PROFIT[number] = true; 
 //---
 }
+//+------------------------------------------------------------------+
+//|                 LOW PROFIT                                          |
+//+------------------------------------------------------------------+
+void SetSignalCloseAll_LOWPROFIT ( int number){
+ SignalCloseAll_LOWPROFIT[number] = false; 
+//---
+  //if(Status.CloseALL[number][STATUS_TRADE]           = TRADE ? true: false )
+  if(Status.CloseALL[number][STATUS_PROFIT_FULL]     = LowProfit_Eqity !=0 ? true: false )  
+  //if(Status.CloseALL[number][STATUS_TRALL]           = TRALL==0 ? true: false )  
+  if(Status.CloseALL[number][STATUS_PROFIT_BUY]      = EQITY - BALANCE_START < LowProfit_Eqity && EQITY - BALANCE_START != 0 ? true: false )
+//---
+ SignalCloseAll_LOWPROFIT[number] = true; 
+//---
+}
+
 //+------------------------------------------------------------------+
 //|                  PROFIT UP SL                                         |
 //+------------------------------------------------------------------+
@@ -23,7 +66,7 @@ void SetSignalCloseSL_PROFIT ( int number){
  SignalCloseSL_PROFIT[number] = false; 
 //---
   if(Status.CloseSL[number][STATUS_TRALL]           = Trall_SL==0 ? true: false )  
-  if(Status.CloseSL[number][STATUS_PROFIT_BUY]      =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true) > ProfitPips_SL ? true: false )
+  if(Status.CloseSL[number][STATUS_PROFIT_SELL]      =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true) > ProfitPips_SL ? true: false )
 //---
  SignalCloseSL_PROFIT[number] = true; 
 //---

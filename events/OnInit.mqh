@@ -207,7 +207,8 @@ int OnInit()
    
      
    //---
-   if(TRADE_iSTO)
+   //if(TRADE_iSTO)
+   if(Stochastic_ON)
    h_Sto[i] = ini_iSto(arrSymbol[0],STO_TF,STOKperiod,STODperiod,STOSlowing,MODE_SMA,STO_LOWHIGH, hiddenIndikator );
    if(h_Sto[i] < 0){
       Print(__FUNCTION__, " h_Sto[0] error =  ", GetLastError() ); 
@@ -318,28 +319,141 @@ int OnInit()
    //Print(__FUNCTION__, " -----------------------------------------  MQLInfoInteger(MQL_TESTER)  =  ", (bool)MQLInfoInteger(MQL_TESTER) );
    //Print(__FUNCTION__, " -----------------------------------------  MQLInfoInteger(MQL_OPTIMIZATION)  =  ", (bool)MQLInfoInteger(MQL_OPTIMIZATION) );
    
-   SetStartParams();
+   jZP[ZP_BALANCE_START]               = AccountInfoDouble(ACCOUNT_BALANCE);
+   jZP[ZP_DATETIME_START]              = (int)TimeLocal();
+
+  //SetStringFile(file_BALANCE_START,(string)(BALANCE_START),false);
+   
+   jZP[ZP_TODAY][NAME_KEY]             = ZP_TODAY ;
+   jZP[ZP_TODAY][NAME_VAL]             = ZP_PROFIT_TODAY ;
+   jZP[ZP_TODAY][TEXT]                 = ZP_TEXT_TODAY ;
+   jZP[ZP_TODAY][VAL]                  = 0 ;
+   jZP[ZP_TODAY][DATE]                 = (int)iTime(NULL,PERIOD_D1,0) ;
+   jZP[ZP_TODAY][FILE]                 = dir + "\\" + ZP_TODAY + ".txt";   
+      
+   jZP[ZP_YESTERDAY][NAME_KEY]         = ZP_YESTERDAY ;
+   jZP[ZP_YESTERDAY][NAME_VAL]         = ZP_PROFIT_YESTERDAY ;
+   jZP[ZP_YESTERDAY][TEXT]             = ZP_TEXT_YESTERDAY ;
+   jZP[ZP_YESTERDAY][VAL]              = 0 ;
+   jZP[ZP_YESTERDAY][DATE]             = (int)iTime(NULL,PERIOD_D1,1) ;
+   jZP[ZP_YESTERDAY][FILE]             = dir + "\\" + ZP_YESTERDAY + ".txt"; 
+   
+   jZP[ZP_CURRENT_WEEK][NAME_KEY]      = ZP_CURRENT_WEEK ;
+   jZP[ZP_CURRENT_WEEK][NAME_VAL]      = ZP_PROFIT_CURRENT_WEEK ;   
+   jZP[ZP_CURRENT_WEEK][TEXT]          = ZP_TEXT_CURRENT_WEEK ;
+   jZP[ZP_CURRENT_WEEK][VAL]           = 0 ;
+   jZP[ZP_CURRENT_WEEK][DATE]          = (int)iTime(NULL,PERIOD_W1,0) ;
+   jZP[ZP_CURRENT_WEEK][FILE]          = dir + "\\" + ZP_CURRENT_WEEK + ".txt"; 
+   
+   jZP[ZP_LAST_WEEK][NAME_KEY]         = ZP_LAST_WEEK ;
+   jZP[ZP_LAST_WEEK][NAME_VAL]         = ZP_PROFIT_LAST_WEEK ;   
+   jZP[ZP_LAST_WEEK][TEXT]             = ZP_TEXT_LAST_WEEK ;
+   jZP[ZP_LAST_WEEK][VAL]              = 0 ;
+   jZP[ZP_LAST_WEEK][DATE]             = (int)iTime(NULL,PERIOD_W1,1) ;
+   jZP[ZP_LAST_WEEK][FILE]             = dir + "\\" + ZP_LAST_WEEK + ".txt"; 
+   
+   jZP[ZP_CURRENT_MONTH][NAME_KEY]     = ZP_CURRENT_MONTH ;
+   jZP[ZP_CURRENT_MONTH][NAME_VAL]     = ZP_PROFIT_CURRENT_MONTH ;   
+   jZP[ZP_CURRENT_MONTH][TEXT]         = ZP_TEXT_CURRENT_MONTH ;
+   jZP[ZP_CURRENT_MONTH][VAL]          = 0 ;
+   jZP[ZP_CURRENT_MONTH][DATE]         = (int)iTime(NULL,PERIOD_MN1,0) ;
+   jZP[ZP_CURRENT_MONTH][FILE]         = dir + "\\" + ZP_CURRENT_MONTH + ".txt"; 
+   
+   jZP[ZP_LAST_MONTH][NAME_KEY]        = ZP_LAST_MONTH ;
+   jZP[ZP_LAST_MONTH][NAME_VAL]        = ZP_PROFIT_LAST_MONTH ;
+   jZP[ZP_LAST_MONTH][TEXT]            = ZP_TEXT_LAST_MONTH ;
+   jZP[ZP_LAST_MONTH][VAL]             = 0 ;
+   jZP[ZP_LAST_MONTH][DATE]            = (int)iTime(NULL,PERIOD_MN1,1) ;
+   jZP[ZP_LAST_MONTH][FILE]            = dir + "\\" + ZP_LAST_MONTH + ".txt"; 
+   
+   jZP[ZP_ENTIRE_PERIOD][NAME_KEY]     = ZP_ENTIRE_PERIOD ;
+   jZP[ZP_ENTIRE_PERIOD][NAME_VAL]     = ZP_PROFIT_ENTIRE_PERIOD ;   
+   jZP[ZP_ENTIRE_PERIOD][TEXT]         = ZP_TEXT_ENTIRE_PERIOD ;
+   jZP[ZP_ENTIRE_PERIOD][VAL]          = 0 ;
+   jZP[ZP_ENTIRE_PERIOD][DATE]         = 0 ;
+   jZP[ZP_ENTIRE_PERIOD][FILE]         = dir + "\\" + ZP_ENTIRE_PERIOD + ".txt"; 
+    
+   jZP[ZP_COMMISION][NAME_KEY]         = ZP_COMMISION ;
+   jZP[ZP_COMMISION][NAME_VAL]         = ZP_VAL_COMMISION ; 
+   jZP[ZP_COMMISION][TEXT]             = ZP_TEXT_COMMISION;  
+   jZP[ZP_COMMISION][VAL]              = 0 ;
+   
+   jZP[ZP_SWAP][NAME_KEY]              = ZP_SWAP ;
+   jZP[ZP_SWAP][NAME_VAL]              = ZP_VAL_SWAP ; 
+   jZP[ZP_SWAP][TEXT]                  = ZP_TEXT_SWAP;  
+   jZP[ZP_SWAP][VAL]                   = 0 ;
+     
+   jFN[(FN_KEY_BALANCE)][NAME_KEY]     =   FN_KEY_BALANCE;
+   jFN[(FN_KEY_BALANCE)][NAME_VAL]     =   FN_VAL_BALANCE;
+   jFN[(FN_KEY_BALANCE)][TEXT]         =   FN_TEXT_BALANCE;
+   jFN[(FN_KEY_BALANCE)][VAL]          =   0;
+   
+   jFN[(FN_KEY_EQITY)][NAME_KEY]       =   FN_KEY_EQITY;
+   jFN[(FN_KEY_EQITY)][NAME_VAL]       =   FN_VAL_EQITY;
+   jFN[(FN_KEY_EQITY)][TEXT]           =   FN_TEXT_EQITY;
+   jFN[(FN_KEY_EQITY)][VAL]            =   0;
+   
+   jFN[(FN_KEY_MARGINFREE)][NAME_KEY]  =   FN_KEY_MARGINFREE;
+   jFN[(FN_KEY_MARGINFREE)][NAME_VAL]  =   FN_VAL_MARGINFREE;
+   jFN[(FN_KEY_MARGINFREE)][TEXT]      =   FN_TEXT_MARGINFREE;
+   jFN[(FN_KEY_MARGINFREE)][VAL]       =   0;
+   
+   jFN[(FN_KEY_PROFIT)][NAME_KEY]      =   FN_KEY_PROFIT;
+   jFN[(FN_KEY_PROFIT)][NAME_VAL]      =   FN_VAL_PROFIT;
+   jFN[(FN_KEY_PROFIT)][TEXT]          =   FN_TEXT_PROFIT;
+   jFN[(FN_KEY_PROFIT)][VAL]           =   0;
+  
+ 
+   jFN[(FN_KEY_PROFIT_DN)][NAME_KEY]  =   FN_KEY_PROFIT_DN;
+   jFN[(FN_KEY_PROFIT_DN)][NAME_VAL]  =   FN_VAL_PROFIT_DN;
+   jFN[(FN_KEY_PROFIT_DN)][TEXT]      =   FN_TEXT_PROFIT_DN;
+   jFN[(FN_KEY_PROFIT_DN)][VAL]       =   0;
+  
+ 
+   jFN[(FN_KEY_PROFIT_UP)][NAME_KEY]  =   FN_KEY_PROFIT_UP;
+   jFN[(FN_KEY_PROFIT_UP)][NAME_VAL]  =   FN_VAL_PROFIT_UP;
+   jFN[(FN_KEY_PROFIT_UP)][TEXT]      =   FN_TEXT_PROFIT_UP;
+   jFN[(FN_KEY_PROFIT_UP)][VAL]       =   0;
+   
+     
+   //SetStartParams();
    
     //if(! _chekServer ){
    ShowPanel(true);
    
-   Print(__FUNCTION__, " ----------------------------------------- FolderCreate(dir) =  ",  FolderCreate(dir) );
-   Print(__FUNCTION__, " ----------------------------------------- file_MAGIC  =  ", file_MAGIC  );
-   Print(__FUNCTION__, " ----------------------------------------- GetStringFile(file_MAGIC)  =  ", GetStringFile(file_MAGIC)  );
-           
-   if(GetStringFile(file_MAGIC) != (string)Magic  ){  
-         
-            SetStartParams();       
-            SetParamsTntoFile();
+
+
+  
+  
+  // если файл не существует         
+   if( !FileIsExist(file_MAGIC) ){
+      Print(__FUNCTION__, " ----------------------------------------- NO file_MAGIC  =  ", file_MAGIC  );
+      Print(__FUNCTION__, " ----------------------------------------- FolderCreate(dir) =  ",  FolderCreate(dir) );
+       FolderCreate(dir) ;
+       SetStringFile(file_MAGIC,(string)(Magic),false);
+       SetZP_IntoFile ();    
+   }
+   // если файл существует
+   else if(GetStringFile(file_MAGIC) != (string)Magic  ){  
+
+
+            //SetStartParams();       
+            //SetParamsTntoFile();
+            SetStringFile(file_MAGIC,(string)(Magic),false);
+            SetZP_IntoFile ();
          
    }else {      
-     GetParamsFromFile();                           
+     //GetParamsFromFile(); 
+     Print(__FUNCTION__, " ----------------------------------------- file_MAGIC  =  ", file_MAGIC  );
+     Print(__FUNCTION__, " ----------------------------------------- GetStringFile(file_MAGIC)  =  ", GetStringFile(file_MAGIC)  ); 
+     SetZP_FromFile();                         
    }
-   ShowPropertiesTrade();
+   
+   
+   ShowZP_Trade();
+   
       //}
-   
-
-   
+      
    EventSetTimer(1);
    
    return(INIT_SUCCEEDED);

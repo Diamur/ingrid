@@ -268,10 +268,10 @@ void SetTextLabel(){
     double const PROFIT_BL = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_BL);
     double const PROFIT_SS = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_SS);
     
-    double const LOT_BS = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_BS);
-    double const LOT_SL = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_SL);
-    double const LOT_BL = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_BL);
-    double const LOT_SS = GetVolumeBUY_SELL_PREFIX(NAME_PREFIX_SS);
+    double const LOT_BS = GetVolumeBUY_PREFIX(NAME_PREFIX_BS);
+    double const LOT_SL = GetVolumeSELL_PREFIX(NAME_PREFIX_SL);
+    double const LOT_BL = GetVolumeBUY_PREFIX(NAME_PREFIX_BL);
+    double const LOT_SS = GetVolumeSELL_PREFIX(NAME_PREFIX_SS);
     
     int const    PIPS_BS = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BS);
     int const    PIPS_SL = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true);
@@ -385,8 +385,7 @@ if(StringFind(Code,"LOT") != -1 ){
 
   SetLabel(_Symbol, arrNameObject[str][1] ,  "Pips_SS"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SS,true) )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SS,corner,anchor,false); 
- str++;  
-   
+ str++;
  } 
  
  if(StringFind(Code,"STL") != -1 ){ 
@@ -472,7 +471,10 @@ if(StringFind(Code,"LOT") != -1 ){
    SetLabel(_Symbol, arrNameObject[str][2] ,  "TRADE_SUB_UP "  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] , (string)(  !TRADE_SUB_UP   ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    str++; 
+   /*
    
+   
+   */
    
        SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;
@@ -492,6 +494,11 @@ if(StringFind(Code,"LOT") != -1 ){
       SetLabel(_Symbol, arrNameObject[str][2] ,  "COUNT"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPendByType(ORDER_TYPE_SELL_LIMIT)  ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    
+  /*
+  
+  
+  */ 
+   
    }
 
  if(StringFind(Code,"TDN") != -1 ){ 
@@ -508,15 +515,35 @@ if(StringFind(Code,"LOT") != -1 ){
       SetLabel(_Symbol, arrNameObject[str][2] ,  "MAIN_ON"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] , (string)( MAIN_ON ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    str++; 
+
+      SetLabel(_Symbol, arrNameObject[str][2] ,  "State_B_START_DN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)(State_BUTTON_START_DN || MQLInfoInteger(MQL_TESTER) ||  MQLInfoInteger(MQL_OPTIMIZATION) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++; 
+
       SetLabel(_Symbol, arrNameObject[str][2] ,  "TRADE_MAIN_DN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] , (string)(   !TRADE_MAIN_DN ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    str++; 
+
       SetLabel(_Symbol, arrNameObject[str][2] ,  "COUNT"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPendByType(ORDER_TYPE_BUY_LIMIT)  ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPendByType(ORDER_TYPE_BUY_LIMIT) == 0  ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    str++; 
-   //   SetLabel(_Symbol, arrNameObject[str][2] ,  "STATUS_WORK"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   //SetLabel(_Symbol, arrNameObject[str][0] , (string)(   ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   //str++; 
+
+      SetLabel(_Symbol, arrNameObject[str][2] ,  "STATUS_STO"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)( Stochastic_ON? ( !STORevers? (isStoMain_UP(0,STOLevelUP,0)  ? true: false):(isStoMain_DN(0,STOLevelDN,0)  ? true: false)  ):true  ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++; 
+   
+   /*
+   
+if(Status.OpenBUYLIMIT[number][STATUS_WORK]           = WorkingHour() ? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_TRADE_DN]       = TRADE_DN ? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_MAIN_ON]        = MAIN_ON ? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_STATE_DN]       = State_BUTTON_START_DN || MQLInfoInteger(MQL_TESTER) ||  MQLInfoInteger(MQL_OPTIMIZATION)  ? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_TRADE_MAIN_DN]  = !TRADE_MAIN_DN ? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_COUNT]          = GetCountPendByType(ORDER_TYPE_BUY_LIMIT) == 0? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_STO_UP]         = Stochastic_ON? ( !STORevers? (isStoMain_UP(number,STOLevelUP,0)  ? true: false):(isStoMain_DN(number,STOLevelUP,0)  ? true: false)  ):true )   
+   
+   
+   */
        SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;
    
@@ -529,10 +556,38 @@ if(StringFind(Code,"LOT") != -1 ){
    SetLabel(_Symbol, arrNameObject[str][2] ,  "SUB_ON"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] , (string)(  SUB_ON  ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    str++; 
+   
+     SetLabel(_Symbol, arrNameObject[str][2] ,  "State_BUTTON_STOP"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  !State_BUTTON_STOP  ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++; 
+  
+    SetLabel(_Symbol, arrNameObject[str][2] ,  "State_BUTTON_DN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)( State_BUTTON_START_DN || MQLInfoInteger(MQL_TESTER) ||  MQLInfoInteger(MQL_OPTIMIZATION) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;   
+   
    SetLabel(_Symbol, arrNameObject[str][2] ,  "TRADE_SUB_DN "  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] , (string)(  !TRADE_SUB_DN   ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    str++; 
    
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "STATUS_STO "  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  Stochastic_ON? ( !STORevers? (isStoMain_UP(0,STOLevelUP,0)  ? true: false):(isStoMain_DN(0,STOLevelDN,0)  ? true: false)  ):true   ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++; 
+   
+   
+   
+   /*
+   
+
+  
+  if(Status.OpenSELLSTOP[number][STATUS_WORK]           = WorkingHour() ? true: false )
+if(Status.OpenSELLSTOP[number][STATUS_TRADE_DN]       = TRADE_DN ? true: false )
+if(Status.OpenSELLSTOP[number][STATUS_SUB_ON]         = SUB_ON ? true: false )
+if(Status.OpenSELLSTOP[number][STATUS_STATE_STOP]     = !State_BUTTON_STOP ? true: false )
+if(Status.OpenSELLSTOP[number][STATUS_STATE_DN]       = State_BUTTON_START_DN || MQLInfoInteger(MQL_TESTER) ||  MQLInfoInteger(MQL_OPTIMIZATION) ? true: false )
+if(Status.OpenSELLSTOP[number][STATUS_TRADE_SUB_DN]   = !TRADE_SUB_DN  ? true: false )
+if(Status.OpenSELLSTOP[number][STATUS_STO_UP]         = Stochastic_ON? ( !STORevers? (isStoMain_UP(number,STOLevelUP,0)  ? true: false):(isStoMain_DN(number,STOLevelUP,0)  ? true: false)  ):true )    
+   
+   */
    }
    
   if(StringFind(Code,"STO") != -1 ){    
@@ -558,38 +613,85 @@ if(StringFind(Code,"LOT") != -1 ){
 
  } 
    
+ 
+  if(StringFind(Code,"LOT2") != -1 ){    
+   SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+   str++;  
+
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "LOT_BS_SUB"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( GetVolumeBS_SUB(NAME_PREFIX_BS) , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+  
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "LOT_SL_MAIN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , DoubleToString( GetVolumeSL_MAIN(NAME_PREFIX_SL) , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+  
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "LOT_BL_MAIN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , DoubleToString( GetVolumeBL_MAIN(NAME_PREFIX_BL) , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+  
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "LOT_SS_SUB"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , DoubleToString( GetVolumeSS_SUB(NAME_PREFIX_SS) , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+   
+ }  
+   
+   
+   if(StringFind(Code,"MAX") != -1 ){    
+   SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+   str++;  
+ 
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "PriceMIN_UP"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , DoubleToString( PriceMIN_UP , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++; 
+   
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "PriceMAX_DN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( PriceMAX_DN , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+ }  
+   
+    if(StringFind(Code,"OUT") != -1 ){ 
+ SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+ str++;
+
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PipsOUT_SL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( (int)((PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT)   )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL,corner,anchor,false); 
+ str++;  
+
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PipsOUT_BL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( (int)(( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT) )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
+ str++;  
+ 
+ 
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "CloseSL_OUT"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( SignalCloseSL_OUT_PRICE[0] )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
+ str++;  
+ 
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "CloseBL_OUT"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( SignalCloseBL_OUT_PRICE[0] )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
+ str++;  
+ 
+ 
+ 
+ 
+
+ } 
+   
+   
 }   
 
  /* 
  
-
- 
- 
- if(Status.OpenBUYSTOP[number][STATUS_WORK]     = WorkingHour() ? true: false )
-if(Status.OpenBUYSTOP[number][STATUS_TRADE_UP] = TRADE_UP ? true: false )
-if(Status.OpenBUYSTOP[number][STATUS_SUB_ON]   = SUB_ON ? true: false )
-if(Status.OpenBUYSTOP[number][STATUS_TRADE_SUB_UP]    = !TRADE_SUB_UP  ? true: false )
-
-
-if(Status.OpenSELLLIMIT[number][STATUS_WORK]           = WorkingHour() ? true: false )
-//if(Status.OpenSELLLIMIT[number][STATUS_TRADE]          = !TRADE ? true: false )
-if(Status.OpenSELLLIMIT[number][STATUS_TRADE_UP]       = TRADE_UP ? true: false )
-if(Status.OpenSELLLIMIT[number][STATUS_MAIN_ON]        = MAIN_ON ? true: false )
-if(Status.OpenSELLLIMIT[number][STATUS_TRADE_MAIN_UP]  = !TRADE_MAIN_UP ? true: false )
-if(Status.OpenSELLLIMIT[number][STATUS_COUNT]          = GetCountPendByType(ORDER_TYPE_SELL_LIMIT) == 0? true: false )
- 
-//------------ 
- 
 if(Status.OpenBUYLIMIT[number][STATUS_WORK]           = WorkingHour() ? true: false )
+//if(Status.OpenBUYLIMIT[number][STATUS_TRADE]          = !TRADE ? true: false )
 if(Status.OpenBUYLIMIT[number][STATUS_TRADE_DN]       = TRADE_DN ? true: false )
 if(Status.OpenBUYLIMIT[number][STATUS_MAIN_ON]        = MAIN_ON ? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_STATE_DN]       = State_BUTTON_START_DN || MQLInfoInteger(MQL_TESTER) ||  MQLInfoInteger(MQL_OPTIMIZATION)  ? true: false )
 if(Status.OpenBUYLIMIT[number][STATUS_TRADE_MAIN_DN]  = !TRADE_MAIN_DN ? true: false )
 if(Status.OpenBUYLIMIT[number][STATUS_COUNT]          = GetCountPendByType(ORDER_TYPE_BUY_LIMIT) == 0? true: false )
+if(Status.OpenBUYLIMIT[number][STATUS_STO_UP]         = Stochastic_ON? ( !STORevers? (isStoMain_UP(number,STOLevelUP,0)  ? true: false):(isStoMain_DN(number,STOLevelUP,0)  ? true: false)  ):true )   
+ 
 
-if(Status.OpenSELLSTOP[number][STATUS_WORK]           = WorkingHour() ? true: false )
-if(Status.OpenSELLSTOP[number][STATUS_TRADE_DN]       = TRADE_DN ? true: false )
-if(Status.OpenSELLSTOP[number][STATUS_SUB_ON]         = SUB_ON ? true: false )
-if(Status.OpenSELLSTOP[number][STATUS_TRADE_SUB_DN]   = !TRADE_SUB_DN  ? true: false )
 
  */
 

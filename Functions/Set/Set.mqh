@@ -52,6 +52,9 @@ void SetPARAMETRS_START(string type){
    PriceMAX_UP    = 0;
    PriceMIN_UP    = 0;
    TRADE_MAIN_UP  = false;
+   TRADE_SUB_UP   = false;
+
+   
   }
  else if(type == NAME_MOVE_DN){
    jBUYLIMIT[NAME_BL_0][NAME_STATUS] = NAME_STATUS_PEND;
@@ -62,6 +65,7 @@ void SetPARAMETRS_START(string type){
    PriceMAX_DN    = 0;
    PriceMIN_DN    = 0;
    TRADE_MAIN_DN  = false; 
+   TRADE_SUB_DN   = false;
   } 
  //---
  else if(type == NAME_SELLLIMIT){
@@ -70,14 +74,14 @@ void SetPARAMETRS_START(string type){
    TRALL_FULL_SL  = Trall_SL;
    PriceMAX_UP    = 0;
    PriceMIN_UP    = 0;
-   TRADE_MAIN_UP  = false; 
+   TRADE_MAIN_UP  = false;
+   TRADE_SUB_UP   = false;  
   }
  //---
  else if(type == NAME_BUYSTOP){
    STOPLOSS_BS    = 0;
    TRALL_FULL_BS  = Trall_BS;  
    PriceMAX_UP    = 0;
-   
   }
  //---
  else if(type == NAME_BUYLIMIT){
@@ -87,6 +91,7 @@ void SetPARAMETRS_START(string type){
    PriceMAX_DN    = 0;
    PriceMIN_DN    = 0;
    TRADE_MAIN_DN  = false; 
+   TRADE_SUB_DN   = false;
  }
  //---
  else if(type == NAME_SELLSTOP){   
@@ -449,6 +454,19 @@ void setXY_Label(){
         //--- DN
         if ( count_SELL_STOP !=0 )  TRADE_SUB_DN = true;   
       }
+//      
+// Print(__FUNCTION__, " =========================== SetTRADE_OPEN   ==============================") ;
+//   Print(__FUNCTION__, " ========== count_SELL_LIMIT = ", count_SELL_LIMIT) ;
+//   Print(__FUNCTION__, " ========== count_BUY_LIMIT = ", count_BUY_LIMIT ) ;
+//   Print(__FUNCTION__, " ========== count_BUY_STOP = ",count_BUY_STOP) ;
+//   Print(__FUNCTION__, " ========== count_SELL_STOP = ", count_SELL_STOP) ;
+//    Print(__FUNCTION__, " ---------------") ;
+//   Print(__FUNCTION__, " ========== TRADE_MAIN_UP = ", TRADE_MAIN_UP) ; 
+//   Print(__FUNCTION__, " ========== TRADE_MAIN_DN = ", TRADE_MAIN_DN) ; 
+//   Print(__FUNCTION__, " ========== TRADE_SUB_UP = ", TRADE_SUB_UP) ; 
+//   Print(__FUNCTION__, " ========== TRADE_SUB_DN = ", TRADE_SUB_DN) ; 
+         
+      
  }
  
  //+------------------------------------------------------------------+

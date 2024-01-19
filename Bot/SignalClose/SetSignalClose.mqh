@@ -23,6 +23,10 @@ void SetSignalClose(int  number){
    
    //SetSignalCloseAll ( number);
    SetSignalCloseAll_PROFIT( number);
+   SetSignalCloseAll_LOWPROFIT(number);
+   
+   SetSignalCloseSL_OUT_PRICE( number);
+   SetSignalCloseBL_OUT_PRICE( number);
    
    //SetSignalCloseBUY_PROFIT( number);
    //SetSignalCloseSELL_PROFIT( number);

@@ -1,7 +1,7 @@
 #include  "..\setting\FilePathMain.mqh" 
 
-#resource "img\\logo.bmp"
-string foto    = "::img\\logo.bmp";
+#resource "img\\logo2.bmp"
+string foto    = "::img\\logo2.bmp";
 
 #define  CHART_ID             0  // Текущее  окно
 #define  SUB_WINDOW           0  // подокно
@@ -11,7 +11,7 @@ string foto    = "::img\\logo.bmp";
 
 #define  HEIGHT_LOGO           32
 
-#define  HEIGHT_CPANEL        415
+#define  HEIGHT_CPANEL        455
 #define  X_CPANEL             1
 #define  WIDTH_HEADER_CPANEL  22
 
@@ -487,11 +487,20 @@ void  ShowPanel(bool on = true)
    int y_property = 20;   // Отступ сверху экрана
    int line_heght = 17;   // Межстрочный интервал
    int head_heght = 25;   // Ширина заголовочных разделов
+   int ZP_heght   = 18 ;  // Ширина зп
+   
    int font_size_header  = 14;
-   int font_size  = 14;
+   int font_size  = 13;
+   int font_size2 = 12;
+   
    int font_size_btn  = 12;
    
-   color    font_color = clrWhite;
+   color    font_color    = clrWhite;
+   color    font_color2   = C'234,167,39';
+   color    font_color1   = clrYellowGreen;
+   
+   color    font_color3   = C'255,102,0' ;
+   
    string font_name = "Calibri";
    int z_index = 0;
 //ENUM_ANCHOR_POINT anchor = ANCHOR_RIGHT_UPPER;
@@ -500,42 +509,66 @@ void  ShowPanel(bool on = true)
    ENUM_BASE_CORNER  corner = CORNER_LEFT_UPPER;
    int x_first_column = 150;
    int x_second_column = 250;
+   
+  
+   
+   
    //string file      = "\\Images\\EURUSD_CUP.bmp";
    //string file2     = "::Images\\EURUSD_CUP.bmp";
 //Лого
-   showBitmap(CHART_ID, SUB_WINDOW, "Logo", foto, corner, X_CPANEL, y_property, WIDTH_CPANEL, HEIGHT_LOGO, z_index);
+   showBitmap(CHART_ID, SUB_WINDOW, NAME_PANEL_LOGO , foto, corner, X_CPANEL, y_property, WIDTH_CPANEL, HEIGHT_LOGO, z_index);
 // Панель
-   showEdit(CHART_ID, SUB_WINDOW, "CPanelBkg", "", corner, font_name, font_size, font_color, WIDTH_CPANEL, HEIGHT_CPANEL, X_CPANEL, y_property = y_property + HEIGHT_LOGO, z_index++, clrDimGray, true);
+   showEdit(CHART_ID, SUB_WINDOW, NAME_PANEL_BKG , "", corner, font_name, font_size, font_color, WIDTH_CPANEL, HEIGHT_CPANEL, X_CPANEL, y_property = y_property + HEIGHT_LOGO, z_index++, clrDimGray, true);
 // Загаловок панели
-   showEdit(CHART_ID, SUB_WINDOW, "CPanelHdr1", "               InGRID v1.00", corner, font_name, font_size, font_color, WIDTH_CPANEL, WIDTH_HEADER_CPANEL, X_CPANEL, y_property = y_property, z_index++,  C'234,167,39', true);
+   showEdit(CHART_ID, SUB_WINDOW, NAME_PANEL_HDR1 , "               InGRID v1.00", corner, font_name, font_size, font_color, WIDTH_CPANEL, WIDTH_HEADER_CPANEL, X_CPANEL, y_property = y_property, z_index++,  font_color3, true);
 // Названия и значения
-   showNameAndValue(p_TODAY, "Today : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + head_heght - 5, z_index++);
-   showNameAndValue(p_YESTERDAY, "Yesterday : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_CURRENT_WEEK, "Current week : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_LAST_WEEK, "Last week : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_CURRENT_MONTH, "Current month : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_LAST_MONTH, "Last month : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_ENTIRE_PERIOD, "Entire period : ",  anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-// Загаловок панели
-   showEdit(0, 0, "CPanelHdr2", "CURRENT STATUS", corner, font_name, font_size, clrGray, WIDTH_CPANEL, WIDTH_HEADER_CPANEL, X_CPANEL, y_property = y_property + head_heght, z_index++, C'232,183,89', true);
-// Названия и значения
-   showNameAndValue(p_BALANCE, "Balance : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + head_heght - 5, z_index++);
-   showNameAndValue(p_EQITY, "Eqity : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_MARGINFREE, "MarginFree : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_PROFIT, "Profit FULL : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_PROFIT_UP, "Profit UP : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-   showNameAndValue(p_PROFIT_DN, "Profit DOWN : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
-// Загаловок панели
-   showEdit(0, 0, "CPanelHdr3", "CONTROL", corner, font_name, font_size, clrGray, WIDTH_CPANEL, WIDTH_HEADER_CPANEL, X_CPANEL, y_property = y_property + head_heght, z_index++, C'239,198,121', true);
-// Названия и значения
-   showButton(0,0, NAME_BUTTON_START, "START AUTO",false,corner, font_name, font_size_btn, clrGray, WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+12, y_property = y_property + head_heght+5, z_index++, C'239,198,121', true);
-   showButton(0,0, NAME_BUTTON_STOP , "CLOSE&STOP",false,corner, font_name, font_size_btn, clrGray , WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+135, y_property  , z_index++, C'239,198,121', true);
+   showZP_NameAndValue( ZP_TODAY          , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + ZP_heght+3, z_index++);
+   showZP_NameAndValue( ZP_YESTERDAY      , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + ZP_heght, z_index++);
+   showZP_NameAndValue( ZP_CURRENT_WEEK   , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + ZP_heght, z_index++);
+   showZP_NameAndValue( ZP_LAST_WEEK      , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + ZP_heght, z_index++);
+   showZP_NameAndValue( ZP_CURRENT_MONTH  , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + ZP_heght, z_index++);
+   showZP_NameAndValue( ZP_LAST_MONTH     , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + ZP_heght, z_index++);
+   showZP_NameAndValue( ZP_ENTIRE_PERIOD  , anchor, corner, font_name, font_size, clrLime, x_first_column, x_second_column, y_property = y_property + ZP_heght, z_index++);
  
-   showButton(0,0, NAME_BUTTON_START_UP, "TRADE DOWN",false,corner, font_name, font_size_btn, clrGray, WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+12, y_property = y_property + head_heght+10, z_index++, C'239,198,121', true);
-   showButton(0,0, NAME_BUTTON_START_DN , "TRADE UP",false,corner, font_name, font_size_btn, clrGray , WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+135, y_property  , z_index++, C'239,198,121', true);
+   showZP_NameAndValue( ZP_COMMISION      , anchor, corner, font_name, font_size, clrLightGray, x_first_column, x_second_column, y_property = y_property + ZP_heght, z_index++);
+   showZP_NameAndValue( ZP_SWAP           , anchor, corner, font_name, font_size, clrLightGray, x_first_column, x_second_column, y_property = y_property + ZP_heght, z_index++);
+   
+   //showNameAndValue(p_TODAY         , "Today : "         , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + head_heght - 5, z_index++);
+   //showNameAndValue(p_YESTERDAY     , "Yesterday : "     , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_CURRENT_WEEK  , "Current week : "  , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_LAST_WEEK     , "Last week : "     , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_CURRENT_MONTH , "Current month : " , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_LAST_MONTH    , "Last month : "    , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_ENTIRE_PERIOD , "Entire period : " , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+// Загаловок панели
+   showEdit(0, 0, NAME_PANEL_HDR2, "CURRENT FINANCE", corner, font_name, font_size2, clrWhite , WIDTH_CPANEL, WIDTH_HEADER_CPANEL, X_CPANEL, y_property = y_property + head_heght, z_index++, font_color3 , true);
+// Названия и значения
+   showFN_NameAndValue( FN_KEY_BALANCE      , anchor, corner, font_name, font_size, clrYellow, x_first_column, x_second_column, y_property = y_property + head_heght - 5, z_index++);
+   showFN_NameAndValue( FN_KEY_EQITY        , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   showFN_NameAndValue( FN_KEY_MARGINFREE   , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   showFN_NameAndValue( FN_KEY_PROFIT       , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   showFN_NameAndValue( FN_KEY_PROFIT_UP    , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   showFN_NameAndValue( FN_KEY_PROFIT_DN    , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   
+   
+   
+   //showNameAndValue(p_BALANCE       , "Balance : "       , anchor, corner, font_name, font_size, clrYellow, x_first_column, x_second_column, y_property = y_property + head_heght - 5, z_index++);
+   //showNameAndValue(p_EQITY         , "Eqity : "         , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_MARGINFREE    , "MarginFree : "    , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_PROFIT        , "Profit FULL : "   , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_PROFIT_DN     , "Profit UP : "     , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+   //showNameAndValue(p_PROFIT_UP     , "Profit DOWN : "   , anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + line_heght, z_index++);
+// Загаловок панели
+   showEdit(0, 0, NAME_PANEL_HDR3 , "CONTROL", corner, font_name, font_size2, clrWhite, WIDTH_CPANEL, WIDTH_HEADER_CPANEL, X_CPANEL, y_property = y_property + head_heght, z_index++, font_color3 , true);
+// Названия и значения
+   showButton(0,0, NAME_BUTTON_START, "START AUTO",false,corner, font_name, font_size_btn, clrWhite, WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+12, y_property = y_property + head_heght+5, z_index++, font_color3, true);
+   showButton(0,0, NAME_BUTTON_STOP , "CLOSE&STOP",false,corner, font_name, font_size_btn, clrWhite , WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+135, y_property  , z_index++, font_color3, true);
  
-   showButton(0,0, NAME_BUTTON_STOP_UP, "CLOSE DOWN",false,corner, font_name, font_size_btn, clrGray, WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+12, y_property = y_property + head_heght+10, z_index++, C'239,198,121', true);
-   showButton(0,0, NAME_BUTTON_STOP_DN , "CLOSE UP",false,corner, font_name, font_size_btn, clrGray , WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+135, y_property  , z_index++, C'239,198,121', true);
+   showButton(0,0, NAME_BUTTON_START_UP, "TRADE DOWN",false,corner, font_name, font_size_btn, clrWhite, WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+12, y_property = y_property + head_heght+10, z_index++, font_color3, true);
+   showButton(0,0, NAME_BUTTON_START_DN , "TRADE UP",false,corner, font_name, font_size_btn, clrWhite , WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+135, y_property  , z_index++, font_color3, true);
+ 
+   showButton(0,0, NAME_BUTTON_STOP_UP, "CLOSE DOWN",false,corner, font_name, font_size_btn, clrWhite, WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+12, y_property = y_property + head_heght+10, z_index++, font_color3, true);
+   showButton(0,0, NAME_BUTTON_STOP_DN , "CLOSE UP",false,corner, font_name, font_size_btn, clrWhite , WIDTH_BUTTON, HEIGHT_BUTTON, X_CPANEL+135, y_property  , z_index++, font_color3, true);
  
    
    //showNameAndValue(p_SPREAD, "Spread : ", anchor, corner, font_name, font_size, font_color, x_first_column, x_second_column, y_property = y_property + head_heght - 5, z_index++);
@@ -626,6 +659,8 @@ void DestroyObject(string name)
      }
   }
 //+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 void showNameAndValue(int number,
                       string textLabel,
                       ENUM_ANCHOR_POINT anchor,
@@ -643,6 +678,50 @@ void showNameAndValue(int number,
    showLabel(0, 0, aProp_names[number],  textLabel,  anchor, corner, font_name, font_size, font_color, x_first_column,   y_prop_array, z_index);
    showLabel(0, 0, aProp_values[number], GetValueDoubleToString(number),  anchor, corner, font_name, font_size, font_color, x_second_columnn, y_prop_array, z_index);
   }
+  
+  //+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+void showFN_NameAndValue(string name,
+                      ENUM_ANCHOR_POINT anchor,
+                      ENUM_BASE_CORNER  corner,
+                      string font_name,
+                      int font_size,
+                      color font_color,
+                      int x_first_column,
+                      int x_second_columnn,
+                      int y_prop_array,
+                      int z_index
+
+                     )
+  {
+   showLabel(0, 0, jFN[name][(NAME_KEY)].ToStr(),  jFN[name][(TEXT)].ToStr() ,  anchor, corner, font_name, font_size, font_color, x_first_column,   y_prop_array, z_index);
+   showLabel(0, 0, jFN[name][(NAME_VAL)].ToStr(), DoubleToString(jFN[name][(VAL)].ToDbl(),2),  anchor, corner, font_name, font_size, font_color, x_second_columnn, y_prop_array, z_index);
+  }
+  
+  //+------------------------------------------------------------------+
+  //|                                                                  |
+  //+------------------------------------------------------------------+
+  
+  void showZP_NameAndValue( string name,                      
+                      ENUM_ANCHOR_POINT anchor,
+                      ENUM_BASE_CORNER  corner,
+                      string font_name,
+                      int font_size,
+                      color font_color,
+                      int x_first_column,
+                      int x_second_columnn,
+                      int y_prop_array,
+                      int z_index
+
+                     )
+  {
+   showLabel(0, 0, jZP[name][(NAME_KEY)].ToStr() ,  jZP[name][(TEXT)].ToStr(),  anchor, corner, font_name, font_size, font_color, x_first_column,   y_prop_array, z_index);
+   showLabel(0, 0, jZP[name][(NAME_VAL)].ToStr(), DoubleToString( jZP[name][(VAL)].ToDbl() ,2) ,  anchor, corner, font_name, font_size, font_color, x_second_columnn, y_prop_array, z_index);
+  }
+  
+  
+  
   //+------------------------------------------------------------------+
   //|                                                                  |
   //+------------------------------------------------------------------+
@@ -673,8 +752,8 @@ bool SetStringFile(string fileName, string str, bool end = true ){
  //--- откроем файл для записи значений индикатора (если его нет, то создастся автоматически) 
    ResetLastError(); 
    int file_handle=FileOpen(fileName,FILE_WRITE|FILE_TXT); 
-    Print(__FUNCTION__ ," -----------  fileName = " ,fileName );
-    Print(__FUNCTION__ ," -----------  file_handle = " ,file_handle );
+    //Print(__FUNCTION__ ," -----------  fileName = " ,fileName );
+    //Print(__FUNCTION__ ," -----------  file_handle = " ,file_handle );
     
      
    if(file_handle != INVALID_HANDLE) 
@@ -696,126 +775,149 @@ bool SetStringFile(string fileName, string str, bool end = true ){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
+void SetZP_FromFile(){
+
+    string data_str = GetStringFile(file_ZP );
+    jFILE.Deserialize(data_str);
+    
+    //Print(__FUNCTION__ ," ----------- jFILE = " , jFILE.Serialize()); 
+    
+    jZP[(ZP_TODAY)][(VAL)]          = jFILE[(ZP_TODAY)][(VAL)].ToDbl();
+    jZP[(ZP_YESTERDAY)][(VAL)]      = jFILE[(ZP_YESTERDAY)][(VAL)].ToDbl();
+    jZP[(ZP_CURRENT_WEEK)][(VAL)]   = jFILE[(ZP_CURRENT_WEEK)][(VAL)].ToDbl();
+    jZP[(ZP_LAST_WEEK)][(VAL)]      = jFILE[(ZP_LAST_WEEK)][(VAL)].ToDbl();
+    jZP[(ZP_CURRENT_MONTH)][(VAL)]  = jFILE[(ZP_CURRENT_MONTH)][(VAL)].ToDbl();
+    jZP[(ZP_LAST_MONTH)][(VAL)]     = jFILE[(ZP_LAST_MONTH)][(VAL)].ToDbl();
+    jZP[(ZP_ENTIRE_PERIOD)][(VAL)]  = jFILE[(ZP_ENTIRE_PERIOD)][(VAL)].ToDbl();
+
+}
+
 void GetParamsFromFile(){
 
-    BALANCE_START  = (double)GetStringFile(file_BALANCE_START);
-    START_DATETIME = (datetime)GetStringFile(file_DAY0_ID);
+//   BALANCE_START  = (double)GetStringFile(file_BALANCE_START);
+//   START_DATETIME = (datetime)GetStringFile(file_DAY0_ID);
+//     
+//   PRFT.DAY0 = (int)GetStringFile(file_DAY0_ID);
+//   PRFT.WEEK0 = (int)GetStringFile(file_WEEK0_ID);
+//   MONTH0_ID = (int)GetStringFile(file_MONTH0_ID);     
      
-    DAY0_ID = (int)GetStringFile(file_DAY0_ID);
-    WEEK0_ID = (int)GetStringFile(file_WEEK0_ID);
-    MONTH0_ID = (int)GetStringFile(file_MONTH0_ID);     
-     
-    _P.TODAY = (double)GetStringFile(file_TODAY    );
-    _P.YESTERDAY = (double)GetStringFile(file_YESTERDAY);
-    
-    _P.CURRENT_WEEK = (double)GetStringFile(file_CURRENT_WEEK);
-    _P.LAST_WEEK = (double)GetStringFile(file_LAST_WEEK);
-    
-    _P.CURRENT_MONTH = (double)GetStringFile(file_CURRENT_MONTH);
-    _P.LAST_MONTH = (double)GetStringFile(file_LAST_MONTH);
-     
-    _P.ENTIRE_PERIOD = (double)GetStringFile(file_ENTIRE_PERIOD);
-    _P.MAXDRAWDOWN = (double)GetStringFile(file_MAXDRAWDOWN);
+//    _P.TODAY = (double)GetStringFile(file_TODAY    );
+//    _P.YESTERDAY = (double)GetStringFile(file_YESTERDAY);
+//    
+//    _P.CURRENT_WEEK = (double)GetStringFile(file_CURRENT_WEEK);
+//    _P.LAST_WEEK = (double)GetStringFile(file_LAST_WEEK);
+//    
+//    _P.CURRENT_MONTH = (double)GetStringFile(file_CURRENT_MONTH);
+//    _P.LAST_MONTH = (double)GetStringFile(file_LAST_MONTH);
+//     
+//    _P.ENTIRE_PERIOD = (double)GetStringFile(file_ENTIRE_PERIOD);
+//    _P.MAXDRAWDOWN = (double)GetStringFile(file_MAXDRAWDOWN);
 }
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-void SetParamsTntoFile (){
+void SetZP_IntoFile (){
 
-     SetStringFile(file_MAGIC,       (string)Magic,false);
-     
-     SetStringFile(file_BALANCE_START,(string)(BALANCE_START),false);
-     SetStringFile(file_START_DATETIME,(string)(START_DATETIME),false);
-     
-     SetStringFile(file_LAST_BALANCE,(string)(LAST_BALANCE),false);
-               
-     SetStringFile(file_DAY0_ID,     (string)(DAY0_ID),false);
-     SetStringFile(file_WEEK0_ID,    (string)(WEEK0_ID),false);
-     SetStringFile(file_MONTH0_ID,   (string)(MONTH0_ID),false);     
-     
-     SetStringFile(file_TODAY    ,   (string)(_P.TODAY),false);
-     SetStringFile(file_YESTERDAY,   (string)(_P.YESTERDAY),false);
+    //Print(__FUNCTION__ ," ----------- file_ZP = " , jZP.Serialize()); 
+
+    SetStringFile(file_ZP,  jZP.Serialize()  ,false);
+//     
     
-     SetStringFile(file_CURRENT_WEEK,(string)(_P.CURRENT_WEEK),false);
-     SetStringFile(file_LAST_WEEK,    (string)(_P.LAST_WEEK),false);
-    
-     SetStringFile(file_CURRENT_MONTH, (string)(_P.CURRENT_MONTH),false);
-     SetStringFile(file_LAST_MONTH,    (string)(_P.LAST_MONTH),false);
-     
-     SetStringFile(file_ENTIRE_PERIOD, (string)(_P.ENTIRE_PERIOD),false);
-     SetStringFile(file_MAXDRAWDOWN, (string)(_P.MAXDRAWDOWN),false);        
+//     SetStringFile(file_START_DATETIME,(string)(START_DATETIME),false);
+//     
+//     SetStringFile(file_LAST_BALANCE,(string)(LAST_BALANCE),false);
+//               
+//     SetStringFile(file_DAY0_ID,     (string)(DAY0_ID),false);
+//     SetStringFile(file_WEEK0_ID,    (string)(WEEK0_ID),false);
+//     SetStringFile(file_MONTH0_ID,   (string)(MONTH0_ID),false);     
+//     
+//     SetStringFile(file_TODAY    ,   (string)(_P.TODAY),false);
+//     SetStringFile(file_YESTERDAY,   (string)(_P.YESTERDAY),false);
+//    
+//     SetStringFile(file_CURRENT_WEEK,(string)(_P.CURRENT_WEEK),false);
+//     SetStringFile(file_LAST_WEEK,    (string)(_P.LAST_WEEK),false);
+//    
+//     SetStringFile(file_CURRENT_MONTH, (string)(_P.CURRENT_MONTH),false);
+//     SetStringFile(file_LAST_MONTH,    (string)(_P.LAST_MONTH),false);
+//     
+//     SetStringFile(file_ENTIRE_PERIOD, (string)(_P.ENTIRE_PERIOD),false);
+//     SetStringFile(file_MAXDRAWDOWN, (string)(_P.MAXDRAWDOWN),false);        
 }
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-void SetStartParams(){     
-  BALANCE_START = AccountInfoDouble(ACCOUNT_BALANCE);
-  SetStringFile(file_BALANCE_START,(string)(BALANCE_START),false);
-  START_DATETIME = TimeLocal();
-  LAST_BALANCE   = AccountInfoDouble(ACCOUNT_BALANCE); 
-}
-
-
-//+------------------------------------------------------------------+
-//|                                                                  |
-//+------------------------------------------------------------------+
-void ShowPropertiesTrade()
+void ShowZP_Trade()
 {
-   setValueLabel(CHART_ID ,aProp_values[(p_TODAY)]          , GetValueDoubleToString(p_TODAY) );   
-   setValueLabel(CHART_ID ,aProp_values[(p_YESTERDAY)]      , GetValueDoubleToString(p_YESTERDAY) ); 
-   setValueLabel(CHART_ID ,aProp_values[(p_CURRENT_WEEK)]   , GetValueDoubleToString(p_CURRENT_WEEK) ); 
-   setValueLabel(CHART_ID ,aProp_values[(p_LAST_WEEK)]      , GetValueDoubleToString(p_LAST_WEEK) ); 
-   setValueLabel(CHART_ID ,aProp_values[(p_CURRENT_MONTH)]  , GetValueDoubleToString(p_CURRENT_MONTH) ); 
-   setValueLabel(CHART_ID ,aProp_values[(p_LAST_MONTH)]     , GetValueDoubleToString(p_LAST_MONTH) ); 
-   setValueLabel(CHART_ID ,aProp_values[(p_CURRENT_MONTH)]  , GetValueDoubleToString(p_CURRENT_MONTH) ); 
-   setValueLabel(CHART_ID ,aProp_values[(p_LAST_MONTH)]     , GetValueDoubleToString(p_LAST_MONTH) ); 
-   setValueLabel(CHART_ID ,aProp_values[(p_ENTIRE_PERIOD)]  , GetValueDoubleToString(p_ENTIRE_PERIOD) ); 
+   setValueLabel(CHART_ID ,jZP[(ZP_TODAY)][(NAME_VAL)].ToStr()         , DoubleToString( jZP[(ZP_TODAY)][(VAL)].ToDbl(),2) )         ;
+   setValueLabel(CHART_ID ,jZP[(ZP_YESTERDAY)][(NAME_VAL)].ToStr()     , DoubleToString( jZP[(ZP_YESTERDAY)][(VAL)].ToDbl(),2) )     ;
+   setValueLabel(CHART_ID ,jZP[(ZP_CURRENT_WEEK)][(NAME_VAL)].ToStr()  , DoubleToString( jZP[(ZP_CURRENT_WEEK)][(VAL)].ToDbl(),2) )  ;
+   setValueLabel(CHART_ID ,jZP[(ZP_LAST_WEEK)][(NAME_VAL)].ToStr()     , DoubleToString( jZP[(ZP_LAST_WEEK)][(VAL)].ToDbl(),2) )     ;
+   setValueLabel(CHART_ID ,jZP[(ZP_CURRENT_MONTH)][(NAME_VAL)].ToStr() , DoubleToString( jZP[(ZP_CURRENT_MONTH)][(VAL)].ToDbl(),2) ) ;
+   setValueLabel(CHART_ID ,jZP[(ZP_LAST_MONTH)][(NAME_VAL)].ToStr()    , DoubleToString( jZP[(ZP_LAST_MONTH)][(VAL)].ToDbl(),2) )    ;
+   setValueLabel(CHART_ID ,jZP[(ZP_ENTIRE_PERIOD)][(NAME_VAL)].ToStr() , DoubleToString( jZP[(ZP_ENTIRE_PERIOD)][(VAL)].ToDbl(),2) ) ;  
+   setValueLabel(CHART_ID ,jZP[(ZP_COMMISION)][(NAME_VAL)].ToStr()     , DoubleToString( jZP[(ZP_COMMISION)][(VAL)].ToDbl(),2) ) ;
+   setValueLabel(CHART_ID ,jZP[(ZP_SWAP)][(NAME_VAL)].ToStr()          , DoubleToString( jZP[(ZP_SWAP)][(VAL)].ToDbl(),2) ) ;
 }
 //+------------------------------------------------------------------+
 void ShowPropertiesTik()
 {
-_P.BALANCE      = AccountInfoDouble(ACCOUNT_BALANCE);
-_P.EQITY        = AccountInfoDouble(ACCOUNT_EQUITY);
-_P.MARGINFREE   = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
-_P.PROFIT       = AccountInfoDouble(ACCOUNT_PROFIT);
-_P.PROFIT_UP    = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_SL);
-_P.PROFIT_DN    = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_BL);
+
+jFN[FN_KEY_BALANCE][VAL]      = AccountInfoDouble(ACCOUNT_BALANCE);
+jFN[FN_KEY_EQITY][VAL]        = AccountInfoDouble(ACCOUNT_EQUITY);
+jFN[FN_KEY_MARGINFREE][VAL]   = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
+jFN[FN_KEY_PROFIT][VAL]       = AccountInfoDouble(ACCOUNT_PROFIT);
+jFN[FN_KEY_PROFIT_UP][VAL]    = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_SL);
+jFN[FN_KEY_PROFIT_DN][VAL]    = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_BL);
+
+setValueLabel(CHART_ID , FN_VAL_BALANCE      , DoubleToString(jFN[FN_KEY_BALANCE][VAL].ToDbl()     , 2) ); 
+setValueLabel(CHART_ID , FN_VAL_EQITY        , DoubleToString(jFN[FN_KEY_EQITY][VAL].ToDbl()       , 2) ); 
+setValueLabel(CHART_ID , FN_VAL_MARGINFREE   , DoubleToString(jFN[FN_KEY_MARGINFREE][VAL].ToDbl()  , 2) ); 
+setValueLabel(CHART_ID , FN_VAL_PROFIT       , DoubleToString(jFN[FN_KEY_PROFIT][VAL].ToDbl()      , 2) ); 
+setValueLabel(CHART_ID , FN_VAL_PROFIT_UP    , DoubleToString(jFN[FN_KEY_PROFIT_UP][VAL].ToDbl()   , 2) ); 
+setValueLabel(CHART_ID , FN_VAL_PROFIT_DN    , DoubleToString(jFN[FN_KEY_PROFIT_DN][VAL].ToDbl()   , 2) ); 
 
 
-double DRAWDOWN = ((_P.BALANCE - _P.EQITY  )/(_P.BALANCE ))*100;
+//_P.BALANCE      = AccountInfoDouble(ACCOUNT_BALANCE);
+//_P.EQITY        = AccountInfoDouble(ACCOUNT_EQUITY);
+//_P.MARGINFREE   = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
+//_P.PROFIT       = AccountInfoDouble(ACCOUNT_PROFIT);
+//_P.PROFIT_UP    = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_SL);
+//_P.PROFIT_DN    = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_BL);
+
+//double DRAWDOWN = ((_P.BALANCE - _P.EQITY  )/(_P.BALANCE ))*100;
 
 //Print(__FUNCTION__, "----------------------------> DRAWDOWN =", DRAWDOWN);
 
-_P.DRAWDOWN     = DRAWDOWN > 0 ? DRAWDOWN : 0 ; 
-_P.MAXDRAWDOWN  = DRAWDOWN >  _P.MAXDRAWDOWN? DRAWDOWN: _P.MAXDRAWDOWN;
+//_P.DRAWDOWN     = DRAWDOWN > 0 ? DRAWDOWN : 0 ; 
+//_P.MAXDRAWDOWN  = DRAWDOWN >  _P.MAXDRAWDOWN? DRAWDOWN: _P.MAXDRAWDOWN;
 
-_P.SPREAD       = SymbolInfoInteger(_Symbol , SYMBOL_SPREAD);
-_P.SWAP_LONG    = SymbolInfoDouble( _Symbol ,SYMBOL_SWAP_LONG);
-_P.SWAP_SHORT   = SymbolInfoDouble( _Symbol ,SYMBOL_SWAP_SHORT);
-_P.LEVERAGE     = AccountInfoInteger(ACCOUNT_LEVERAGE);
+//_P.SPREAD       = SymbolInfoInteger(_Symbol , SYMBOL_SPREAD);
+//_P.SWAP_LONG    = SymbolInfoDouble( _Symbol ,SYMBOL_SWAP_LONG);
+//_P.SWAP_SHORT   = SymbolInfoDouble( _Symbol ,SYMBOL_SWAP_SHORT);
+//_P.LEVERAGE     = AccountInfoInteger(ACCOUNT_LEVERAGE);
 
 //Расчет стоимости 1 пипса
 //if( PositionsTotal() > 0)
 //GetLotsFull(Magic);
 
-double FULLVOLUME = GetLotsFull(Magic);
-double _TRADE_TICK_VALUE =SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_VALUE) ;
-double _TRADE_TICK_SIZE = ( SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_SIZE)  ) ;
-double _POINT = SymbolInfoDouble(_Symbol,SYMBOL_POINT);
+//double FULLVOLUME = GetLotsFull(Magic);
+//double _TRADE_TICK_VALUE =SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_VALUE) ;
+//double _TRADE_TICK_SIZE = ( SymbolInfoDouble(_Symbol,SYMBOL_TRADE_TICK_SIZE)  ) ;
+//double _POINT = SymbolInfoDouble(_Symbol,SYMBOL_POINT);
 // MQL4
 // Lots * MarketInfo(Symbol(),MODE_TICKVALUE) / ( MarketInfo(Symbol(),MODE_TICKSIZE) / MarketInfo(Symbol(),MODE_POINT) )
 // MQL5
-_P.PRICE_PIPS  =  MathAbs(FULLVOLUME * _TRADE_TICK_VALUE  / ( _TRADE_TICK_SIZE  / _POINT   )) ;
+//_P.PRICE_PIPS  =  MathAbs(FULLVOLUME * _TRADE_TICK_VALUE  / ( _TRADE_TICK_SIZE  / _POINT   )) ;
  
 //Print(__FUNCTION__, "----------------------------------------------> FULLVOLUME = ", FULLVOLUME );
 //Print(__FUNCTION__, "----------------------------------------------> _P.PRICE_PIPS = ", _P.PRICE_PIPS );
 
-setValueLabel(CHART_ID ,aProp_values[(p_BALANCE)]        , GetValueDoubleToString(p_BALANCE) ); 
-setValueLabel(CHART_ID ,aProp_values[(p_EQITY)]          , GetValueDoubleToString(p_EQITY) ); 
-setValueLabel(CHART_ID ,aProp_values[(p_MARGINFREE)]     , GetValueDoubleToString(p_MARGINFREE) ); 
-setValueLabel(CHART_ID ,aProp_values[(p_PROFIT)]         , GetValueDoubleToString(p_PROFIT) ); 
-setValueLabel(CHART_ID ,aProp_values[(p_PROFIT_UP)]      , GetValueDoubleToString(p_PROFIT_UP) );
-setValueLabel(CHART_ID ,aProp_values[(p_PROFIT_DN)]      , GetValueDoubleToString(p_PROFIT_DN) );
+//setValueLabel(CHART_ID ,aProp_values[(p_BALANCE)]        , GetValueDoubleToString(p_BALANCE) ); 
+//setValueLabel(CHART_ID ,aProp_values[(p_EQITY)]          , GetValueDoubleToString(p_EQITY) ); 
+//setValueLabel(CHART_ID ,aProp_values[(p_MARGINFREE)]     , GetValueDoubleToString(p_MARGINFREE) ); 
+//setValueLabel(CHART_ID ,aProp_values[(p_PROFIT)]         , GetValueDoubleToString(p_PROFIT) ); 
+//setValueLabel(CHART_ID ,aProp_values[(p_PROFIT_UP)]      , GetValueDoubleToString(p_PROFIT_UP) );
+//setValueLabel(CHART_ID ,aProp_values[(p_PROFIT_DN)]      , GetValueDoubleToString(p_PROFIT_DN) );
  
 
 //setValueLabel(CHART_ID ,aProp_values[(p_DRAWDOWN)]       , GetValueDoubleToString(p_DRAWDOWN)+"%" ); 
@@ -827,73 +929,43 @@ setValueLabel(CHART_ID ,aProp_values[(p_PROFIT_DN)]      , GetValueDoubleToStrin
 //setValueLabel(CHART_ID ,aProp_values[(p_LEVERAGE)]       , "1:" + GetValueDoubleToString(p_LEVERAGE) ); 
 //setValueLabel(CHART_ID ,aProp_values[(p_REAL_LEVERAGE)]  , GetValueDoubleToString(p_REAL_LEVERAGE) ); 
 //setValueLabel(CHART_ID ,aProp_values[(p_PRICE_PIPS)]     , GetValueDoubleToString(p_PRICE_PIPS) ); 
+
 }
-//+------------------------------------------------------------------+
+//+-----------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-double GetLotsFull(int magic){
- double lots = 0;
- for(int i =0 ; i < PositionsTotal() ; i++ ){
-               if(PositionGetTicket(i)>0){                               
-                   if((ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY  && (int)(PositionGetInteger(POSITION_MAGIC)) == magic ){
-                         lots += PositionGetDouble(POSITION_VOLUME)  ;
-                       }   
-                   if((ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL  && (int)(PositionGetInteger(POSITION_MAGIC))  == magic  ){                                                 
-                         lots -= PositionGetDouble(POSITION_VOLUME)  ;                             
-                       }                          
-                   }
-              }        
-      return lots;        
-}
-//+------------------------------------------------------------------+
-void ShowPropertiesOne()
-{
-_P.CURRENCY = AccountInfoString(ACCOUNT_CURRENCY); 
-setValueLabel(CHART_ID ,aProp_values[(p_CURRENCY)]       , GetValueDoubleToString(p_CURRENCY) ); 
-}
-//+------------------------------------------------------------------+
-void ShowPropertiesTime()
-{
-//Если  НОВЫЙ ДЕНЬ
-if( DAY0_ID != (int)iTime(_Symbol,PERIOD_D1,0) ){
-    DAY0_ID = (int)iTime(_Symbol,PERIOD_D1,0); 
-    if(_dt.day_of_week != 0){
-      _P.YESTERDAY   =  arrDAY[_dt.day_of_week-1];
-      _P.TODAY       =  arrDAY[_dt.day_of_week]; 
-    }else{
-      _P.YESTERDAY   =  arrDAY[6];
-      _P.TODAY       =  arrDAY[_dt.day_of_week]; 
-    }
-    
-       SetParamsTntoFile();      
-      
- }
- 
-//Если  НОВА НЕДЕЛЯ
-if( WEEK0_ID != (int)iTime(_Symbol,PERIOD_W1,0) ){
-    WEEK0_ID = (int)iTime(_Symbol,PERIOD_W1,0);
-for(int i=0;i<7;i++)
-  {
-   arrDAY[i] = 0;
-  }    
-     _P.TODAY        = 0;
-     _P.YESTERDAY    = 0; 
-     
-     _P.LAST_WEEK    = _P.CURRENT_WEEK;
-     _P.CURRENT_WEEK = 0; 
- }
+void SetZPTime(){
+
  //Если НОВЫЙ МЕСЯЦ
- if(MONTH0_ID != (int)iTime(_Symbol,PERIOD_MN1,0) ){
-      MONTH0_ID = (int)iTime(_Symbol,PERIOD_MN1,0); 
-                   _P.LAST_MONTH    = _P.CURRENT_MONTH;
-                   _P.CURRENT_MONTH = 0;                       
+ if(jZP[ZP_CURRENT_MONTH][DATE].ToInt()  != (int)iTime(_Symbol,PERIOD_MN1,0) ){
+
+    jZP[ZP_CURRENT_MONTH][DATE]   = (int)iTime(_Symbol,PERIOD_MN1,0); 
+         //---
+    jZP[ZP_LAST_MONTH][VAL]    =  jZP[ZP_CURRENT_MONTH][VAL].ToDbl(); 
+    jZP[ZP_CURRENT_MONTH][VAL] =  0;   
+ }    
+ //Если  НОВАЯ НЕДЕЛЯ
+if( jZP[ZP_CURRENT_WEEK][DATE].ToInt()  != (int)iTime(_Symbol,PERIOD_W1,0) ){
+    
+    jZP[ZP_CURRENT_WEEK][DATE]    = (int)iTime(_Symbol,PERIOD_W1,0);
+    //---
+    jZP[ZP_LAST_WEEK][VAL]     =  jZP[ZP_CURRENT_WEEK][NAME_VAL].ToDbl(); 
+    jZP[ZP_CURRENT_WEEK][VAL]  =  0;
  } 
+if( jZP[ZP_TODAY][DATE].ToInt() != (int)iTime(_Symbol,PERIOD_D1,0) ){
+    //---
+    jZP[ZP_TODAY][DATE]        = (int)iTime(_Symbol,PERIOD_D1,0); 
+    //---
+    jZP[ZP_YESTERDAY][VAL]  =  jZP[ZP_TODAY][NAME_VAL].ToDbl(); 
+    jZP[ZP_TODAY][VAL]      =  0; 
+   SetZP_IntoFile();      
+ }
  
 ////-------------------------------
 // setValueLabel(CHART_ID ,aProp_values[(p_WEB)]            , (string)(int)(_dt.day_of_week ) );/
- setValueLabel(CHART_ID ,aProp_values[(p_WEB)]            , GetStrDate() );// 
- setValueLabel(CHART_ID ,aProp_values[(p_DATE_TIME)]      , GetStrTime() );//
- setValueLabel(CHART_ID ,aProp_values[(p_DAY_OF_WEEK)] , GetName_DAY_OF_WEEK() );// 
+ //setValueLabel(CHART_ID ,aProp_values[(p_WEB)]            , GetStrDate() );// 
+ //setValueLabel(CHART_ID ,aProp_values[(p_DATE_TIME)]      , GetStrTime() );//
+ //setValueLabel(CHART_ID ,aProp_values[(p_DAY_OF_WEEK)]    , GetName_DAY_OF_WEEK() );// 
  
 }
 enum months  // перечисление именованных констант 
@@ -948,3 +1020,74 @@ void setValueLabel(long   chart_id,
       ObjectSetString(chart_id, name, OBJPROP_TEXT, text);
      }
   }
+  
+ //+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+void setPanelTOP(long   chart_id,
+                   string name
+                  )
+  {
+   int hart_id =        ObjectFind(chart_id, name);
+   if(ObjectFind(chart_id, name) != -1)
+     {
+     //--- Отключим видимость 
+      ObjectSetInteger(0,name,OBJPROP_TIMEFRAMES,OBJ_NO_PERIODS); 
+      //--- Включим видимость   
+      ObjectSetInteger(0,name,OBJPROP_TIMEFRAMES,OBJ_ALL_PERIODS); 
+
+     }
+  }
+  
+ //+------------------------------------------------------------------+
+ //|                                                                  |
+ //+------------------------------------------------------------------+
+ void PanelTop(){
+      
+ // Помещаем панель наверх
+      setPanelTOP( 0, NAME_PANEL_LOGO );
+      setPanelTOP( 0, NAME_PANEL_BKG );
+      setPanelTOP( 0, NAME_PANEL_HDR1 );
+      setPanelTOP( 0, NAME_PANEL_HDR2 );
+      setPanelTOP( 0, NAME_PANEL_HDR3 );
+      //
+      setPanelTOP( 0, ZP_TODAY );
+      setPanelTOP( 0, ZP_PROFIT_TODAY );
+      setPanelTOP( 0, ZP_YESTERDAY );
+      setPanelTOP( 0, ZP_PROFIT_YESTERDAY );
+      setPanelTOP( 0, ZP_CURRENT_WEEK );
+      setPanelTOP( 0, ZP_PROFIT_CURRENT_WEEK );
+      setPanelTOP( 0, ZP_LAST_WEEK );
+      setPanelTOP( 0, ZP_PROFIT_LAST_WEEK );
+      setPanelTOP( 0, ZP_CURRENT_MONTH );
+      setPanelTOP( 0, ZP_PROFIT_CURRENT_MONTH );
+      setPanelTOP( 0, ZP_LAST_MONTH );
+      setPanelTOP( 0, ZP_PROFIT_LAST_MONTH );
+      setPanelTOP( 0, ZP_ENTIRE_PERIOD );
+      setPanelTOP( 0, ZP_PROFIT_ENTIRE_PERIOD );
+      setPanelTOP( 0, ZP_COMMISION );
+      setPanelTOP( 0, ZP_VAL_COMMISION );
+      setPanelTOP( 0, ZP_SWAP );
+      setPanelTOP( 0, ZP_VAL_SWAP );
+      //---
+      setPanelTOP( 0, FN_KEY_BALANCE );
+      setPanelTOP( 0, FN_VAL_BALANCE );      
+      setPanelTOP( 0, FN_KEY_EQITY );
+      setPanelTOP( 0, FN_VAL_EQITY );      
+      setPanelTOP( 0, FN_KEY_MARGINFREE );
+      setPanelTOP( 0, FN_VAL_MARGINFREE );      
+      setPanelTOP( 0, FN_KEY_PROFIT );
+      setPanelTOP( 0, FN_VAL_PROFIT );      
+      setPanelTOP( 0, FN_KEY_PROFIT_UP );
+      setPanelTOP( 0, FN_VAL_PROFIT_UP );      
+      setPanelTOP( 0, FN_KEY_PROFIT_DN );
+      setPanelTOP( 0, FN_VAL_PROFIT_DN );      //---
+      setPanelTOP( 0, NAME_BUTTON_START );
+      setPanelTOP( 0, NAME_BUTTON_STOP );
+      setPanelTOP( 0, NAME_BUTTON_START_UP );
+      setPanelTOP( 0, NAME_BUTTON_START_DN );
+      setPanelTOP( 0, NAME_BUTTON_STOP_UP );
+      setPanelTOP( 0, FN_KEY_BALANCE );
+      setPanelTOP( 0, NAME_BUTTON_STOP_DN );     
+ 
+ } 

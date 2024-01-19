@@ -39,21 +39,43 @@ void TraderBot(int      number,  CTrade   &trade[]  )
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ P R O F I T   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$$$$$
+
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-//|                    CLOSE  BUTTON UP   | % State_BUTTON_STOP_UP  %                              |
+//|                    CLOSE OUT SL    | % PipsOutPrice  %                              |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-if( State_BUTTON_STOP_UP ){
-     Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON UP | % State_BUTTON_STOP_UP  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+if( SignalCloseSL_OUT_PRICE[number] ){
+     //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>     CLOSE OUT SL    | % PipsOutPrice  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
      //---
      CloseSL_PREFIX (number,trade) ;
      //---
      SetPARAMETRS_START(NAME_SELLLIMIT);
 }
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                    CLOSE OUT BL    | % PipsOutPrice  %                              |
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if( SignalCloseBL_OUT_PRICE[number] ){
+     //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>     CLOSE OUT BL    | % PipsOutPrice  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+     //---
+     CloseBL_PREFIX (number,trade) ;
+     //---
+     SetPARAMETRS_START(NAME_BUYLIMIT);
+}
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                    CLOSE  BUTTON UP   | % State_BUTTON_STOP_UP  %                              |
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if( State_BUTTON_STOP_UP ){
+     //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON UP | % State_BUTTON_STOP_UP  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+     //---
+     CloseSL_PREFIX (number,trade) ;
+     //---
+     SetPARAMETRS_START(NAME_SELLLIMIT);
+}
+
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|                    CLOSE  BUTTON DN   | % State_BUTTON_STOP_UP  %                              |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if( State_BUTTON_STOP_DN ){
-     Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON DN | % State_BUTTON_STOP_DN  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+     //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON DN | % State_BUTTON_STOP_DN  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
      //---
      CloseBL_PREFIX (number,trade) ;
      //---
@@ -64,45 +86,30 @@ if( State_BUTTON_STOP_DN ){
 //|                    CLOSE  BUTTON ALL   | % State_BUTTON_STOP %                              |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if( State_BUTTON_STOP ){
-     Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON ALL   | % State_BUTTON_STOP  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+     //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  BUTTON ALL   | % State_BUTTON_STOP  %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
      //---
      CloseAll_PREFIX(number,trade);
      //---
      SetPARAMETRS_START(NAME_ALL);
 }
-
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+//|                    CLOSE LOW PROFIT ALL   | % DT_EQ_BAL_START < LowProfit_Eqity  %                              |
+//+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+if (  SignalCloseAll_LOWPROFIT[number] ) {
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   CLOSE LOW PROFIT ALL   | % DT_EQ_BAL_START < LowProfit_Eqity  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+   //---
+   CloseAll_PREFIX(number,trade);
+   //---
+   SetPARAMETRS_START(NAME_ALL);
+}
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|                    CLOSE  PROFIT ALL   | % DT_EQ_BAL_START > Profit_Eqity  %                              |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if (  SignalCloseAll_PROFIT[number] ) {
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT ALL   | % DT_EQ_BAL_START > Profit_Eqity  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-
-//  int p = 50; 
-//   //---
-//   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-//        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-//     p--;
-//   }
-//   p = 50; 
-//   //---
-//   while( GetCountPendByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
-//        DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
-//     p--;
-//   }
-//   p = 50; 
-//   
-//   //---
-//   while( GetCountPositionsByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-//        ClosePositionByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-//     p--;
-//   }
-//    p = 50; 
-//   //---
-//   while( GetCountPositionsByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
-//        ClosePositionByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
-//     p--;
-//   }
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT ALL   | % DT_EQ_BAL_START > Profit_Eqity  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+  //---
    CloseAll_PREFIX(number,trade);
+  //---
    SetPARAMETRS_START(NAME_ALL);
 }
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
@@ -111,21 +118,10 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT ALL   | % DT
 //|                    CLOSE  PROFIT SL   | % Pips_SL > ProfitPips_SL  %                              |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseSL_PROFIT[number]){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT SL   | % Pips_SL > ProfitPips_SL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-//   int p = 50; 
-//   //---
-//   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-//        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-//     p--;
-//   }
-//   p = 50; 
-//   //---
-//   while( GetCountPositionsByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-//        ClosePositionByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-//     p--;
-//   }   
-//   
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT SL   | % Pips_SL > ProfitPips_SL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+  //---
    CloseSL_PREFIX(number,trade);
+  //---
    SetPARAMETRS_START(NAME_SELLLIMIT);
    //--- 
    //SetTRADE_CLOSE();
@@ -136,61 +132,35 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    CLOSE  PROFIT SL   | % Pip
 //|                    CLOSE  PROFIT BL   | % Pips_BL > ProfitPips_BL  %                              |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseBL_PROFIT[number]){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE  PROFIT BL   | % Pips_BL > ProfitPips_BL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   //int p = 50; 
-   ////---
-   //while( GetCountPendByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
-   //     DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
-   //  p--;
-   //}
-   //p = 50; 
-   ////---
-   //while( GetCountPositionsByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
-   //     ClosePositionByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
-   //  p--;
-   //}   
-   
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE  PROFIT BL   | % Pips_BL > ProfitPips_BL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+   //---
    CloseBL_PREFIX(number,trade);
+   //---
    SetPARAMETRS_START(NAME_BUYLIMIT);
-   //--- 
-   //SetTRADE_CLOSE();
 }
 
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ M O V E   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$$$$$
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|                     CLOSE  MOVE SL UP  | %  DT_StartStep_UP > StartStep+SPREAD  %                           
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-//if(false)
 if(SignalCloseUP_MOVE[number]){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE  MOVE SL UP  | %  DT_StartStep_UP > StartStep+SPREAD  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-//   int p = 50; 
-//   //---
-//   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-//        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-//     p--;
-//   }
-//   
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE  MOVE SL UP  | %  DT_StartStep_UP > StartStep+SPREAD  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+  //---
    CloseUP_MOVE(number,trade);
+  //---
    SetPARAMETRS_START(NAME_MOVE_UP);
-   //---
 }
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|                     CLOSE MOVE BL  DN  | %  DT_StartStep_DN > StartStep+SPREAD  %                           
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-//if(false)
 if(SignalCloseDN_MOVE[number]){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE MOVE BL  DN  | %  DT_StartStep_DN > StartStep+SPREAD  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   //int p = 50; 
-   ////---
-   //while( GetCountPendByPREFIX( NAME_PREFIX_BL) > 0 && p > 0){         
-   //     DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol);
-   //  p--;
-   //}
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE MOVE BL  DN  | %  DT_StartStep_DN > StartStep+SPREAD  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+ //---
    CloseDN_MOVE(number,trade);
+ //---
    SetPARAMETRS_START(NAME_MOVE_DN);
-   //--- 
 }
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ T R A L    &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$$$$$
 
@@ -198,36 +168,21 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE MOVE BL  DN  | %  DT_S
 //|             CLOSE SL TRALL  | %   BID > STOPLOSS_SL  %                                                     |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseSL_TRALL[number]){ 
- Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   CLOSE SL TRALL  | %   BID > STOPLOSS_SL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   int p = 50; 
+ //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   CLOSE SL TRALL  | %   BID > STOPLOSS_SL  %    <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );  
    //---
-   while( GetCountPendByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-        DeletePendByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-     p--;
-   }
-   p = 50; 
+   CloseSL_PREFIX(number,trade);      
    //---
-   while( GetCountPositionsByPREFIX( NAME_PREFIX_SL ) > 0 && p > 0){
-        ClosePositionByPREFIX ( number, NAME_PREFIX_SL, trade, _Symbol );
-     p--;
-   }   
-   
    SetPARAMETRS_START(NAME_SELLLIMIT);
-   //--- 
 }
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|             CLOSE BS TRALL  | %   BID > STOPLOSS_BS  %                                                     |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseBS_TRALL[number]){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE BS TRALL  |  % ASK < STOPLOSS_BS %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   int p = 50; 
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE BS TRALL  |  % ASK < STOPLOSS_BS %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
    //---
-   while( GetCountPositionsByPREFIX( NAME_PREFIX_BS ) > 0 && p > 0){
-        ClosePositionByPREFIX ( number, NAME_PREFIX_BS, trade, _Symbol );
-     p--;
-   }   
+   CloseBS_PREFIX(number,trade, false);
+   //---
    SetPARAMETRS_START(NAME_BUYSTOP);
-   //--- 
 }
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
@@ -235,93 +190,55 @@ Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE BS TRALL  |  % ASK < S
 //|             CLOSE BL TRALL  | %   ASK < STOPLOSS_BL  %                                                     |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseBL_TRALL[number]){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE BL TRALL  | %   ASK < STOPLOSS_BL  %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   int p = 50; 
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE BL TRALL  | %   ASK < STOPLOSS_BL  %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
    //---
-   while( GetCountPendByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
-        DeletePendByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
-     p--;
-   }
-   p = 50; 
+   CloseBL_PREFIX(number,trade);      
    //---
-   while( GetCountPositionsByPREFIX( NAME_PREFIX_BL ) > 0 && p > 0){
-        ClosePositionByPREFIX ( number, NAME_PREFIX_BL, trade, _Symbol );
-     p--;
-   }   
    SetPARAMETRS_START(NAME_BUYLIMIT);
-   //--- 
 }
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|             CLOSE SS TRALL  | %   BID > STOPLOSS_BL  %                                                     |
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseSS_TRALL[number]){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE SS TRALL  | % BID > STOPLOSS_SS %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-   int p = 50; 
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>  CLOSE SS TRALL  | % BID > STOPLOSS_SS %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
    //---
-   while( GetCountPositionsByPREFIX( NAME_PREFIX_SS ) > 0 && p > 0){
-        ClosePositionByPREFIX ( number, NAME_PREFIX_SS, trade, _Symbol );
-     p--;
-   }   
-   SetPARAMETRS_START(NAME_SELLSTOP);
-   //--- 
+   CloseSS_PREFIX(number,trade, false);
+   //---     
+   SetPARAMETRS_START(NAME_SELLSTOP); 
 }
-
 // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ S C O P E   &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$$$$$$$$$$$$$$$$$$$$$$$$
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|            SCOPE | CLOSE BUYSTOP  | %  Ticket_BUYSTOP_CLOSE !=-1  %                               
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseBuyStopScope[number] ){  
- Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE BUYSTOP  | %  Ticket_BUYSTOP_CLOSE !=-1  %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-  int p = 50; 
-  bool close = false;
-   while(   close == false && p > 0){
-     close = DeletePendByTicket(number,trade,_Symbol,Ticket_BUYSTOP_CLOSE ,Magic) ? true: close;       
-     p--;
-   }
- //SetTRADE_CLOSE();  
+ //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE BUYSTOP  | %  Ticket_BUYSTOP_CLOSE !=-1  %   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+   //---
+   CloseBuyStopScope(number,trade);  
 }
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|            SCOPE | CLOSE SELLLIMIT  | %  Ticket_SELLLIMIT_CLOSE !=-1  %                               
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseSellLimitScope[number] ){  
- Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE SELLLIMIT  | %  Ticket_SELLLIMIT_CLOSE !=-1  %  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-  int p = 50; 
-  bool close = false;
-   while(   close == false && p > 0){
-     close = DeletePendByTicket(number,trade,_Symbol,Ticket_SELLLIMIT_CLOSE ,Magic) ? true: close;       
-     p--;
-   }
- //SetTRADE_CLOSE();  
+ //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE SELLLIMIT  | %  Ticket_SELLLIMIT_CLOSE !=-1  %  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+   //---
+   CloseSellLimitScope(number,trade);  
 }
-
-
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|            SCOPE | CLOSE SELLSTOP  | %  Ticket_SELLSTOP_CLOSE !=-1  %                               
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseSellStopScope[number] ){  
- Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE SELLSTOP  | %  Ticket_SELLSTOP_CLOSE !=-1  %  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-  int p = 50; 
-  bool close = false;
-   while(   close == false && p > 0){
-     close = DeletePendByTicket(number,trade,_Symbol,Ticket_SELLSTOP_CLOSE ,Magic) ? true: close;       
-     p--;
-   }
- //SetTRADE_CLOSE();  
+ //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE SELLSTOP  | %  Ticket_SELLSTOP_CLOSE !=-1  %  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+    CloseSellStopScope(number,trade);  
 }
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 //|            SCOPE | CLOSE BUYLIMIT  | %  Ticket_BUYLIMIT_CLOSE !=-1  %                               
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalCloseBuyLimitScope[number] ){  
- Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE BUYLIMIT  | %  Ticket_BUYLIMIT_CLOSE !=-1  %  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-  int p = 50; 
-  bool close = false;
-   while(   close == false && p > 0){
-     close = DeletePendByTicket(number,trade,_Symbol,Ticket_BUYLIMIT_CLOSE ,Magic) ? true: close;       
-     p--;
-   }
- //SetTRADE_CLOSE();  
+ //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> SCOPE | CLOSE BUYLIMIT  | %  Ticket_BUYLIMIT_CLOSE !=-1  %  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+  //---
+  CloseBuyLimitScope (number,trade);  
 }
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
 //+<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>+
@@ -333,7 +250,7 @@ if(SignalCloseBuyLimitScope[number] ){
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(ScopeLevel == 0)
  if(SignalOpenSellLimit[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   START | SCOPE_OFF |  SELLIMIT   % CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   START | SCOPE_OFF |  SELLIMIT   % CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrSELLLIMIT[i];
      double const nextPrice      = jSELLLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
@@ -349,7 +266,7 @@ if(ScopeLevel == 0)
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(ScopeLevel != 0)
  if(SignalOpenSellLimit[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   START | SCOPE_ON |  SELLIMIT   % CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   START | SCOPE_ON |  SELLIMIT   % CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrSELLLIMIT[i];
      double const nextPrice      = jSELLLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
@@ -369,7 +286,7 @@ if(ScopeLevel != 0)
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(ScopeLevel == 0)
  if(SignalOpenBuyLimit[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   START | SCOPE_OFF |  BUYLIMIT   % CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>   START | SCOPE_OFF |  BUYLIMIT   % CountPend == 0  %       <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrBUYLIMIT[i];
      double const nextPrice      = jBUYLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
@@ -385,7 +302,7 @@ if(ScopeLevel == 0)
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(ScopeLevel != 0 )
  if(SignalOpenBuyLimit[number] ){ 
-    Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    START | SCOPE_ON | OPEN BUYLIMIT     %  CountPend == 0  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+    //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>    START | SCOPE_ON | OPEN BUYLIMIT     %  CountPend == 0  %     <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrBUYLIMIT[i];
      double const nextPrice      = jBUYLIMIT[NameOrder][NAME_PRICE_OPEN].ToDbl() ;
@@ -401,7 +318,7 @@ if(ScopeLevel != 0 )
 //|          TRADE | SCOPE_ON | OPEN HIDE BUYLIMIT   % isPriceInScopeBUYLIMIT %                            
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if( SignalOpenBuyLimitScope[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>     TRADE | SCOPE_ON | OPEN HIDE BUYLIMIT   % isPriceInScopeBUYLIMIT %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>     TRADE | SCOPE_ON | OPEN HIDE BUYLIMIT   % isPriceInScopeBUYLIMIT %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrBUYLIMIT[i];
         int const countPend      = GetCountPendByComment(NameOrder)  ;
@@ -420,7 +337,7 @@ if( SignalOpenBuyLimitScope[number] ){
 //|          TRADE | SCOPE_ON | OPEN HIDE  SELLLIMIT  % isPriceInScopeSELLLIMIT %                            
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if( SignalOpenSellLimitScope[number] ){ 
-   Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>     TRADE | SCOPE_ON | OPEN HIDE SELLLIMIT   % isPriceInScopeSELLLIMIT %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
+   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>>     TRADE | SCOPE_ON | OPEN HIDE SELLLIMIT   % isPriceInScopeSELLLIMIT %      <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );   
    for(int i=0;i<NUMBER_OF_KNEES;i++){
      string const NameOrder      = Order.arrSELLLIMIT[i];
         int const countPend      = GetCountPendByComment(NameOrder)  ;
@@ -443,7 +360,7 @@ if( SignalOpenSellLimitScope[number] ){
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if( ScopeLevel == 0) 
  if(SignalOpenBuyStop[number] ){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_OFF | OPEN BUYSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_OFF | OPEN BUYSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
 
 for(int i=1;i<NUMBER_OF_KNEES;i++){
   
@@ -461,11 +378,13 @@ for(int k=kstart;k<kstop;k++){
   double const nextLot        = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_LOT].ToDbl() ;
   string const nextComment    = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_COMMENT].ToStr() ; //MainNameOrder+"#"+SubNameOrder;
   double const nextPrice      = jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_PRICE_OPEN].ToDbl() ;          
-  double const nextTP         =  Trall_BS != 0 ? 0 : jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
+  double const nextTP         =  Trall_BS != 0 ? 0 : jSELLLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;   
    //if(i < 3 )
    //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jSELLLIMIT ",i," =  ", jSELLLIMIT[MainNameOrder][SubNameOrder].Serialize() );
+ 
   if(nextPrice > 0)
      if( count == 0  )
+       if(GetVolumeBS_SUB(NAME_PREFIX_BS)+nextLot < GetVolumeSL_MAIN(NAME_PREFIX_SL) )  
          set_OPEN_BUYSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
    }// конец цикла
   }
@@ -475,7 +394,7 @@ for(int k=kstart;k<kstop;k++){
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if( ScopeLevel != 0) 
  if(SignalOpenBuyStop[number] ){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_ON | OPEN BUYSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_ON | OPEN BUYSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
 
 for(int i=1;i<NUMBER_OF_KNEES;i++){
   
@@ -499,6 +418,7 @@ for(int k=kstart;k<kstop;k++){
    if(nextPrice > 0)
      if( count == 0  )
      if (nextPrice < PRICE_ScopeLevel_UP_BID ){
+     if(GetVolumeBS_SUB(NAME_PREFIX_BS)+nextLot < GetVolumeSL_MAIN(NAME_PREFIX_SL) )  
           set_OPEN_BUYSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
       }else{
          break;
@@ -513,7 +433,7 @@ for(int k=kstart;k<kstop;k++){
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if(SignalOpenBuyStopScope[number] ){  
 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> TRADE | SCOPE_ON | OPEN BUYSTOP % inScope  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> TRADE | SCOPE_ON | OPEN BUYSTOP % inScope  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
 
 for(int i=1;i<NUMBER_OF_KNEES;i++){
   
@@ -539,6 +459,7 @@ for(int k=kstart;k<kstop;k++){
    if( count == 0  )
     if(ASK + ReSubStep * POINT < nextPrice )
      if (nextPrice < PRICE_ScopeLevel_UP_BID ){
+       if(GetVolumeBS_SUB(NAME_PREFIX_BS)+nextLot < GetVolumeSL_MAIN(NAME_PREFIX_SL) )  
           set_OPEN_BUYSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
       }else{
          break;
@@ -554,7 +475,7 @@ for(int k=kstart;k<kstop;k++){
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if( ScopeLevel == 0) 
  if(SignalOpenSellStop[number] ){ 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_OFF | OPEN SELLSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_OFF | OPEN SELLSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
 
 for(int i=1;i<NUMBER_OF_KNEES;i++){
   
@@ -577,6 +498,7 @@ for(int k=kstart;k<kstop;k++){
    //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jBUYLIMIT ",i," =  ", jBUYLIMIT[MainNameOrder][SubNameOrder].Serialize() );
    if(nextPrice > 0)
      if( count == 0  )
+       if(GetVolumeSS_SUB(NAME_PREFIX_SS)+nextLot  < GetVolumeBL_MAIN(NAME_PREFIX_BL) )  
          set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
    }// конец цикла
   }
@@ -586,7 +508,7 @@ for(int k=kstart;k<kstop;k++){
 //+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 if( ScopeLevel != 0) 
  if(SignalOpenSellStop[number] ){  
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_ON | OPEN SELLSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> START | SCOPE_ON | OPEN SELLSTOP % count =0  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
 
 for(int i=1;i<NUMBER_OF_KNEES;i++){
   
@@ -607,10 +529,11 @@ for(int k=kstart;k<kstop;k++){
   double const nextTP         = Trall_SS != 0 ? 0 : jBUYLIMIT[MainNameOrder][SubNameOrder][NAME_TAKEPROFIT].ToDbl() ;      
   //  if(i < 3 )
   //Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> jBUYLIMIT ",i," =  ", jBUYLIMIT[MainNameOrder][SubNameOrder].Serialize() );
-  
+
  if(nextPrice > 0 )
    if( count == 0  )
       if (nextPrice > PRICE_ScopeLevel_DN_ASK ){
+       if(GetVolumeSS_SUB(NAME_PREFIX_SS)+nextLot  < GetVolumeBL_MAIN(NAME_PREFIX_BL) ) 
           set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
       }else{
          //break;
@@ -624,7 +547,7 @@ for(int k=kstart;k<kstop;k++){
 if(SignalOpenSellStopScope[number] ){  
 //if(SignalOpenSellStop[number] || SignalOpenSellStopScope[number]){ 
 
-Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> TRADE | SCOPE_ON | OPEN SELLSTOP % inScope  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
+//Print(__FUNCTION__, " >>>>>>>>>>>>>>>>>>>>>>>>>>>> TRADE | SCOPE_ON | OPEN SELLSTOP % inScope  % <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
 
 for(int i=1;i<NUMBER_OF_KNEES;i++){
   
@@ -651,11 +574,13 @@ for(int k=kstart;k<kstop;k++){
    if( count == 0  )
     if(ASK - ReSubStep * POINT > nextPrice )
      if (nextPrice > PRICE_ScopeLevel_DN_ASK ){
+       if(GetVolumeSS_SUB(NAME_PREFIX_SS)+nextLot < GetVolumeBL_MAIN(NAME_PREFIX_BL) ){
           set_OPEN_SELLSTOP(number, trade, MainNameOrder, SubNameOrder, nextPrice, nextTP, nextLot,nextComment );
+       } 
+          
       }else{
          //break;
-      }  
-       
+      }        
        
    }// конец цикла
   }
@@ -664,12 +589,6 @@ for(int k=kstart;k<kstop;k++){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-
   SetTRADE_OPEN();
-  
- 
- 
- 
-
  
 }

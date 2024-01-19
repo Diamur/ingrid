@@ -72,6 +72,14 @@ bool   _chekServer     = false ;
 #define  STATUS_STATE_UP               41
 #define  STATUS_STATE_DN               42
 #define  STATUS_STATE_STOP             43 
+#define  STATUS_STO                    44
+#define  STATUS_ASK                    45
+#define  STATUS_BID                    46
+#define  STATUS_PIPS_OUT               47
+#define  STATUS_DT_OUT                 48
+
+
+
 
 //+------------------------------------------------------------------+
 struct _Status {  
@@ -208,7 +216,18 @@ _Lot Lot;
 //CPositionInfo  a_position;
 CTrade   a_trade[NUMBER_OF_SYMBOLS];
 CJAVal   jSymbol;
+CDealInfo deal;
 
+CJAVal   jBUYLIMIT;
+CJAVal   jSELLLIMIT;
+
+CJAVal   jData;
+CJAVal   jTicket;
+
+CJAVal   jZP;
+CJAVal   jFN;
+
+CJAVal   jFILE;
 
 string arrSymbol[NUMBER_OF_SYMBOLS] ;
 bool   Trade[NUMBER_OF_SYMBOLS];
@@ -228,6 +247,11 @@ int   in_count_SELLLIMIT[NUMBER_OF_SYMBOLS];
 //+------------------------------------------------------------------+
 bool  SignalCloseAll_TRALL[NUMBER_OF_SYMBOLS] ;
 bool  SignalCloseAll_PROFIT[NUMBER_OF_SYMBOLS] ;
+bool  SignalCloseAll_LOWPROFIT[NUMBER_OF_SYMBOLS] ;
+
+bool  SignalCloseSL_OUT_PRICE[NUMBER_OF_SYMBOLS] ;
+bool  SignalCloseBL_OUT_PRICE[NUMBER_OF_SYMBOLS] ;
+
 
 bool  SignalCloseBL_PROFIT[NUMBER_OF_SYMBOLS] ;
 bool  SignalCloseSL_PROFIT[NUMBER_OF_SYMBOLS] ;
@@ -592,7 +616,7 @@ int NextMultSELLLIMIT = 1;
 #define  NAME_BUTTON_STOP_UP   "BUTTON_STOP_UP"
 #define  NAME_BUTTON_STOP_DN   "BUTTON_STOP_DN"
 
-#define  BGCOLOR_BUTTON          C'239,198,121'
+#define  BGCOLOR_BUTTON          C'250,102,0'
 #define  COLOR_TEXT              clrGray
 
 #define  TEXT_BUTTON_START     "START AUTO"
@@ -620,108 +644,83 @@ uint time_click = 0;
 #define KEY_NUMLOCK_RIGHT 102 
 #define KEY_NUMLOCK_UP    104 
 
-/*
-#define  NAME_BL_0 "BL_0"
-#define  NAME_BL_1 "BL_1"
-#define  NAME_BL_2 "BL_2"
-#define  NAME_BL_3 "BL_3"
-#define  NAME_BL_4 "BL_4"
-#define  NAME_BL_5 "BL_5"
-*/
+   #define NAME_PANEL_LOGO  "LOGO"
+   #define NAME_PANEL_BKG   "CPanelBkg"
+   
+   #define NAME_PANEL_HDR1   "CPanelHdr1"
+   #define NAME_PANEL_HDR2   "CPanelHdr2"
+   #define NAME_PANEL_HDR3   "CPanelHdr3"
+      
+   #define ZP_BALANCE_START  "BALANCE_START"
+   #define ZP_DATETIME_START "DATETIME_STAR"
 
-//---
-//enum name_BUYLIMIT
-//  {
-//  BL_0 = 0,
-//  BL_1 ,
-//  BL_2 ,
-//  BL_3 ,
-//  BL_4 ,
-//  BL_5 
-//  };
-////---
-//enum name_BUYSTOP
-//  {
-//  BS_0 = 0,
-//  BS_1 ,
-//  BS_2 ,
-//  BS_3 ,
-//  BS_4 ,
-//  BS_5 ,
-//  BS_6 ,
-//  BS_7 ,
-//  BS_8 ,
-//  BS_9 ,
-//  BS_10 ,
-//  BS_11 ,
-//  BS_12 ,
-//  BS_13 ,
-//  BS_14 ,
-//  BS_15 ,
-//  BS_16 ,
-//  BS_17 ,
-//  BS_18 ,
-//  BS_19 ,
-//  BS_20 ,
-//  BS_21 ,
-//  BS_22 ,
-//  BS_23 ,
-//  BS_24 ,
-//  BS_25 
-//  };
-////---
-//enum name_SELLLIMIT
-//  {
-//  SL_0 = 0,
-//  SL_1 ,
-//  SL_2 ,
-//  SL_3 ,
-//  SL_4 ,
-//  SL_5 
-//  };
-////---
-//enum name_SELLSTOP
-//  {
-//  SS_0 = 0,
-//  SS_1 ,
-//  SS_2 ,
-//  SS_3 ,
-//  SS_4 ,
-//  SS_5 ,
-//  SS_6 ,
-//  SS_7 ,
-//  SS_8 ,
-//  SS_9 ,
-//  SS_10 ,
-//  SS_11 ,
-//  SS_12 ,
-//  SS_13 ,
-//  SS_14 ,
-//  SS_15 ,
-//  SS_16 ,
-//  SS_17 ,
-//  SS_18 ,
-//  SS_19 ,
-//  SS_20 ,
-//  SS_21 ,
-//  SS_22 ,
-//  SS_23 ,
-//  SS_24 ,
-//  SS_25 
-  //};
+   #define NAME_KEY        "NAME_KYE"
+   #define NAME_VAL        "NAME_VAL"
+   
+   #define TEXT            "TEXT" 
+   #define VAL             "VAL"     
+   #define DATE            "DATE" 
+   #define FILE            "FILE"     
+   //+----------------------(ZP)--------------------------------------------+          
+   //--- key
+   #define ZP_TODAY                 "TODAY"
+   #define ZP_YESTERDAY             "YESTERDAY"
+   #define ZP_CURRENT_WEEK          "CURRENT_WEEK"
+   #define ZP_LAST_WEEK             "LAST_WEEK"
+   #define ZP_CURRENT_MONTH         "CURRENT_MONTH"
+   #define ZP_LAST_MONTH            "LAST_MONTH"
+   #define ZP_ENTIRE_PERIOD         "ENTIRE_PERIOD"   
+   #define ZP_COMMISION             "COMMISION" 
+   #define ZP_SWAP                  "SWAP" 
+   //--- val  
+   #define ZP_PROFIT_TODAY          "PROFIT_TODAY"
+   #define ZP_PROFIT_YESTERDAY      "PROFIT_YESTERDAY"
+   #define ZP_PROFIT_CURRENT_WEEK   "PROFIT_CURRENT_WEEK"
+   #define ZP_PROFIT_LAST_WEEK      "PROFIT_LAST_WEEK"
+   #define ZP_PROFIT_CURRENT_MONTH  "PROFIT_CURRENT_MONTH"
+   #define ZP_PROFIT_LAST_MONTH     "PROFIT_LAST_MONTH"
+   #define ZP_PROFIT_ENTIRE_PERIOD  "PROFIT_ENTIRE_PERIOD"   
+   #define ZP_VAL_COMMISION         "VAL_COMMISION" 
+   #define ZP_VAL_SWAP              "VAL_SWAP"  
+   //--- text        
+   #define ZP_TEXT_TODAY            "Current day : "
+   #define ZP_TEXT_YESTERDAY        "Last day : "
+   #define ZP_TEXT_CURRENT_WEEK     "Current week : "
+   #define ZP_TEXT_LAST_WEEK        "Last week : "
+   #define ZP_TEXT_CURRENT_MONTH    "Current month : "
+   #define ZP_TEXT_LAST_MONTH       "Last month : "
+   #define ZP_TEXT_ENTIRE_PERIOD    "Entire period : " 
+   #define ZP_TEXT_COMMISION        "Commision : "  
+   #define ZP_TEXT_SWAP             "Swap : "  
+    //+----------------------(ZP)--------------------------------------------+     
+   //--- key 
+   #define FN_KEY_BALANCE           "KEY_BALANCE"   
+   #define FN_KEY_EQITY             "KEY_EQITY"   
+   #define FN_KEY_MARGINFREE        "KEY_MARGINFREE"   
+   #define FN_KEY_PROFIT            "KEY_PROFIT"   
+   #define FN_KEY_PROFIT_DN         "KEY_PROFIT_DN"   
+   #define FN_KEY_PROFIT_UP         "KEY_PROFIT_UP"       
+   //--- val  
+   #define FN_VAL_BALANCE           "VAL_BALANCE"
+   #define FN_VAL_EQITY             "VAL_EQITY"
+   #define FN_VAL_MARGINFREE        "VAL_MARGINFREE"
+   #define FN_VAL_PROFIT            "VAL_PROFIT"
+   #define FN_VAL_PROFIT_DN         "VAL_PROFIT_DN"
+   #define FN_VAL_PROFIT_UP         "VAL_PROFIT_UP"
+  //--- text       
+   #define FN_TEXT_BALANCE           "Balance : "
+   #define FN_TEXT_EQITY             "Eqity : "
+   #define FN_TEXT_MARGINFREE        "MarginFree : "
+   #define FN_TEXT_PROFIT            "Profit FULL : "
+   #define FN_TEXT_PROFIT_DN         "Profit UP : "
+   #define FN_TEXT_PROFIT_UP         "Profit DOWN : "
 
-    //jData["Lot"]        = MinLot;
-    //jData["Step"]       = (int)(StepBUYLIMIT/10);
-    //jData["FullStep"]   = (int)(fullStep);    
-    //jData["PriceOpen"]  = 0;
-    //jData["TakeProfit"] = 0;
-    //jData["Trade"]      = false;  
+   bool isPanelTop = false;
 
-CJAVal   jBUYLIMIT;
-CJAVal   jSELLLIMIT;
 
-CJAVal   jData;
-CJAVal   jTicket;
+
+
+
 
 //---
 
@@ -854,8 +853,8 @@ double BALANCE_START ;
 double EQITY ;
 double DT_EQITY_BALANCE ;
 
-double   LAST_BALANCE  ;//= 0; //          
-datetime START_DATETIME;// = 0; //
+//double   BALANCE  ;//= 0; //          
+datetime DATETIME_START;// = 0; //
 
 bool PRICE_Set      = false;
 
@@ -889,16 +888,13 @@ int  TIME_CLOSE_DN = 0;
 
 
 
-//+------------------------------------------------------------------+     
-int DAY0_ID = 0;
-//int DAY1_ID = 0;
+//+------------------------------------------------------------------+ 
 
-int WEEK0_ID = 0;
-//int WEEK1_ID = 0;  
 
-int MONTH0_ID = 0;
-//int MONTH0_ID = 0;
 
-double arrDAY[7] = {0,0,0,0,0};
-double arrWEEK[4] = {0,0,0,0};   
-double arrMONTH[2] = {0,0}; 
+
+//double arrDAY[5] = {0,0,0,0,0};
+//double arrWEEK[4] = {0,0,0,0};   
+//double arrMONTH[2] = {0,0};
+
+ 

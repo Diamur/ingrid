@@ -25,6 +25,7 @@ string getNameFILE(){ return __FILE__ ;}
 //#include  "indicators\CCI.mqh" 
 //+------------------------------------------------------------------+
 #include  "Trade\Trade.mqh" 
+//#include  "Trade\DealInfo.mqh" 
 #include  "Bot\Bot.mqh"
 #include  "Lot\Lot.mqh" 
 #include  "Functions\Functions.mqh" 
