@@ -35,6 +35,8 @@
 #include  "\Get\GetPriceBUYSTOP.mqh"
 #include  "\Get\GetPriceSELLLIMIT.mqh"
 #include  "\Get\GetPriceSELLSTOP.mqh"
+
+#include  "\Set\Set.mqh"
 //+------------------------------------------------------------------+
 //#include  "\Mod\TrailingPositions.mqh"
 //#include  "\Mod\TrailingBUY.mqh"

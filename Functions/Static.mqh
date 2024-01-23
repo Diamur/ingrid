@@ -8,6 +8,6 @@ void Static()
    SetTimeDAY();
    //SetVECTOR();
    info = "";
-   
+    if(Panel_ON) 
    ShowPropertiesTik();
 }

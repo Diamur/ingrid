@@ -2,6 +2,72 @@
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
+string getPrefix_MAIN(string Prefix_Sub){
+
+for(int i=1;i<NUMBER_OF_KNEES;i++){
+  
+int const kstart = arrStartStop[i][0];
+int const kstop  = arrStartStop[i][1];  
+//if(kstart <10)
+ for(int k=kstart;k<kstop;k++){ 
+  string const MainNameOrder  = Order.arrBUYLIMIT[i];
+  string const SubNameOrder   = Order.arrSELLSTOP[k];
+   if(Prefix_Sub == SubNameOrder ) return MainNameOrder;
+  }
+ } 
+return "";
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+string getPrefix_FULL(string Prefix_Sub){
+
+for(int i=1;i<NUMBER_OF_KNEES;i++){
+  
+int const kstart = arrStartStop[i][0];
+int const kstop  = arrStartStop[i][1];  
+//if(kstart <10)
+ for(int k=kstart;k<kstop;k++){ 
+  string const MainNameOrder  = Order.arrBUYLIMIT[i];
+  string const SubNameOrder   = Order.arrSELLSTOP[k];
+   if(Prefix_Sub == SubNameOrder ) return MainNameOrder + "#" + SubNameOrder;
+  }
+ } 
+return "";
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+int GetTicket_BY_PREFIX_FULL (string prefix_full){
+ int ticket = -1;
+  for(int i=0;i<PositionsTotal();i++){ 
+      if( PositionGetSymbol(i) != "" ) 
+        if( PositionGetInteger(POSITION_MAGIC) == Magic){
+           if ( PositionGetString(POSITION_COMMENT) == prefix_full)
+                         return (int)PositionGetInteger(POSITION_TICKET);
+        }     
+      }   
+   return   ticket;
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+int GetTicket_BY_PREFIX (string prefix){
+ int ticket = -1;
+  for(int i=0;i<PositionsTotal();i++){ 
+      if( PositionGetSymbol(i) != "" ) 
+        if( PositionGetInteger(POSITION_MAGIC) == Magic){
+           int const pos = StringFind( PositionGetString(POSITION_COMMENT),prefix);
+           if(pos != -1){
+                return (int)PositionGetInteger(POSITION_TICKET);
+           }
+        }    
+      }   
+   return   ticket;
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 int GetTicket_SELLSTOP_CLOSE (double price){
  int ticket = -1;
       for(int i=0;i< OrdersTotal() ;i++){
@@ -169,6 +235,23 @@ string GetCommentSELLLIMIT( int mult  ){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
+double GetProfitBUY_PREFIX_FULL( string prefix_full ){
+  double profit = 0;
+    for(int i=0;i<PositionsTotal();i++)
+      { 
+       if( PositionGetSymbol(i) != "" ) 
+        if( PositionGetInteger(POSITION_MAGIC) == Magic)
+         if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY){
+            if( PositionGetString(POSITION_COMMENT) == prefix_full ) 
+                   profit+= PositionGetDouble(POSITION_PROFIT) ;
+            }
+      }
+   return profit;
+}
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 double GetProfitBUY_PREFIX( string prefix ){
   double profit = 0;
     for(int i=0;i<PositionsTotal();i++)
@@ -180,6 +263,23 @@ double GetProfitBUY_PREFIX( string prefix ){
               if(pos != -1){
                   profit+= PositionGetDouble(POSITION_PROFIT) ;
               }
+          }
+      }   
+   return profit;
+}
+
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+double GetProfitSELL_PREFIX_FULL( string prefix_full ){
+  double profit = 0;
+    for(int i=0;i<PositionsTotal();i++)
+      { 
+       if( PositionGetSymbol(i) != "" ) 
+        if( PositionGetInteger(POSITION_MAGIC) == Magic)
+         if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL){
+          if( PositionGetString(POSITION_COMMENT) == prefix_full )
+                  profit+= PositionGetDouble(POSITION_PROFIT) ;
           }
       }   
    return profit;
@@ -285,6 +385,38 @@ double GetVolumeSELL(){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
+double GetVolumeBUY_PREFIX_FULL(string prefix_full){
+  double volume = 0;
+    for(int i=0;i<PositionsTotal();i++)
+      { 
+      if( PositionGetSymbol(i) != "" ) 
+        if( PositionGetInteger(POSITION_MAGIC) == Magic)
+         if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY){
+           if( PositionGetString(POSITION_COMMENT) == prefix_full  )          
+                  volume+= PositionGetDouble(POSITION_VOLUME) ;
+          } 
+      }   
+   return volume;
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+double GetVolumeSELL_PREFIX_FULL(string prefix_full){
+  double volume = 0;
+    for(int i=0;i<PositionsTotal();i++)
+      { 
+      if( PositionGetSymbol(i) != "" ) 
+        if( PositionGetInteger(POSITION_MAGIC) == Magic)
+         if( PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL){
+           if( PositionGetString(POSITION_COMMENT) == prefix_full )          
+                  volume+= PositionGetDouble(POSITION_VOLUME) ;
+          } 
+      }   
+   return volume;
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 double GetVolumeSELL_PREFIX(string prefix){
   double volume = 0;
     for(int i=0;i<PositionsTotal();i++)
@@ -300,6 +432,7 @@ double GetVolumeSELL_PREFIX(string prefix){
       }   
    return volume;
 }
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
@@ -318,6 +451,7 @@ double GetVolumeBUY_PREFIX(string prefix){
       }   
    return volume;
 }
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
@@ -476,6 +610,25 @@ double GetVolume(){
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
+int GetPipsProfitSELL_Prefix_Full(string prefix_full){     
+  if(GetVolumeSELL_PREFIX_FULL(prefix_full) != 0){
+      return  (int)( GetProfitSELL_PREFIX_FULL(prefix_full)/GetVolumeSELL_PREFIX_FULL(prefix_full));
+    }
+   return  0;
+} 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+int GetPipsProfitBUY_Prefix_Full(string prefix_full){   
+  
+  if(GetVolumeBUY_PREFIX_FULL(prefix_full) != 0){
+      return  (int)( GetProfitBUY_PREFIX_FULL(prefix_full)/GetVolumeBUY_PREFIX_FULL(prefix_full));
+    }
+   return  0;
+}  
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 int GetPipsProfitBUY_Prefix(string prefix){     
   if(GetVolumeBUY_PREFIX(prefix) != 0){
       return  (int)( GetProfitBUY_PREFIX(prefix)/GetVolumeBUY_PREFIX(prefix));
@@ -491,6 +644,8 @@ int GetPipsProfitSELL_Prefix(string prefix){
     }
    return  0;
 }  
+
+
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+

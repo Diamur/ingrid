@@ -76,12 +76,22 @@ void SetPARAMETRS_START(string type){
    PriceMIN_UP    = 0;
    TRADE_MAIN_UP  = false;
    TRADE_SUB_UP   = false;  
+   
+      ObjectDelete(0,NAME_TRALL_NULL_SL);
+      ObjectDelete(0,NAME_TRALL_OPEN_SL);
+      ObjectDelete(0,NAME_TRALL_FULL_SL);    
+   
   }
  //---
  else if(type == NAME_BUYSTOP){
    STOPLOSS_BS    = 0;
    TRALL_FULL_BS  = Trall_BS;  
    PriceMAX_UP    = 0;
+   
+      ObjectDelete(0,NAME_TRALL_NULL_BS);
+      ObjectDelete(0,NAME_TRALL_OPEN_BS);
+      ObjectDelete(0,NAME_TRALL_FULL_BS); 
+   
   }
  //---
  else if(type == NAME_BUYLIMIT){
@@ -92,12 +102,22 @@ void SetPARAMETRS_START(string type){
    PriceMIN_DN    = 0;
    TRADE_MAIN_DN  = false; 
    TRADE_SUB_DN   = false;
+   
+      ObjectDelete(0,NAME_TRALL_NULL_BL);
+      ObjectDelete(0,NAME_TRALL_OPEN_BL);
+      ObjectDelete(0,NAME_TRALL_FULL_BL);  
+   
  }
  //---
  else if(type == NAME_SELLSTOP){   
      STOPLOSS_SS    = 0;
      TRALL_FULL_SS  = Trall_SS;    
      PriceMIN_DN    = 0; 
+     
+      ObjectDelete(0,NAME_TRALL_NULL_SS);
+      ObjectDelete(0,NAME_TRALL_OPEN_SS);
+      ObjectDelete(0,NAME_TRALL_FULL_SS);  
+     
   }  
  //---
  if(GetCountAllTotalByMagic() == 0 ){ 
@@ -167,6 +187,7 @@ void setSELLLIMIT( int  id, double minLot , double _K_MainLot , int  _K_SubLot )
     jdata[NAME_STATUS]        = NAME_STATUS_PEND;    
     jdata[NAME_TRADE]         = false;  
     jdata[NAME_COMMENT]       = mainCOMMENT; 
+    
 int const kstart = arrStartStop[id][0];
 int const kstop  = arrStartStop[id][1];
     
@@ -325,7 +346,7 @@ void SetVECTOR(){
 void setXY_Label(){
    int xLabel     = 5;
    int yLabel     = 5;
-   int dtyLabel   = 15;
+   int dtyLabel   = 13;
    int dtxLabel   = 80;
    int dtx1 = 2;
    int dtx2 = 4;
@@ -480,7 +501,8 @@ void setPRICE_BL(double BID){
   //|                    BUYLIMIT                                      |
   //+------------------------------------------------------------------+
     int const nextFullStep_BL             = (int)jBUYLIMIT[MainName_BL][NAME_FULL_STEP].ToInt();
- double const nextPrice_BL                = BID - nextFullStep_BL * POINT ;    
+ double const nextPrice_BL                = BID - nextFullStep_BL * POINT ;
+ jBUYLIMIT[MainName_BL][NAME_ID]  = i;     
  jBUYLIMIT[MainName_BL][NAME_PRICE_OPEN]  = nextPrice_BL;  
         
  int const kstart = arrStartStop[i][0];
@@ -496,7 +518,8 @@ void setPRICE_BL(double BID){
          int const nextSubStep_SS   = (int)jBUYLIMIT[MainName_BL][SubName_SS][NAME_SUB_STEP].ToInt();   
          int const spred            = (int)SymbolInfoInteger(NULL,SYMBOL_SPREAD);
       double const nextPrice_SS     = BID - nextFullStep_SS * POINT ;  
-      double const nextTP_SS        = nextPrice_SS -  (TakeProfit_SS !=0? TakeProfit_SS: nextSubStep_SS ) * POINT ;          
+      double const nextTP_SS        = nextPrice_SS -  (TakeProfit_SS !=0? TakeProfit_SS: nextSubStep_SS ) * POINT ; 
+      jBUYLIMIT[MainName_BL][SubName_SS][NAME_ID]  = k;         
       jBUYLIMIT[MainName_BL][SubName_SS][NAME_PRICE_OPEN]  = nextPrice_SS;    
       jBUYLIMIT[MainName_BL][SubName_SS][NAME_TAKEPROFIT]  = nextTP_SS; 
      }   
@@ -514,7 +537,8 @@ void setPRICE_SL(double ASK){
   //|                    SELLIMIT                                      |
   //+------------------------------------------------------------------+
     int const nextFullStep_SL             = (int)jSELLLIMIT[MainName_SL][NAME_FULL_STEP].ToInt();
- double const nextPrice_SL                = ASK + nextFullStep_SL*POINT ;    
+ double const nextPrice_SL                = ASK + nextFullStep_SL*POINT ;
+ jSELLLIMIT[MainName_SL][NAME_ID]  = i;    
  jSELLLIMIT[MainName_SL][NAME_PRICE_OPEN] = nextPrice_SL; 
         
  int const kstart = arrStartStop[i][0];
@@ -530,6 +554,7 @@ void setPRICE_SL(double ASK){
         int const nextSubStep_BS    = (int)jSELLLIMIT[MainName_SL][SubName_BS][NAME_SUB_STEP].ToInt();
      double const nextPrice_BS      = ASK + nextFullStep_BS * POINT;  
      double const nextTP_BS         = nextPrice_BS +  (TakeProfit_BS !=0? TakeProfit_BS: nextSubStep_BS ) * POINT ;
+     jSELLLIMIT[MainName_SL][SubName_BS][NAME_ID]  = k;
      jSELLLIMIT[MainName_SL][SubName_BS][NAME_PRICE_OPEN] = nextPrice_BS;    
      jSELLLIMIT[MainName_SL][SubName_BS][NAME_TAKEPROFIT] = nextTP_BS;  
      }   
@@ -539,59 +564,61 @@ void setPRICE_SL(double ASK){
  //+------------------------------------------------------------------+
  //|                                                                  |
  //+------------------------------------------------------------------+
-void setPRICE(double ASK, double BID){
-
-   //Print(__FUNCTION__, " =========================== setPRICE   ==============================") ;
-   //Print(__FUNCTION__, " ========== ASK = ", ASK) ;
-   //Print(__FUNCTION__, " ========== BID = ", BID) ;
-   
-
-  for(int i=0;i<NUMBER_OF_KNEES;i++){
-      string const MainName_BL  = Order.arrBUYLIMIT[i];
-      string const MainName_SL  = Order.arrSELLLIMIT[i];  
-  //+------------------------------------------------------------------+
-  //|                    SELLIMIT                                      |
-  //+------------------------------------------------------------------+
-    int const nextFullStep_SL             = (int)jSELLLIMIT[MainName_SL][NAME_FULL_STEP].ToInt();
- double const nextPrice_SL                = ASK + nextFullStep_SL*POINT ;    
- jSELLLIMIT[MainName_SL][NAME_PRICE_OPEN] = nextPrice_SL; 
-   //+------------------------------------------------------------------+
-  //|                    BUYLIMIT                                      |
-  //+------------------------------------------------------------------+
-    int const nextFullStep_BL             = (int)jBUYLIMIT[MainName_BL][NAME_FULL_STEP].ToInt();
- double const nextPrice_BL                = BID - nextFullStep_BL * POINT ;    
- jBUYLIMIT[MainName_BL][NAME_PRICE_OPEN]  = nextPrice_BL;  
-        
- int const kstart = arrStartStop[i][0];
- int const kstop  = arrStartStop[i][1];  
-    
-   for(int k=kstart;k<kstop;k++){    
-      //+------------------------------------------------------------------+
-      //|                   SELLSTOP                                               |
-      //+------------------------------------------------------------------+
-      string const SubName_SS       = Order.arrSELLSTOP[k];
-      string const fullName_SS      = MainName_BL + "#" + SubName_SS;     
-         int const nextFullStep_SS  = (int)jBUYLIMIT[MainName_BL][SubName_SS][NAME_FULL_STEP].ToInt();     
-         int const nextSubStep_SS   = (int)jBUYLIMIT[MainName_BL][SubName_SS][NAME_SUB_STEP].ToInt();   
-         int const spred            = (int)SymbolInfoInteger(NULL,SYMBOL_SPREAD);
-      double const nextPrice_SS     = BID - nextFullStep_SS * POINT ;  
-      double const nextTP_SS        = nextPrice_SS -  nextSubStep_SS * POINT ;          
-      jBUYLIMIT[MainName_BL][SubName_SS][NAME_PRICE_OPEN]  = nextPrice_SS;    
-      jBUYLIMIT[MainName_BL][SubName_SS][NAME_TAKEPROFIT]  = nextTP_SS; 
-     //+------------------------------------------------------------------+
-     //|                   BUYSTOP                                               |
-     //+------------------------------------------------------------------+
-     string const SubName_BS        = Order.arrBUYSTOP[k];
-     string const fullName_BS       = MainName_SL + "#" + SubName_BS;
-        int const nextFullStep_BS   = (int)jSELLLIMIT[MainName_SL][SubName_BS][NAME_FULL_STEP].ToInt(); 
-        int const nextSubStep_BS    = (int)jSELLLIMIT[MainName_SL][SubName_BS][NAME_SUB_STEP].ToInt();
-     double const nextPrice_BS      = ASK + nextFullStep_BS * POINT;  
-     double const nextTP_BS         = nextPrice_BS +  nextSubStep_BS * POINT ;
-     jSELLLIMIT[MainName_SL][SubName_BS][NAME_PRICE_OPEN] = nextPrice_BS;    
-     jSELLLIMIT[MainName_SL][SubName_BS][NAME_TAKEPROFIT] = nextTP_BS;  
-     }   
-   }
-}
+//void setPRICE(double ASK, double BID){
+//
+//   //Print(__FUNCTION__, " =========================== setPRICE   ==============================") ;
+//   //Print(__FUNCTION__, " ========== ASK = ", ASK) ;
+//   //Print(__FUNCTION__, " ========== BID = ", BID) ;
+//   
+//
+//  for(int i=0;i<NUMBER_OF_KNEES;i++){
+//      string const MainName_BL  = Order.arrBUYLIMIT[i];
+//      string const MainName_SL  = Order.arrSELLLIMIT[i];  
+//  //+------------------------------------------------------------------+
+//  //|                    SELLIMIT                                      |
+//  //+------------------------------------------------------------------+
+//    int const nextFullStep_SL             = (int)jSELLLIMIT[MainName_SL][NAME_FULL_STEP].ToInt();
+// double const nextPrice_SL                = ASK + nextFullStep_SL*POINT ;    
+// jSELLLIMIT[MainName_SL][NAME_PRICE_OPEN] = nextPrice_SL; 
+//   //+------------------------------------------------------------------+
+//  //|                    BUYLIMIT                                      |
+//  //+------------------------------------------------------------------+
+//    int const nextFullStep_BL             = (int)jBUYLIMIT[MainName_BL][NAME_FULL_STEP].ToInt();
+// double const nextPrice_BL                = BID - nextFullStep_BL * POINT ;    
+// jBUYLIMIT[MainName_BL][NAME_PRICE_OPEN]  = nextPrice_BL;  
+//        
+// int const kstart = arrStartStop[i][0];
+// int const kstop  = arrStartStop[i][1];  
+//    
+//   for(int k=kstart;k<kstop;k++){    
+//      //+------------------------------------------------------------------+
+//      //|                   SELLSTOP                                               |
+//      //+------------------------------------------------------------------+
+//      string const SubName_SS       = Order.arrSELLSTOP[k];
+//      string const fullName_SS      = MainName_BL + "#" + SubName_SS;     
+//         int const nextFullStep_SS  = (int)jBUYLIMIT[MainName_BL][SubName_SS][NAME_FULL_STEP].ToInt();     
+//         int const nextSubStep_SS   = (int)jBUYLIMIT[MainName_BL][SubName_SS][NAME_SUB_STEP].ToInt();   
+//         int const spred            = (int)SymbolInfoInteger(NULL,SYMBOL_SPREAD);
+//      double const nextPrice_SS     = BID - nextFullStep_SS * POINT ;  
+//      double const nextTP_SS        = nextPrice_SS -  nextSubStep_SS * POINT ;   
+//      jBUYLIMIT[MainName_BL][SubName_SS][NAME_ID]  = k;
+//      jBUYLIMIT[MainName_BL][SubName_SS][NAME_PRICE_OPEN]  = nextPrice_SS;    
+//      jBUYLIMIT[MainName_BL][SubName_SS][NAME_TAKEPROFIT]  = nextTP_SS; 
+//     //+------------------------------------------------------------------+
+//     //|                   BUYSTOP                                               |
+//     //+------------------------------------------------------------------+
+//     string const SubName_BS        = Order.arrBUYSTOP[k];
+//     string const fullName_BS       = MainName_SL + "#" + SubName_BS;
+//        int const nextFullStep_BS   = (int)jSELLLIMIT[MainName_SL][SubName_BS][NAME_FULL_STEP].ToInt(); 
+//        int const nextSubStep_BS    = (int)jSELLLIMIT[MainName_SL][SubName_BS][NAME_SUB_STEP].ToInt();
+//     double const nextPrice_BS      = ASK + nextFullStep_BS * POINT;  
+//     double const nextTP_BS         = nextPrice_BS +  nextSubStep_BS * POINT ;
+//     jSELLLIMIT[MainName_SL][SubName_BS][NAME_ID]  = k;
+//     jSELLLIMIT[MainName_SL][SubName_BS][NAME_PRICE_OPEN] = nextPrice_BS;    
+//     jSELLLIMIT[MainName_SL][SubName_BS][NAME_TAKEPROFIT] = nextTP_BS;  
+//     }   
+//   }
+//}
 //+------------------------------------------------------------------+
 //|                                                                   |
 //+------------------------------------------------------------------+
@@ -833,13 +860,16 @@ void SetTRALL_BL  (  double _ASK,
        }           
       DT_NULL_OPEN_BL = (int)((PRICE_TRALL_OPEN_BL - PRICE_TRALL_NULL_BL)/POINT);
       DT_OPEN_FULL_BL = (int)((PRICE_TRALL_FULL_BL - PRICE_TRALL_OPEN_BL)/POINT);       
-     
+   if(!Hidden_HLine)
       H_line(NAME_TRALL_NULL_BL, PRICE_TRALL_NULL_BL,clrAqua );
        if(STOPLOSS_BL != 0){
+              if(!Hidden_HLine)
                H_line(NAME_TRALL_OPEN_BL, PRICE_TRALL_OPEN_BL,clrRed,STYLE_SOLID,2 );   
         }else{
+           if(!Hidden_HLine)
                H_line(NAME_TRALL_OPEN_BL, PRICE_TRALL_OPEN_BL,clrPink );   
            } 
+    if(!Hidden_HLine)        
       H_line(NAME_TRALL_FULL_BL, PRICE_TRALL_FULL_BL,clrGold );        
    //---
    }else{
@@ -893,13 +923,16 @@ void SetTRALL_SS  (  double _ASK,
  
     DT_NULL_OPEN_SS = (int)((PRICE_TRALL_NULL_SS - PRICE_TRALL_OPEN_SS)/POINT);
     DT_OPEN_FULL_SS = (int)((PRICE_TRALL_OPEN_SS - PRICE_TRALL_FULL_SS )/POINT);       
-     
+    if(!Hidden_HLine)  
       H_line(NAME_TRALL_NULL_SS, PRICE_TRALL_NULL_SS,clrAqua );
        if(STOPLOSS_SS != 0){
+       if(!Hidden_HLine)
                H_line(NAME_TRALL_OPEN_SS, STOPLOSS_SS,clrYellow,STYLE_SOLID,2 );   
         }else{
+     if(!Hidden_HLine)
                H_line(NAME_TRALL_OPEN_SS, PRICE_TRALL_OPEN_SS,clrPink );   
            } 
+   if(!Hidden_HLine)                   
       H_line(NAME_TRALL_FULL_SS, PRICE_TRALL_FULL_SS,clrGold );        
    //---
    } else{
@@ -938,13 +971,16 @@ void SetTRALL_SL  (  double _ASK,
           
     DT_NULL_OPEN_SL = (int)((PRICE_TRALL_NULL_SL - PRICE_TRALL_OPEN_SL)/POINT);
     DT_OPEN_FULL_SL = (int)((PRICE_TRALL_OPEN_SL - PRICE_TRALL_FULL_SL )/POINT);       
-     
+    if(!Hidden_HLine)
       H_line(NAME_TRALL_NULL_SL, PRICE_TRALL_NULL_SL,clrAqua );
        if(STOPLOSS_SL != 0){
+          if(!Hidden_HLine)
                H_line(NAME_TRALL_OPEN_SL, PRICE_TRALL_OPEN_SL,clrYellow,STYLE_SOLID,2 );   
         }else{
+            if(!Hidden_HLine)
                H_line(NAME_TRALL_OPEN_SL, PRICE_TRALL_OPEN_SL,clrPink );   
            } 
+   if(!Hidden_HLine)
       H_line(NAME_TRALL_FULL_SL, PRICE_TRALL_FULL_SL,clrGold );        
    //---
    } else{
@@ -982,12 +1018,16 @@ void SetTRALL_BS  (  double _ASK,
       DT_NULL_OPEN_BS = (int)((PRICE_TRALL_OPEN_BS - PRICE_TRALL_NULL_BS)/POINT);
       DT_OPEN_FULL_BS = (int)((PRICE_TRALL_FULL_BS - PRICE_TRALL_OPEN_BS)/POINT);       
      
+      if(!Hidden_HLine)  
       H_line(NAME_TRALL_NULL_BS, PRICE_TRALL_NULL_BS,clrAqua );
        if(STOPLOSS_BS != 0){
+          if(!Hidden_HLine)
                H_line(NAME_TRALL_OPEN_BS, STOPLOSS_BS,clrRed,STYLE_SOLID,2 );   
         }else{
+           if(!Hidden_HLine)
                H_line(NAME_TRALL_OPEN_BS, PRICE_TRALL_OPEN_BS,clrPink );   
            } 
+        if(!Hidden_HLine)      
       H_line(NAME_TRALL_FULL_BS, PRICE_TRALL_FULL_BS,clrGold );        
    //---
    }else{

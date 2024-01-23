@@ -19,7 +19,7 @@ bool   _chekServer     = false ;
 #define  NUMBER_OF_SELLSTOP            122  
 #define  NUMBER_OF_BUYSTOP             122  
 
-#define  NUMBER_OF_STATUSES            50 
+#define  NUMBER_OF_STATUSES            60 
 
 #define  STATUS_TRADE                  0 
 #define  STATUS_WORK                   1 
@@ -77,6 +77,12 @@ bool   _chekServer     = false ;
 #define  STATUS_BID                    46
 #define  STATUS_PIPS_OUT               47
 #define  STATUS_DT_OUT                 48
+#define  STATUS_TP                     49
+#define  STATUS_CLOSE                   50
+#define  STATUS_PREFIX                 51
+
+
+
 
 
 
@@ -252,6 +258,11 @@ bool  SignalCloseAll_LOWPROFIT[NUMBER_OF_SYMBOLS] ;
 bool  SignalCloseSL_OUT_PRICE[NUMBER_OF_SYMBOLS] ;
 bool  SignalCloseBL_OUT_PRICE[NUMBER_OF_SYMBOLS] ;
 
+bool  SignalCloseTicketBS_TP[NUMBER_OF_SYMBOLS] ;
+bool  SignalCloseTicketSS_TP[NUMBER_OF_SYMBOLS] ;
+
+bool  SignalCloseTicketSL_MAIN_TP[NUMBER_OF_SYMBOLS] ;
+bool  SignalCloseTicketBL_MAIN_TP[NUMBER_OF_SYMBOLS] ;
 
 bool  SignalCloseBL_PROFIT[NUMBER_OF_SYMBOLS] ;
 bool  SignalCloseSL_PROFIT[NUMBER_OF_SYMBOLS] ;
@@ -715,6 +726,10 @@ uint time_click = 0;
    #define FN_TEXT_PROFIT_DN         "Profit UP : "
    #define FN_TEXT_PROFIT_UP         "Profit DOWN : "
 
+   #define CODE_PRINTCLOSE           "PRINTCLOSE"
+   #define CODE_PRINTOPEN            "PRINTOPEN"
+
+
    bool isPanelTop = false;
 
 
@@ -841,7 +856,7 @@ double STOPLOSS_SS;
 //---
    int VECTOR;
 
-#define NUMBER_STR 50
+#define NUMBER_STR 100
 #define NUMBER_COL 4
 
 string   arrNameObject[NUMBER_STR][NUMBER_COL];
@@ -898,3 +913,15 @@ int  TIME_CLOSE_DN = 0;
 //double arrMONTH[2] = {0,0};
 
  
+//int CloseTicketBS_TP = -1;
+//int CloseTicketSS_TP = -1;
+
+string ClosePrefixBS_TP = "";
+string ClosePrefixSS_TP = "";
+
+string ClosePrefixBS_NOW_TP = "";
+string ClosePrefixSS_NOW_TP = "";
+
+double ClosePriceBS_NOW_TP = 0;
+double ClosePriceSS_NOW_TP = 0;
+

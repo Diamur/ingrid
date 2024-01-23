@@ -1,6 +1,6 @@
-#property copyright "Copyright 2022, MetaQuotes Ltd."
-#property link      "https://www.mql5.com"
-#property version   "1.00"
+#property copyright     "Copyright 2022, MetaQuotes Ltd."
+#property link          "https://www.mql5.com"
+#property version       "1.00"
 #property description   "Cameron EA"
 //+------------------------------------------------------------------+
 //|                                                                  |

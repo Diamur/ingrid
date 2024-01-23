@@ -366,10 +366,12 @@ bool CTrade::PositionModify(const string symbol,const double sl,const double tp)
 //+------------------------------------------------------------------+
 bool CTrade::PositionModify(const ulong ticket,const double sl,const double tp)
   {
+                //Print(__FUNCTION__, ">>>>>>>>>>>>> IsStopped(__FUNCTION__) = ", IsStopped(__FUNCTION__) ); 
 //--- check stopped
    if(IsStopped(__FUNCTION__))
       return(false);
 //--- check position existence
+               //Print(__FUNCTION__, ">>>>>>>>>>>>> PositionSelectByTicket(ticket) = ", PositionSelectByTicket(ticket) ); 
    if(!PositionSelectByTicket(ticket))
       return(false);
 //--- clean
@@ -382,7 +384,10 @@ bool CTrade::PositionModify(const ulong ticket,const double sl,const double tp)
    m_request.sl      =sl;
    m_request.tp      =tp;
 //--- action and return the result
-   return(OrderSend(m_request,m_result));
+   bool res = OrderSend(m_request,m_result);
+   
+    //Print(__FUNCTION__, ">>>>>>>>>>>>> res = ", res ); 
+   return(res);
   }
 //+------------------------------------------------------------------+
 //| Close specified opened position                                  |

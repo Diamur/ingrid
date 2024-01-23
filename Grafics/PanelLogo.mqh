@@ -53,10 +53,9 @@ struct Panel
      bool STOP;            // 25
   
    double PROFIT_UP;       // 26 
-   double PROFIT_DN;       // 27 
-   
+   double PROFIT_DN;       // 27
   };
-
+  
 Panel _P = {0,0,0,0,0,0,0,  0,0,0,0,0,0,  0,0,0,0,0,"",0, "","","","",false,false,0,0};
 
 
@@ -600,6 +599,10 @@ void  ShowPanel(bool on = true)
    //showLabel(0, 0, aProp_values[p_DATE_TIME], GetStrTime(), anchor, corner, font_name, font_size, clrGold, x_second_column,  y_property = y_property + line_heght + 5, z_index);
    
    //showLabel(0, 0, aProp_values[p_DATE_TIME], (string)TimeCurrent(), anchor, corner, font_name, font_size, clrAliceBlue, x_second_column,  y_property = y_property + line_heght + 5, z_index);
+   
+   
+   
+   
    ChartRedraw();
   }
 
@@ -949,14 +952,15 @@ if( jZP[ZP_CURRENT_WEEK][DATE].ToInt()  != (int)iTime(_Symbol,PERIOD_W1,0) ){
     
     jZP[ZP_CURRENT_WEEK][DATE]    = (int)iTime(_Symbol,PERIOD_W1,0);
     //---
-    jZP[ZP_LAST_WEEK][VAL]     =  jZP[ZP_CURRENT_WEEK][NAME_VAL].ToDbl(); 
+    jZP[ZP_LAST_WEEK][VAL]     =  jZP[ZP_CURRENT_WEEK][VAL].ToDbl(); 
     jZP[ZP_CURRENT_WEEK][VAL]  =  0;
  } 
+ //Если  НОВ 
 if( jZP[ZP_TODAY][DATE].ToInt() != (int)iTime(_Symbol,PERIOD_D1,0) ){
     //---
     jZP[ZP_TODAY][DATE]        = (int)iTime(_Symbol,PERIOD_D1,0); 
     //---
-    jZP[ZP_YESTERDAY][VAL]  =  jZP[ZP_TODAY][NAME_VAL].ToDbl(); 
+    jZP[ZP_YESTERDAY][VAL]  =  jZP[ZP_TODAY][VAL].ToDbl(); 
     jZP[ZP_TODAY][VAL]      =  0; 
    SetZP_IntoFile();      
  }

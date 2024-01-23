@@ -1,5 +1,48 @@
 #include  "..\..\setting\FilePathMain.mqh" 
 //+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+bool isCode(string code){
+return StringFind(Code, code) != -1;
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+bool isOrdersPrefix(string prefix){
+ bool _bool = false;
+      for(int i=0;i< OrdersTotal() ;i++){
+       if((OrderGetTicket(i)) > 0) {
+        if(OrderGetString(ORDER_SYMBOL) == _Symbol )
+          if( OrderGetInteger(ORDER_MAGIC) == Magic){
+           int const pos = StringFind( OrderGetString(ORDER_COMMENT),prefix);
+            if(pos != -1 ){
+                 _bool = true;
+                 break;
+            }
+           }
+         }
+     }; 
+ return _bool; 
+}
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+
+bool isPositionsPrefix(string prefix){
+ bool _bool = false;
+    for(int i = 0; i < PositionsTotal()  ; i++) {     
+     if(PositionGetSymbol(i) == _Symbol )
+       if( PositionGetInteger(POSITION_MAGIC) == Magic)  {
+          int const pos = StringFind( PositionGetString(POSITION_COMMENT),prefix);
+          if(pos != -1 ){
+                 _bool = true;
+                 break;
+           }
+         }
+     }; 
+ return _bool; 
+}
+//+------------------------------------------------------------------+
 //|                     >>>>>>>>>>>> OUT <<<<<<<<<<<<                 |
 //+------------------------------------------------------------------+
 bool isPriceOutScopeLevelPend_DN(double price){

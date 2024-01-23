@@ -28,6 +28,13 @@ void SetSignalClose(int  number){
    SetSignalCloseSL_OUT_PRICE( number);
    SetSignalCloseBL_OUT_PRICE( number);
    
+   SetSignalCloseTicketBS_TP(number);
+   SetSignalCloseTicketSS_TP(number);
+   
+   SetSignalCloseTicketSL_MAIN_TP(number);
+   SetSignalCloseTicketBL_MAIN_TP(number);
+   
+   
    //SetSignalCloseBUY_PROFIT( number);
    //SetSignalCloseSELL_PROFIT( number);
    

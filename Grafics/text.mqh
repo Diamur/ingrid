@@ -244,44 +244,44 @@ void SetTextLabel(){
    string strSTOPLOSS_BL      = DoubleToString(STOPLOSS_BL, DIGIT );
    string strSTOPLOSS_SS      = DoubleToString(STOPLOSS_SS, DIGIT );
    
-   
-   //string strPRICE_TRALL_NULL_BL = DoubleToString(PRICE_TRALL_NULL_BL, DIGIT );
-   //string strPRICE_TRALL_OPEN_BL = DoubleToString(PRICE_TRALL_OPEN_BL, DIGIT );
-   //string strPRICE_TRALL_FULL_BL = DoubleToString(PRICE_TRALL_FULL_BL, DIGIT );  
-  
-//   string strDT_NULL_OPEN     = DoubleToString(DT_NULL_OPEN, 0 );  
-//   string strDT_OPEN_FULL     = DoubleToString(DT_OPEN_FULL, 0 );  
-//   
-//   string strLAST_PROFIT      = DoubleToString(LAST_PROFIT, 2 );  
-//   string strLAST_PipsPROFIT  = DoubleToString(LAST_PipsPROFIT, 0 );       
-   
-   
-    //SetTRALL_VECTOR( _ASK, _BID, TRALL, TRALL_Step, PipsALL, STOPLOSS_UP,STOPLOSS_DN, strVECTOR, "TRALL_NULL",  "TRALL_OPEN", "TRALL_FULL");
      
     color clrSTOPLOSS_BS = STOPLOSS_BS > 0 ? clrRed : clrWhite ; 
     color clrSTOPLOSS_SL = STOPLOSS_SL > 0 ? clrRed : clrWhite ;
     color clrSTOPLOSS_BL = STOPLOSS_BL > 0 ? clrRed : clrWhite ;    
     color clrSTOPLOSS_SS = STOPLOSS_SS > 0 ? clrRed : clrWhite ;    
     
-    double const PROFIT_BS = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_BS);
-    double const PROFIT_SL = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_SL);
-    double const PROFIT_BL = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_BL);
-    double const PROFIT_SS = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_SS);
+    //---
+    double const LOT_BS             = GetVolumeBS_SUB(NAME_PREFIX_BS); 
+    double const LOT_SL             = GetVolumeSL_MAIN(NAME_PREFIX_SL);
+    double const LOT_SL_FULL        =  MathAbs(LOT_BS - LOT_SL) ;  
+ 
+    double const LOT_BL             = GetVolumeBL_MAIN(NAME_PREFIX_BL);
+    double const LOT_SS             = GetVolumeSS_SUB(NAME_PREFIX_SS);
+    double const LOT_BL_FULL        = MathAbs(LOT_BL - LOT_SS) ;
+    //---
+    double const PROFIT_BS          = GetProfitBUY_PREFIX(NAME_PREFIX_BS);
+    double const PROFIT_SL          = GetProfitSELL_PREFIX(NAME_PREFIX_SL);
+    double const PROFIT_SL_FULL     = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_SL);
+   
+    double const PROFIT_BL_FULL     = GetProfitBUY_SELL_PREFIX(NAME_PREFIX_BL);    
+    double const PROFIT_BL          = GetProfitBUY_PREFIX(NAME_PREFIX_BL);
+    double const PROFIT_SS          = GetProfitSELL_PREFIX(NAME_PREFIX_SS);
+    //---
+       int const PIPS_BS            = GetPipsProfitBUY_Prefix(NAME_PREFIX_BS);
+       int const PIPS_SL            = GetPipsProfitSELL_Prefix(NAME_PREFIX_SL);
+       int const PIPS_SL_FULL       = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true);
     
-    double const LOT_BS = GetVolumeBUY_PREFIX(NAME_PREFIX_BS);
-    double const LOT_SL = GetVolumeSELL_PREFIX(NAME_PREFIX_SL);
-    double const LOT_BL = GetVolumeBUY_PREFIX(NAME_PREFIX_BL);
-    double const LOT_SS = GetVolumeSELL_PREFIX(NAME_PREFIX_SS);
+       int const PIPS_BL_FULL       = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL,true);
+       int const PIPS_BL            = GetPipsProfitBUY_Prefix(NAME_PREFIX_BL);
+       int const PIPS_SS            = GetPipsProfitSELL_Prefix(NAME_PREFIX_SS);
+    //---
+     color const clrPROFIT_BS       =  PROFIT_BS  > 0 ? clrLime : ( PROFIT_BS  < 0 ? clrRed: clrWhite );
+     color const clrPROFIT_SL       =  PROFIT_SL  > 0 ? clrLime : ( PROFIT_SL  < 0 ? clrRed: clrWhite );
+     color const clrPROFIT_SL_FULL  =  PROFIT_SL_FULL  > 0 ? clrLime : ( PROFIT_SL_FULL  < 0 ? clrRed: clrWhite );
     
-    int const    PIPS_BS = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BS);
-    int const    PIPS_SL = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true);
-    int const    PIPS_BL = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL);
-    int const    PIPS_SS = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SS,true);
-    
-    color clrPROFIT_BS  =  PIPS_BS  > 0 ? clrLime : ( PIPS_BS  < 0 ? clrRed: clrWhite );
-    color clrPROFIT_SL  =  PIPS_SL  > 0 ? clrLime : ( PIPS_SL  < 0 ? clrRed: clrWhite );
-    color clrPROFIT_BL  =  PIPS_BL  > 0 ? clrLime : ( PIPS_BL  < 0 ? clrRed: clrWhite );
-    color clrPROFIT_SS  =  PIPS_SS  > 0 ? clrLime : ( PIPS_SS  < 0 ? clrRed: clrWhite );
+     color const clrPROFIT_BL_FULL  =  PROFIT_BL_FULL  > 0 ? clrLime : ( PROFIT_BL_FULL  < 0 ? clrRed: clrWhite );
+     color const clrPROFIT_BL       =  PROFIT_BL  > 0 ? clrLime : ( PROFIT_BL  < 0 ? clrRed: clrWhite );
+     color const clrPROFIT_SS       =  PROFIT_SS  > 0 ? clrLime : ( PROFIT_SS  < 0 ? clrRed: clrWhite );
                      
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -296,12 +296,15 @@ void SetTextLabel(){
 //+------------------------------------------------------------------+
 
     int dtx = 0;
+    int dtYLineBefor = 5;
+    int dtYLineAfter = 8;
+     
     int fsz = FONT_Size;  
     
- if(Panel_ON)   {
+ if(isCode("LOG")) {
  str++;
  
- if(StringFind(Code,"ASK") != -1 ){
+ if( isCode("ASK") ){
   SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;     
    SetLabel(_Symbol, arrNameObject[str][2] , "ASK"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
@@ -313,7 +316,7 @@ void SetTextLabel(){
  str++;
  }   
     
-if(StringFind(Code,"BAL") != -1 ){
+if(isCode("BALANCE") ){
  SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;   
    SetLabel(_Symbol, arrNameObject[str][2] , "BALANCE"          ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
@@ -331,7 +334,7 @@ if(StringFind(Code,"BAL") != -1 ){
 }
 
  
-if(StringFind(Code,"PRF") != -1 ){ 
+if ( isCode("PROFIT") ){ 
  SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;
 //   SetLabel(_Symbol, arrNameObject[str][1] , "PROFIT_FULL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
@@ -344,6 +347,16 @@ if(StringFind(Code,"PRF") != -1 ){
   SetLabel(_Symbol, arrNameObject[str][1] , "PROFIT_SL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( PROFIT_SL , 2  )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL,corner,anchor,false); 
    str++;     
+   
+  SetLabel(_Symbol, arrNameObject[str][1] , "PROFIT_SL_FULL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( PROFIT_SL_FULL , 2  )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL_FULL,corner,anchor,false); 
+   str++;     
+  SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+  str++;    
+  SetLabel(_Symbol, arrNameObject[str][1] , "PROFIT_BL_FULL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( PROFIT_BL_FULL , 2  )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL_FULL,corner,anchor,false); 
+   str++;     
+   
   SetLabel(_Symbol, arrNameObject[str][1] , "PROFIT_BL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( PROFIT_BL  , 2  )          ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
    str++;     
@@ -352,15 +365,22 @@ if(StringFind(Code,"PRF") != -1 ){
    str++;  
    
 }
-if(StringFind(Code,"LOT") != -1 ){ 
+if( isCode("LOT") ){ 
  SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;
-
    SetLabel(_Symbol, arrNameObject[str][1] , "LOT_BS"         ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] ,   DoubleToString( LOT_BS  , 2  )     ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BS,corner,anchor,false); 
  str++;  
    SetLabel(_Symbol, arrNameObject[str][1] , "LOT_SL"         ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] ,   DoubleToString( LOT_SL , 2  )      ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL,corner,anchor,false); 
+ str++;  
+   SetLabel(_Symbol, arrNameObject[str][1] , "LOT_SL_FULL"         ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] ,   DoubleToString( LOT_SL_FULL , 2  )      ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL_FULL,corner,anchor,false); 
+ str++;  
+ SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+ str++;  
+   SetLabel(_Symbol, arrNameObject[str][1] , "LOT_BL_FULL"         ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] ,   DoubleToString( LOT_BL_FULL  , 2  )    ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL_FULL,corner,anchor,false); 
  str++;  
    SetLabel(_Symbol, arrNameObject[str][1] , "LOT_BL"         ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] ,   DoubleToString( LOT_BL  , 2  )    ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
@@ -369,26 +389,62 @@ if(StringFind(Code,"LOT") != -1 ){
    SetLabel(_Symbol, arrNameObject[str][0] ,   DoubleToString(LOT_SS  , 2  )    ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SS,corner,anchor,false); 
  str++;  
  }
- 
- if(StringFind(Code,"PPS") != -1 ){ 
+ //---
+ if( isCode("PIPS")  ){ 
  SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;
-  SetLabel(_Symbol, arrNameObject[str][1] ,  "Pips_BS"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
-  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BS))        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BS,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_BS"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( PIPS_BS  )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BS,corner,anchor,false); 
  str++;  
-  SetLabel(_Symbol, arrNameObject[str][1] ,  "Pips_SL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
-  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true))        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL,corner,anchor,false); 
- str++;  
-  SetLabel(_Symbol, arrNameObject[str][1] ,  "Pips_BL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
-  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL))        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_SL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(PIPS_SL)        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL,corner,anchor,false); 
  str++;  
 
-  SetLabel(_Symbol, arrNameObject[str][1] ,  "Pips_SS"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SS,true) )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SS,corner,anchor,false); 
- str++;
- } 
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_SL_FULL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( PIPS_SL_FULL )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL_FULL,corner,anchor,false); 
+ str++;  
  
- if(StringFind(Code,"STL") != -1 ){ 
+  SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+ str++; 
+ 
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_BL_FULL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(PIPS_BL_FULL)        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL_FULL,corner,anchor,false); 
+ str++;  
+
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_BL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(PIPS_BL)        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
+ str++;  
+
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_SS"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(PIPS_SS )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SS,corner,anchor,false); 
+ str++;
+ }
+ //---
+ if(  isCode("COUNT") ){    
+   SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+   str++;  
+
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "Count_BS"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPositionsByPREFIX( NAME_PREFIX_BS ) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+  
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "Count_SL"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPositionsByPREFIX( NAME_PREFIX_SL ) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+  
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "Count_BL"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPositionsByPREFIX( NAME_PREFIX_BL ) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+  
+   SetLabel(_Symbol, arrNameObject[str][2] ,  "Count_SS"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
+   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPositionsByPREFIX( NAME_PREFIX_SS ) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
+   str++;
+ }
+ 
+ 
+
+ 
+ if(  isCode("STOPLOSS")  ){ 
   SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;    
  if(Trall_SL != 0){
@@ -414,7 +470,7 @@ if(StringFind(Code,"LOT") != -1 ){
   }
  }
 
- if(StringFind(Code,"TRD") != -1 ){ 
+ if(  isCode("TRADE") ){ 
     SetLabel(_Symbol, arrNameObject[str][2] , "TRADE"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] , (string)(TRADE) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
  str++;
@@ -433,29 +489,10 @@ if(StringFind(Code,"LOT") != -1 ){
 }
 
 
-  if(StringFind(Code,"CNT") != -1 ){    
-   SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
-   str++;  
-
-   SetLabel(_Symbol, arrNameObject[str][2] ,  "Count_BS"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPositionsByPREFIX( NAME_PREFIX_BS ) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   str++;
-  
-   SetLabel(_Symbol, arrNameObject[str][2] ,  "Count_SL"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPositionsByPREFIX( NAME_PREFIX_SL ) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   str++;
-  
-   SetLabel(_Symbol, arrNameObject[str][2] ,  "Count_BL"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPositionsByPREFIX( NAME_PREFIX_BL ) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   str++;
-  
-   SetLabel(_Symbol, arrNameObject[str][2] ,  "Count_SS"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] , (string)(  GetCountPositionsByPREFIX( NAME_PREFIX_SS ) ) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   str++;
- }
 
 
-  if(StringFind(Code,"TUP") != -1 ){ 
+
+  if(  isCode("TUP")  ){ 
      SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
    str++;  
    
@@ -476,7 +513,7 @@ if(StringFind(Code,"LOT") != -1 ){
    
    */
    
-       SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+   SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;
    
          SetLabel(_Symbol, arrNameObject[str][2] ,  "WORK"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
@@ -501,7 +538,7 @@ if(StringFind(Code,"LOT") != -1 ){
    
    }
 
- if(StringFind(Code,"TDN") != -1 ){ 
+ if( isCode("TDN")  ){ 
    
       SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
    str++;  
@@ -590,7 +627,7 @@ if(Status.OpenSELLSTOP[number][STATUS_STO_UP]         = Stochastic_ON? ( !STORev
    */
    }
    
-  if(StringFind(Code,"STO") != -1 ){    
+  if( isCode("STO") ){    
    SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
    str++;  
 
@@ -613,34 +650,10 @@ if(Status.OpenSELLSTOP[number][STATUS_STO_UP]         = Stochastic_ON? ( !STORev
 
  } 
    
- 
-  if(StringFind(Code,"LOT2") != -1 ){    
+   if(isCode("MINMAX") ){    
    SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
    str++;  
-
-   SetLabel(_Symbol, arrNameObject[str][2] ,  "LOT_BS_SUB"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( GetVolumeBS_SUB(NAME_PREFIX_BS) , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   str++;
   
-   SetLabel(_Symbol, arrNameObject[str][2] ,  "LOT_SL_MAIN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] , DoubleToString( GetVolumeSL_MAIN(NAME_PREFIX_SL) , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   str++;
-  
-   SetLabel(_Symbol, arrNameObject[str][2] ,  "LOT_BL_MAIN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] , DoubleToString( GetVolumeBL_MAIN(NAME_PREFIX_BL) , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   str++;
-  
-   SetLabel(_Symbol, arrNameObject[str][2] ,  "LOT_SS_SUB"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
-   SetLabel(_Symbol, arrNameObject[str][0] , DoubleToString( GetVolumeSS_SUB(NAME_PREFIX_SS) , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
-   str++;
-   
- }  
-   
-   
-   if(StringFind(Code,"MAX") != -1 ){    
-   SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
-   str++;  
- 
    SetLabel(_Symbol, arrNameObject[str][2] ,  "PriceMIN_UP"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] , DoubleToString( PriceMIN_UP , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    str++; 
@@ -648,31 +661,86 @@ if(Status.OpenSELLSTOP[number][STATUS_STO_UP]         = Stochastic_ON? ( !STORev
    SetLabel(_Symbol, arrNameObject[str][2] ,  "PriceMAX_DN"  ,fsz, arrXLabel[str][1]+dtx, arrYLabel[str], clrWhite  ,corner,anchor,false); 
    SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( PriceMAX_DN , 2) ,fsz, arrXLabel[str][0], arrYLabel[str], clrWhite,corner,anchor,false); 
    str++;
+   
+   
  }  
    
-    if(StringFind(Code,"OUT") != -1 ){ 
+    if(isCode("OUT")  ){ 
  SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
  str++;
 
   SetLabel(_Symbol, arrNameObject[str][1] ,  "PipsOUT_SL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
-  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( (int)((PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT)   )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_SL,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( PriceMIN_UP == 0 ? 0 : (int)((  PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK )     )/POINT)   )        ,fsz, arrXLabel[str][0], arrYLabel[str], (int)((  PriceMIN_UP - PriceMIN_UP==0?0:SymbolInfoDouble(NULL,SYMBOL_ASK )    )/POINT)  > 0 ? clrGreen:clrRed,corner,anchor,false); 
  str++;  
 
   SetLabel(_Symbol, arrNameObject[str][1] ,  "PipsOUT_BL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
-  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( (int)(( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT) )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( PriceMAX_DN==0 ? 0: (int)(( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT) )        ,fsz, arrXLabel[str][0], arrYLabel[str], (int)(( PriceMAX_DN==0?0:SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT)  > 0? clrGreen:clrRed,corner,anchor,false); 
  str++;  
  
+ SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+ str++;
  
   SetLabel(_Symbol, arrNameObject[str][1] ,  "CloseSL_OUT"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
-  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( SignalCloseSL_OUT_PRICE[0] )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( SignalCloseSL_OUT_PRICE[0] )        ,fsz, arrXLabel[str][0], arrYLabel[str], SignalCloseSL_OUT_PRICE[0]? clrGreen:clrRed,corner,anchor,false); 
  str++;  
  
   SetLabel(_Symbol, arrNameObject[str][1] ,  "CloseBL_OUT"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
-  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( SignalCloseBL_OUT_PRICE[0] )        ,fsz, arrXLabel[str][0], arrYLabel[str], clrPROFIT_BL,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( SignalCloseBL_OUT_PRICE[0] )        ,fsz, arrXLabel[str][0], arrYLabel[str], SignalCloseBL_OUT_PRICE[0] ? clrGreen:clrRed,corner,anchor,false); 
  str++;  
  
+    SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+ str++;
  
+  
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PipsOutPrice"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( PipsOutPrice !=0 )        ,fsz, arrXLabel[str][0], arrYLabel[str], PipsOutPrice !=0 ? clrGreen:clrRed ,corner,anchor,false); 
+ str++;  
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "ASK < PriceMIN_UP"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( SymbolInfoDouble(NULL,SYMBOL_ASK) < PriceMIN_UP )        ,fsz, arrXLabel[str][0], arrYLabel[str],  SymbolInfoDouble(NULL,SYMBOL_ASK) < PriceMIN_UP? clrGreen:clrRed,corner,anchor,false); 
+ str++;  
+   SetLabel(_Symbol, arrNameObject[str][1] ,  "PriceMIN_UP-ASK > PipsOut"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( (PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT > PipsOutPrice )        ,fsz, arrXLabel[str][0], arrYLabel[str],  (PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT > PipsOutPrice ? clrGreen:clrRed,corner,anchor,false); 
+ str++;  
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_SL_FULL < 0 "          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true) < 0 )        ,fsz, arrXLabel[str][0], arrYLabel[str],  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL) < 0 ? clrGreen:clrRed,corner,anchor,false); 
+ str++;  
+    SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str]  , clrDarkGray,  corner , anchor,false);  
+ str++;
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PipsOutPrice"                 ,fsz, arrXLabel[str][1], arrYLabel[str] , clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(PipsOutPrice !=0  )   ,fsz, arrXLabel[str][0], arrYLabel[str] , PipsOutPrice !=0 ? clrGreen:clrRed,corner,anchor,false); 
+ str++;  
+  SetLabel(_Symbol, arrNameObject[str][1] ,  " BID > MAX_DN "          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( SymbolInfoDouble(NULL,SYMBOL_BID) > PriceMAX_DN  )        ,fsz, arrXLabel[str][0], arrYLabel[str],  SymbolInfoDouble(NULL,SYMBOL_BID) > PriceMAX_DN  ? clrGreen:clrRed,corner,anchor,false); 
+ str++;  
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "BID-MAX_DN > PipsOutPrice"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)( ( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT > PipsOutPrice )        ,fsz, arrXLabel[str][0], arrYLabel[str], ( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT > PipsOutPrice  ? clrGreen:clrRed,corner,anchor,false); 
+ str++;  
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_BL_FULL < 0"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL,true) < 0 )        ,fsz, arrXLabel[str][0], arrYLabel[str],  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL) < 0 ? clrGreen:clrRed,corner,anchor,false); 
+ str++;  
  
+     SetLabel(_Symbol, arrNameObject[str][0] , "---------",9, arrXLabel[str][0] , arrYLabel[str] , clrDarkGray,  corner , anchor,false);  
+ str++;
+   SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_SL"          ,fsz, arrXLabel[str][1], arrYLabel[str]  , clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true) )        ,fsz, arrXLabel[str][0], arrYLabel[str]  ,  clrWhite ,corner,anchor,false); 
+ str++;  
+    SetLabel(_Symbol, arrNameObject[str][1] ,  "PIPS_BL"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL,true)  )        ,fsz, arrXLabel[str][0], arrYLabel[str],  clrWhite ,corner,anchor,false); 
+ str++;  
+ 
+ /*
+ //---
+  if(Status.CloseSL[number][STATUS_PIPS_OUT]    = PipsOutPrice !=0 ? true: false )  
+  if(Status.CloseSL[number][STATUS_ASK]         = SymbolInfoDouble(NULL,SYMBOL_ASK) < PriceMIN_UP   ? true: false )  
+  if(Status.CloseSL[number][STATUS_DT_OUT]      = (PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT > PipsOutPrice ? true: false )
+  if(Status.CloseBL[number][STATUS_PROFIT_SELL] =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL) < 0 ? true: false )  
+ //---
+  if(Status.CloseBL[number][STATUS_PIPS_OUT]    = PipsOutPrice !=0 ? true: false )  
+  if(Status.CloseBL[number][STATUS_BID]         = SymbolInfoDouble(NULL,SYMBOL_BID) > PriceMAX_DN  ? true: false )  
+  if(Status.CloseBL[number][STATUS_DT_OUT]      = ( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT > PipsOutPrice ? true: false )
+  if(Status.CloseBL[number][STATUS_PROFIT_BUY]  =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL) < 0 ? true: false )  
+ 
+ */
  
 
  } 

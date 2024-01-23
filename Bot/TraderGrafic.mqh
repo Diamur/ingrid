@@ -148,7 +148,7 @@ if(SignalOpenSellStop[number]){
 
  
   SetTextLabel();
-  
+ if(!Hidden_HLine) 
   SetHLine_Scope();
 //if(HLINE_ON)
    //SetHLINE();

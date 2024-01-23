@@ -1,5 +1,62 @@
 #include  "..\..\..\setting\FilePathMain.mqh" 
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+//<><><><><><><><><><><><><><><><><>    TAKEPROFIT   <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+//+------------------------------------------------------------------+
+//|                CloseTicketSL_MAIN                                          |
+//+------------------------------------------------------------------+
+void SetSignalCloseTicketSL_MAIN_TP ( int number){
+  SignalCloseTicketSL_MAIN_TP[number] = false; 
+ //---
+  if(Status.CloseSL[number][STATUS_PROFIT_SELL] = ProfitPipsMain !=0 ? true: false )
+  if(Status.CloseSL[number][STATUS_TRALL]       = Trall_SL ==0 ? true: false )
+  if(Status.CloseSL[number][STATUS_PREFIX]      = GetPipsProfitSELL_Prefix(NAME_PREFIX_SL) > ProfitPipsMain  ? true: false )
+ //---
+ SignalCloseTicketSL_MAIN_TP[number] = true; 
+//---
+}
+//+------------------------------------------------------------------+
+//|                CloseTicketBL_MAIN                                          |
+//+------------------------------------------------------------------+
+void SetSignalCloseTicketBL_MAIN_TP ( int number){
+  SignalCloseTicketBL_MAIN_TP[number] = false; 
+ //---
+  if(Status.CloseBL[number][STATUS_PROFIT_BUY] = ProfitPipsMain !=0 ? true: false )
+  if(Status.CloseBL[number][STATUS_TRALL]       = Trall_BL ==0 ? true: false )
+  if(Status.CloseBL[number][STATUS_PREFIX]      = GetPipsProfitBUY_Prefix(NAME_PREFIX_BL) > ProfitPipsMain  ? true: false )
+ //---
+ SignalCloseTicketBL_MAIN_TP[number] = true; 
+//---
+}
+
+
+//+------------------------------------------------------------------+
+//|                CloseTicketBS_TP                                          |
+//+------------------------------------------------------------------+
+void SetSignalCloseTicketBS_TP ( int number){
+  SignalCloseTicketBS_TP[number] = false; 
+ //---
+  if(Status.CloseBS[number][STATUS_TP]         = CloseAutoTP_Sub  ? true: false )  
+  if(Status.CloseBS[number][STATUS_CLOSE]      = ClosePrefixBS_TP != "" ? true: false )
+  if(Status.CloseBS[number][STATUS_PREFIX]     = isPositionsPrefix(ClosePrefixBS_TP) ? true: false )
+ //---
+ SignalCloseTicketBS_TP[number] = true; 
+//---
+}
+//+------------------------------------------------------------------+
+//|                CloseTicketSS_TP                                          |
+//+------------------------------------------------------------------+
+void SetSignalCloseTicketSS_TP ( int number){
+  SignalCloseTicketSS_TP[number] = false; 
+ //---
+  if(Status.CloseSS[number][STATUS_TP]         = CloseAutoTP_Sub  ? true: false )  
+  if(Status.CloseSS[number][STATUS_CLOSE]      = ClosePrefixSS_TP != "" ? true: false )
+  if(Status.CloseSS[number][STATUS_PREFIX]     = isPositionsPrefix(ClosePrefixSS_TP) ? true: false )
+ //---
+ SignalCloseTicketSS_TP[number] = true; 
+//---
+}
+//<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //<><><><><><><><><><><><><><><><><>    PROFIT      <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 //+------------------------------------------------------------------+
@@ -10,10 +67,11 @@ void SetSignalCloseSL_OUT_PRICE ( int number){
  //---
   if(Status.CloseSL[number][STATUS_PIPS_OUT]    = PipsOutPrice !=0 ? true: false )  
   if(Status.CloseSL[number][STATUS_ASK]         = SymbolInfoDouble(NULL,SYMBOL_ASK) < PriceMIN_UP   ? true: false )  
-  if(Status.CloseSL[number][STATUS_DT_OUT]      = (PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT > PipsOutPrice ? true: false )
-  if(Status.CloseBL[number][STATUS_PROFIT_SELL] =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL) < 0 ? true: false )  
+  if(Status.CloseSL[number][STATUS_DT_OUT]      = ( PriceMIN_UP==0 ? 0: (PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT ) > PipsOutPrice ? true: false )
+  if(Status.CloseBL[number][STATUS_PROFIT_SELL] =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL,true) < 0 ? true: false )  
  //---
  SignalCloseSL_OUT_PRICE[number] = true; 
+ 
 //---
 }
 //+------------------------------------------------------------------+
@@ -24,8 +82,8 @@ void SetSignalCloseBL_OUT_PRICE ( int number){
  //---
   if(Status.CloseBL[number][STATUS_PIPS_OUT]    = PipsOutPrice !=0 ? true: false )  
   if(Status.CloseBL[number][STATUS_BID]         = SymbolInfoDouble(NULL,SYMBOL_BID) > PriceMAX_DN  ? true: false )  
-  if(Status.CloseBL[number][STATUS_DT_OUT]      = ( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT > PipsOutPrice ? true: false )
-  if(Status.CloseBL[number][STATUS_PROFIT_BUY]  =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL) < 0 ? true: false )  
+  if(Status.CloseBL[number][STATUS_DT_OUT]      = ( PriceMAX_DN==0 ? 0:  ( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT ) > PipsOutPrice ? true: false )
+  if(Status.CloseBL[number][STATUS_PROFIT_BUY]  = GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL,true) < 0 ? true: false )  
  //---
  SignalCloseBL_OUT_PRICE[number] = true; 
 //---

@@ -2,12 +2,28 @@
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
+bool ClosePositionByTicket(  int number,
+                             int ticket,
+                        CTrade &trade[],
+                        string symbol){
+   for(int i = 0; i < PositionsTotal(); i++){     
+     if(PositionGetSymbol(i) == symbol )
+       if( PositionGetInteger(POSITION_MAGIC) == Magic)
+         if( PositionGetInteger(POSITION_TICKET) ==  ticket  )  
+              if(!trade[number].PositionClose( PositionGetInteger(POSITION_TICKET) ) ){
+                 Print(__FUNCTION__," error  = ", GetLastError());
+            } else return true;
+     };
+     return false;         
+  }
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 bool ClosePositionByType(  int number,
                         CTrade &trade[],
                         ENUM_POSITION_TYPE type,
                         string symbol){
-   for(int i = 0; i < PositionsTotal(); i++)
-     {     
+   for(int i = 0; i < PositionsTotal(); i++){     
      if(PositionGetSymbol(i) == symbol )
        if( PositionGetInteger(POSITION_MAGIC) == Magic)
          if( PositionGetInteger(POSITION_TYPE) ==  type  )  
@@ -55,3 +71,21 @@ bool ClosePositionByPREFIX(    int number,
     return _close;         
 }  
   
+bool ClosePositionByPREFIX_FULL(    int number,
+                            string prefix,
+                            CTrade &trade[],
+                            string symbol){
+  bool _close = false;                      
+    for(int i = 0; i < PositionsTotal()  ; i++) {     
+     if(PositionGetSymbol(i) == symbol )
+       if( PositionGetInteger(POSITION_MAGIC) == Magic)  {
+         if( PositionGetString(POSITION_COMMENT) == prefix)
+               if(!trade[number].PositionClose( PositionGetInteger(POSITION_TICKET) ) ){
+                 Print(__FUNCTION__," CloseAllPosition error "  + " = ", GetLastError());
+              } else _close =  true;
+           
+         }
+     };     
+    return _close;         
+}  
+ 

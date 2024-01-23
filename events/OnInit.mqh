@@ -14,6 +14,7 @@ int OnInit()
       }
     
       
+
       
   
     DIGIT               = (int)SymbolInfoInteger(NULL,SYMBOL_DIGITS);
@@ -419,6 +420,8 @@ int OnInit()
    //SetStartParams();
    
     //if(! _chekServer ){
+    
+ if(Panel_ON) 
    ShowPanel(true);
    
 
@@ -449,7 +452,7 @@ int OnInit()
      SetZP_FromFile();                         
    }
    
-   
+ if(Panel_ON) 
    ShowZP_Trade();
    
       //}
