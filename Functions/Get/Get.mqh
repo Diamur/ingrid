@@ -790,16 +790,16 @@ int getDTPriceMIN_DN(double price){ return POINT !=0 ?  (int)( ( price - PriceMI
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-double Get_Lot_BY_Money_Risk( string symbol, double risk  ){   
+double Get_Lot_BY_Money_Risk( double risk  ){   
      
 //   string depo_symbol1 ="";
 //   string depo_symbol2 ="";
 //   
    double sum_money_risk = 0;
    
-   double minlot           = SymbolInfoDouble(symbol,SYMBOL_VOLUME_MIN);
-   double maxlot           = SymbolInfoDouble(symbol,SYMBOL_VOLUME_MAX);
-   double steplot          = SymbolInfoDouble(symbol,SYMBOL_VOLUME_STEP); 
+   double minlot           = SymbolInfoDouble(NULL,SYMBOL_VOLUME_MIN);
+   double maxlot           = SymbolInfoDouble(NULL,SYMBOL_VOLUME_MAX);
+   double steplot          = SymbolInfoDouble(NULL,SYMBOL_VOLUME_STEP); 
    
    double lot = minlot ;
    
@@ -821,7 +821,7 @@ double Get_Lot_BY_Money_Risk( string symbol, double risk  ){
    double lot_1 = (double)( 100000 / _ACCOUNT_LEVERAGE);  
    
    // Цена пары
-   double price = iClose(symbol,PERIOD_CURRENT,0); 
+   double price = iClose(NULL,PERIOD_CURRENT,0); 
      
    //Сумма 1 лота
    double summa_1_lot = lot_1 * price; 

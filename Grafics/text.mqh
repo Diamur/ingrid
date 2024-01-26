@@ -728,23 +728,19 @@ if(Status.OpenSELLSTOP[number][STATUS_STO_UP]         = Stochastic_ON? ( !STORev
   SetLabel(_Symbol, arrNameObject[str][0] ,  (string)(  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL,true)  )        ,fsz, arrXLabel[str][0], arrYLabel[str],  clrWhite ,corner,anchor,false); 
  str++;  
  
- /*
- //---
-  if(Status.CloseSL[number][STATUS_PIPS_OUT]    = PipsOutPrice !=0 ? true: false )  
-  if(Status.CloseSL[number][STATUS_ASK]         = SymbolInfoDouble(NULL,SYMBOL_ASK) < PriceMIN_UP   ? true: false )  
-  if(Status.CloseSL[number][STATUS_DT_OUT]      = (PriceMIN_UP - SymbolInfoDouble(NULL,SYMBOL_ASK) )/POINT > PipsOutPrice ? true: false )
-  if(Status.CloseBL[number][STATUS_PROFIT_SELL] =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_SL) < 0 ? true: false )  
- //---
-  if(Status.CloseBL[number][STATUS_PIPS_OUT]    = PipsOutPrice !=0 ? true: false )  
-  if(Status.CloseBL[number][STATUS_BID]         = SymbolInfoDouble(NULL,SYMBOL_BID) > PriceMAX_DN  ? true: false )  
-  if(Status.CloseBL[number][STATUS_DT_OUT]      = ( SymbolInfoDouble(NULL,SYMBOL_BID) - PriceMAX_DN )/POINT > PipsOutPrice ? true: false )
-  if(Status.CloseBL[number][STATUS_PROFIT_BUY]  =  GetPipsProfitBUY_SELL_Prefix(NAME_PREFIX_BL) < 0 ? true: false )  
- 
- */
- 
-
  } 
+  
    
+     if(isCode("RISK")  ){ 
+ SetLabel(_Symbol, arrNameObject[str][0] , "---------------------------------------------",9, arrXLabel[str][0] , arrYLabel[str], clrDarkGray,  corner , anchor,false);  
+ str++;
+
+  SetLabel(_Symbol, arrNameObject[str][1] ,  "Get_Lot"          ,fsz, arrXLabel[str][1], arrYLabel[str], clrWhite  ,corner,anchor,false); 
+  SetLabel(_Symbol, arrNameObject[str][0] ,  DoubleToString( Get_Lot_BY_Money_Risk( Risk ) ,2)        ,fsz, arrXLabel[str][0], arrYLabel[str], (int)((  PriceMIN_UP - PriceMIN_UP==0?0:SymbolInfoDouble(NULL,SYMBOL_ASK )    )/POINT)  > 0 ? clrGreen:clrRed,corner,anchor,false); 
+ str++;  
+ 
+ 
+ }  
    
 }   
 
